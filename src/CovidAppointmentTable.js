@@ -5,10 +5,10 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
 import Switch from "@material-ui/core/Switch";
 import Availability from "./components/Availability";
 import SignUpLink from "./components/SignUpLink";
+import MoreInformation from "./components/MoreInformation";
 
 export function transformData(data) {
 	return data.map((entry, index) => {
@@ -21,7 +21,7 @@ export function transformData(data) {
 			hasAppointments: entry.hasAvailability,
 			appointmentData: entry.availability || null,
 			signUpLink: entry.signUpLink || null,
-			//extraData: entry.extraData || null,
+			extraData: entry.extraData || null,
 		};
 	});
 }
@@ -47,8 +47,9 @@ export function sortAndFilterData(
 }
 
 const useStyles = makeStyles((theme) => ({
-	card: {
-		margin: theme.spacing(2),
+	cardBox: {
+		"padding-top": theme.spacing(2),
+		"padding-bottom": theme.spacing(2),
 	},
 }));
 
@@ -80,36 +81,32 @@ export default function CovidAppointmentTable() {
 
 	return (
 		<Loader loaded={!!data && data.length > 0}>
-			<Grid container justify="center" spacing={3}>
-				<Grid item xs={12} sm={8}>
-					<FormControlLabel
-						control={
-							<Switch
-								checked={onlyShowAvailable}
-								onChange={(event) => setOnlyShowAvailable(event.target.checked)}
-							/>
-						}
-						label="Only show locations with available appointments"
+			<FormControlLabel
+				control={
+					<Switch
+						checked={onlyShowAvailable}
+						onChange={(event) => setOnlyShowAvailable(event.target.checked)}
 					/>
-				</Grid>
-				{formattedData.map((entry) => {
-					return (
-						<Grid item xs={12} sm={8} key={entry.key}>
-							<Card className={classes.card}>
-								<CardHeader
-									title={<div>{entry.location}</div>}
-									subheader={<div>{entry.city}</div>}
-								/>
-								<CardContent>
-									<Availability entry={entry} />
-									<br />
-									<SignUpLink entry={entry} />
-								</CardContent>
-							</Card>
-						</Grid>
-					);
-				})}
-			</Grid>
+				}
+				label="Only show locations with available appointments"
+			/>
+			{formattedData.map((entry) => {
+				return (
+					<div className={classes.cardBox}>
+						<Card>
+							<CardHeader
+								title={<div>{entry.location}</div>}
+								subheader={<div>{entry.city}</div>}
+							/>
+							<CardContent>
+								<Availability entry={entry} />
+								<MoreInformation entry={entry} />
+								<SignUpLink entry={entry} />
+							</CardContent>
+						</Card>
+					</div>
+				);
+			})}
 		</Loader>
 	);
 }
