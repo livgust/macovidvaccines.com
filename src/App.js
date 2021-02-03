@@ -1,6 +1,7 @@
 import CovidAppointmentTable from "./CovidAppointmentTable";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import Menu from "./components/Menu";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -15,16 +16,19 @@ const useStyles = makeStyles((theme) => ({
 function App() {
 	const classes = useStyles();
 	return (
-		<div className={classes.main}>
-			<Grid container justify="center" spacing={3}>
-				<Grid item xs={1} sm={2}></Grid>
-				<Grid item xs={10} sm={8}>
-					<h1 className={classes.heading}>MA Covid Vaccine Appointments</h1>
-					<CovidAppointmentTable />
+		<>
+			<Menu />
+			<div className={classes.main}>
+				<Grid container justify="center" spacing={3}>
+					<Grid item xs={1} sm={2}></Grid>
+					<Grid item xs={10} sm={8}>
+						<h1 className={classes.heading}>MA Covid Vaccine Appointments</h1>
+						<CovidAppointmentTable />
+					</Grid>
+					<Grid item xs={1} sm={2}></Grid>
 				</Grid>
-				<Grid item xs={1} sm={2}></Grid>
-			</Grid>
-		</div>
+			</div>
+		</>
 	);
 }
 

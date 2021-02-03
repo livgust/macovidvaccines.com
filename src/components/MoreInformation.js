@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
 	accordion: {
 		"margin-top": theme.spacing(2),
 		"margin-bottom": theme.spacing(2),
+		":last-child": { "margin-bottom": theme.spacing(2) },
 	},
 	buttonText: {
 		...theme.typography.button,
