@@ -1,4 +1,3 @@
-import "./App.css";
 import CovidAppointmentTable from "./CovidAppointmentTable";
 import React from "react";
 

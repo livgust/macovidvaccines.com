@@ -1,22 +1,24 @@
 import Loader from "react-loader";
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@material-ui/core/Grid";
+import Switch from "@material-ui/core/Switch";
+import Availability from "./components/Availability";
+import SignUpLink from "./components/SignUpLink";
 
 export function transformData(data) {
-	return data.map((entry) => {
+	return data.map((entry, index) => {
 		return {
+			key: index,
 			location: entry.name,
 			streetAddress: entry.street,
 			city: entry.city,
 			zip: entry.zip,
-			hasAppointments: entry.hasAvailability ? "Yes" : "No",
+			hasAppointments: entry.hasAvailability,
 			appointmentData: entry.availability || null,
 			signUpLink: entry.signUpLink || null,
 			//extraData: entry.extraData || null,
@@ -24,9 +26,15 @@ export function transformData(data) {
 	});
 }
 
-export function sortData(data, { sortKey, sortAsc }) {
-	console.log(sortKey);
-	const newData = data.sort((a, b) => {
+export function sortAndFilterData(
+	data,
+	{ sortKey, sortAsc },
+	onlyShowAvailable
+) {
+	const filteredData = onlyShowAvailable
+		? data.filter((entry) => entry.hasAppointments)
+		: data;
+	const newData = filteredData.sort((a, b) => {
 		const first = sortAsc ? a[sortKey] : b[sortKey];
 		const second = sortAsc ? b[sortKey] : a[sortKey];
 		if (typeof first == "string") {
@@ -35,16 +43,26 @@ export function sortData(data, { sortKey, sortAsc }) {
 			return first - second;
 		}
 	});
-	console.log(newData);
 	return newData;
 }
 
+const useStyles = makeStyles((theme) => ({
+	card: {
+		margin: theme.spacing(2),
+	},
+}));
+
 export default function CovidAppointmentTable() {
+	const classes = useStyles();
+
 	const [data, setData] = useState([]);
 	const [sortInfo, setSortInfo] = useState({
 		sortKey: "hasAppointments",
 		sortAsc: false,
 	});
+
+	const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
+
 	useEffect(() => {
 		fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod").then(
 			async (res) => {
@@ -54,90 +72,44 @@ export default function CovidAppointmentTable() {
 		);
 	}, []);
 
-	const columns = [
-		{ header: "Location", key: "location", defaultSorting: "ASC" },
-		{ header: "Street Address", key: "streetAddress", sortable: false },
-		{ header: "City", key: "city", sortable: true },
-		{ header: "ZIP", key: "zip", sortable: true },
-		{
-			header: "Has Available Appointments",
-			key: "hasAppointments",
-			sortable: true,
-		},
-		{
-			header: "Available Appointments",
-			key: "appointmentData",
-			sortable: true,
-			render: (data, parentElement) => {
-				const availableSlots = [];
-				for (const date in data) {
-					if (data[date].hasAvailability) {
-						availableSlots.push({
-							date: date,
-							...data[date],
-						});
-					}
-				}
-				if (!availableSlots.length && parentElement.hasAppointments === "Yes") {
-					return <div>No date-specific data available.</div>;
-				} else {
-					return (
-						<div>
-							{availableSlots.map((slot) => (
-								<div>
-									{slot.date}:{" "}
-									{slot.numberAvailableAppointments
-										? `${slot.numberAvailableAppointments} slots`
-										: "slots available"}
-								</div>
-							))}
-						</div>
-					);
-				}
-			},
-		},
-		{
-			header: "Sign-up Link",
-			key: "signUpLink",
-			sortable: false,
-			render: (data, parentElement) => {
-				if (parentElement.hasAppointments === "Yes") {
-					return data ? <a href={data}>Click Here</a> : "No link available.";
-				} else {
-					return <div></div>;
-				}
-			},
-		},
-	];
+	const formattedData = sortAndFilterData(
+		transformData(data),
+		sortInfo,
+		onlyShowAvailable
+	);
+
 	return (
 		<Loader loaded={!!data && data.length > 0}>
-			<TableContainer component={Paper}>
-				<Table size="small">
-					<TableHead>
-						<TableRow>
-							{columns.map((col) => (
-								<TableCell>{col.header}</TableCell>
-							))}
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{sortData(transformData(data), sortInfo).map((entry) => (
-							<TableRow>
-								{columns.map((col) => {
-									const entryDataPiece = entry[col.key] || null;
-									return (
-										<TableCell>
-											{col.render
-												? col.render(entryDataPiece, entry)
-												: entryDataPiece || ""}
-										</TableCell>
-									);
-								})}
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
+			<Grid container justify="center" spacing={3}>
+				<Grid item xs={12} sm={8}>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={onlyShowAvailable}
+								onChange={(event) => setOnlyShowAvailable(event.target.checked)}
+							/>
+						}
+						label="Only show locations with available appointments"
+					/>
+				</Grid>
+				{formattedData.map((entry) => {
+					return (
+						<Grid item xs={12} sm={8} key={entry.key}>
+							<Card className={classes.card}>
+								<CardHeader
+									title={<div>{entry.location}</div>}
+									subheader={<div>{entry.city}</div>}
+								/>
+								<CardContent>
+									<Availability entry={entry} />
+									<br />
+									<SignUpLink entry={entry} />
+								</CardContent>
+							</Card>
+						</Grid>
+					);
+				})}
+			</Grid>
 		</Loader>
 	);
 }
