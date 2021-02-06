@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -17,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
+	},
+	buttonText: {
+		color: theme.palette.primary.contrastText,
 	},
 	title: {
 		flexGrow: 1,
@@ -52,6 +56,14 @@ export default function ButtonAppBar() {
 					>
 						<MenuIcon />
 					</IconButton>
+					<Button
+						className={classes.buttonText}
+						href="https://www.gofundme.com/f/wwwmacovidvaccinescom?utm_source=customer&utm_medium=copy_link&utm_campaign=p_cf+share-flow-1"
+						target="_blank"
+						rel="noreferrer"
+					>
+						Contribute
+					</Button>
 				</Toolbar>
 			</AppBar>
 			<Menu
@@ -83,7 +95,11 @@ function AboutDialog(props) {
 				<DialogContentText id="about-dialog-description">
 					<p>
 						This website was created by{" "}
-						<a href="http://www.oliviaadams.dev" target="_blank">
+						<a
+							href="http://www.oliviaadams.dev"
+							target="_blank"
+							rel="noreferrer"
+						>
 							Olivia Adams
 						</a>
 						.
@@ -93,7 +109,11 @@ function AboutDialog(props) {
 						tells you what places currently are advertising available
 						appointments for COVID vaccines. It is YOUR responsibility to verify
 						that you are eligible before signing up. For more information, click{" "}
-						<a href="http://www.mass.gov/covidvaccine" target="_blank">
+						<a
+							href="http://www.mass.gov/covidvaccine"
+							target="_blank"
+							rel="noreferrer"
+						>
 							here
 						</a>
 						.
