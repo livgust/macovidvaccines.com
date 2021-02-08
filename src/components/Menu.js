@@ -131,9 +131,9 @@ function AboutDialog(props) {
 					</p>
 					<p>
 						I'm working as fast as I can to gather more information from other
-						sources, however, I'm a mom of two on maternity leave. If you're
-						interested in helping, visit my personal website (linked above) to
-						contact me.
+						sources. To contact me,{" "}
+						<a href="mailto:macovidvaccines@gmail.com">send an email</a>. I'll
+						try to get back to you but I'm getting a lot of outreach!
 					</p>
 				</DialogContentText>
 			</DialogContent>
