@@ -26,8 +26,8 @@ function App() {
 						<h1 className={classes.heading}>MA Covid Vaccine Appointments</h1>
 						<CovidAppointmentTable />
 						<Typography variant="caption" display="block" gutterBottom>
-						This site is not affiliated with or endorsed by the Commonwealth of Massachusetts. <br/>
-This site is for informational purposes only.   Not all vaccination locations are tracked and the information may not be complete or accurate. <br/>
+						This site is not affiliated with or endorsed by the Commonwealth of Massachusetts.<br/>
+This site is for informational purposes only.   Not all vaccination locations are tracked and the information may not be complete or accurate.<br/>
 							Copyright &#169; {new Date().getFullYear()} Olivia Adams. All rights reserved.
 						</Typography>
 					</Grid>
