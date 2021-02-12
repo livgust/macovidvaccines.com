@@ -68,9 +68,11 @@ export default function CovidAppointmentTable() {
 		fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod").then(
 			async (res) => {
 				const newData = await res.json();
-				setData(JSON.parse(newData.body).results);
+				setData(JSON.parse(newData.body).results || []);
 			}
-		);
+		).catch(
+                  (ex) => setData([])
+                );
 	}, []);
 
 	const formattedData = sortAndFilterData(
@@ -92,7 +94,7 @@ export default function CovidAppointmentTable() {
 			/>
 			{formattedData.map((entry) => {
 				return (
-					<div className={classes.cardBox}>
+				  	<div key={`${entry.location}-${entry.city}`} className={classes.cardBox}>
 						<Card>
 							<CardHeader
 								title={<div>{entry.location}</div>}
