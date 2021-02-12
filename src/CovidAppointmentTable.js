@@ -68,7 +68,7 @@ export default function CovidAppointmentTable() {
 		fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod").then(
 			async (res) => {
 				const newData = await res.json();
-				setData(JSON.parse(newData.body).results || []);
+				setData(JSON.parse(newData.body).results);
 			}
 		).catch(
                   (ex) => setData([])
