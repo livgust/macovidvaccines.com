@@ -63,6 +63,7 @@ export default function StateEligibility() {
 	return (
 		<div className={classes.container}>
 			<Button
+				data-testid="eligibility-button"
 				variant="contained"
 				color="primary"
 				onClick={() => setModalOpen(true)}
@@ -70,12 +71,18 @@ export default function StateEligibility() {
 				Check your eligibility
 			</Button>
 			<Modal open={modalOpen} onClose={handleModalClose}>
-				<div style={modalStyle} className={classes.modal}>
+				<div
+					style={modalStyle}
+					className={classes.modal}
+					data-testid="eligibility-modal"
+				>
 					{!iframeLoaded && <p>Loading...</p>}
 					<iframe
 						onLoad={() => setIframeLoaded(true)}
 						src={iframeSrc}
 						style={iframeStyle}
+						title="Vaccine Eligibility Form"
+						data-testid="eligibility-iframe"
 					/>
 				</div>
 			</Modal>
