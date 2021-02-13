@@ -1,5 +1,4 @@
 export default function Availability({ entry }) {
-	console.log(entry.hasAppointments);
 	if (!entry.hasAppointments) {
 		return <div>No availability.</div>;
 	} else {
@@ -18,10 +17,9 @@ export default function Availability({ entry }) {
 			return (
 				<div>
 					{availableSlots.map((slot) => (
-						<div>
-							{`${slot.date}: ${slot.numberAvailableAppointments} slot${
-								slot.numberAvailableAppointments > 1 ? "s" : ""
-							}`}
+						<div key={slot.date}>
+							{`${slot.date}: ${slot.numberAvailableAppointments} slot${slot.numberAvailableAppointments > 1 ? "s" : ""
+								}`}
 						</div>
 					))}
 				</div>

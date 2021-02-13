@@ -60,7 +60,7 @@ function DropDownWithButton({ dateLinkPairs }) {
 				onChange={(event) => setDateIndexSelected(event.target.value)}
 			>
 				{dateLinkPairs.map((pair, index) => (
-					<MenuItem value={index}>{pair[0]}</MenuItem>
+					<MenuItem key={pair[0]} value={index}>{pair[0]}</MenuItem>
 				))}
 			</Select>
 			<Button

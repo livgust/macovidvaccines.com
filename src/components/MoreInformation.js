@@ -53,7 +53,7 @@ function ExtraData({ data }) {
 		let elements = [];
 		for (const key in data) {
 			elements.push(
-				<div className={classes.extraData}>
+				<div key={key} className={classes.extraData}>
 					<b>{key}:</b> {data[key]}
 				</div>
 			);
