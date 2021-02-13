@@ -1,7 +1,14 @@
+import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useState } from "react";
+
+const useStyles = makeStyles((theme) => ({
+	dateSelectDropdown: {
+		marginRight: theme.spacing(2),
+	},
+}));
 
 export default function SignUpLink({ entry }) {
 	if (entry.hasAppointments) {
@@ -53,11 +60,13 @@ export default function SignUpLink({ entry }) {
 
 function DropDownWithButton({ dateLinkPairs }) {
 	const [dateIndexSelected, setDateIndexSelected] = useState(0);
+	const classes = useStyles();
 	return (
 		<>
 			<Select
 				value={dateIndexSelected}
 				onChange={(event) => setDateIndexSelected(event.target.value)}
+				className={classes.dateSelectDropdown}
 			>
 				{dateLinkPairs.map((pair, index) => (
 					<MenuItem value={index}>{pair[0]}</MenuItem>
