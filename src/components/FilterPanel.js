@@ -38,15 +38,17 @@ export default function FilterPanel(props) {
     useEffect(() => {
         onChange({
             hasAppointments: d => !hasAppointments || !!d.hasAppointments,
-            vaxType: vaxType !== 'Any' ?
-                d => {
+            vaxType: d => {
+                if (vaxType === 'Any') {
+                    return true;
+                } else {
                     if (d.extraData && d.extraData['Vaccinations offered']) {
                         return d.extraData['Vaccinations offered'].includes(vaxType);
+                    } else {
+                        return false;
                     }
-                    return false;
                 }
-                :
-                () => true
+            }
         })
     }, [onChange, hasAppointments, vaxType])
 
