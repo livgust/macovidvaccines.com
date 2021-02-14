@@ -28,11 +28,23 @@ export default function CovidAppointmentTable(props) {
 		}
 	)
 
+	console.log(sortedData);
+
+	// generate unique key for each site
+	const getSiteId = (site) => {
+		return btoa(
+			JSON.stringify(site)
+				.split('')
+				.map(c => c.charCodeAt(0).toString())
+				.join('')
+		);
+	};
+
 	return (
 		<>
 			{sortedData.map((entry) => {
 				return (
-					<div key={`${entry.location}-${entry.city}`} className={classes.cardBox}>
+					<div key={getSiteId(entry)} className={classes.cardBox}>
 						<Card>
 							<CardHeader
 								title={<div>{entry.location}</div>}

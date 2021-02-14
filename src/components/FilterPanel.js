@@ -37,10 +37,7 @@ export default function FilterPanel(props) {
 
     useEffect(() => {
         onChange({
-            hasAppointments: hasAppointments ?
-                d => !!d.hasAppointments === hasAppointments
-                :
-                () => true,
+            hasAppointments: d => !hasAppointments || !!d.hasAppointments,
             vaxType: vaxType !== 'Any' ?
                 d => {
                     if (d.extraData && d.extraData['Vaccinations offered']) {
