@@ -63,6 +63,12 @@ const useStyles = makeStyles((theme) => ({
 		"margin-bottom": theme.spacing(1),
 		"margin-left": theme.spacing(1)
 	},
+	locationsNotFound: {
+		"margin": theme.spacing(1, "auto")
+	},
+	notFoundBox: {
+		"display": "grid"
+	}
 }));
 
 
@@ -71,7 +77,7 @@ export default function CovidAppointmentTable() {
 	const classes = useStyles();
 	const [loading, setLoading] = useState(false)
 	const [currentLocation, setCurrentLocation] = useState({});
-	const [zipcode, setZipcode] = useState(false)
+	const [zipcode, setZipcode] = useState("")
 	const [data, setData] = useState([]);
 	const [sortInfo, setSortInfo] = useState({
 		sortKey: "hasAppointments",
@@ -81,20 +87,25 @@ export default function CovidAppointmentTable() {
 	const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
 
 	useEffect(() => {
-		fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod").then(
-			async (res) => {
-				const newData = await res.json();
-				setData(JSON.parse(newData.body).results);
-			}
-		);
+		resetData()
 	}, []);
 
 	useEffect(()=> {
 		setLoading(true)
-		setData(data => data.map(entry=> ({...entry, distance: getDistance(currentLocation, {latitude:Math.random() * 30, longitude: Math.random()*-75}) * 0.000621371 }))
-		.sort((a,b) => a.distance > b.distance ? 1 : -1))
+		setData(data => data.filter(entry => entry.latitude && entry.longitude)
+			.map(entry=> ({...entry, distance: getDistance(currentLocation, {latitude:entry.latitude || 0, longitude: entry.longitude || 0}) * 0.000621371 }))
+			.sort((a,b) => a.distance > b.distance ? 1 : -1))
 		setLoading(false)
 	}, [currentLocation])
+
+	const resetData = () => {
+		fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod").then(
+		async (res) => {
+			const newData = await res.json();
+			setData(JSON.parse(newData.body).results);
+		}
+		);
+	}
 
 	const formattedData = sortAndFilterData(
 		transformData(data),
@@ -103,6 +114,7 @@ export default function CovidAppointmentTable() {
 	);
 
 	const getCurrentLocation = () => {
+		setZipcode("")
 		navigator.geolocation.getCurrentPosition((position) => {
 		  setCurrentLocation({latitude: position.coords.latitude, longitude: position.coords.longitude});
 	  	})
@@ -119,7 +131,7 @@ export default function CovidAppointmentTable() {
 	}
 	
 	return (
-		<Loader loaded={!!data && data.length > 0 && !loading}>
+			<>
 			<FormControlLabel
 				control={
 					<Switch
@@ -130,11 +142,16 @@ export default function CovidAppointmentTable() {
 				label="Only show locations with available appointments"
 			/>
 			<div >
-				<TextField id="outlined-basic" label="Enter Zipcode" variant="outlined" onChange={e => setZipcode(e.target.value)} />
+				<TextField id="outlined-basic" label="Enter Zipcode" variant="outlined" onChange={e => setZipcode(e.target.value)} value={zipcode}/>
 				<Button className={classes.filterButtons} variant="contained" color="secondary" onClick={getZipcodeLocation}>Search By Zip</Button>
 				<Button className={classes.filterButtons} variant="contained" color="secondary" startIcon={<GpsFixedIcon/>} onClick={getCurrentLocation}>Use My Location</Button>
 			</div>
-					
+			{!loading && data.length === 0 ?
+				<div className={classes.notFoundBox}>
+					<h2 className={classes.locationsNotFound}>No Locations Found</h2>
+					<Button className={classes.filterButtons} variant="contained" color="secondary" onClick={resetData}>Show All Locations</Button>
+				</div> :(
+			<Loader loaded={!!data && data.length > 0 && !loading}>
 			{formattedData.map((entry) => {
 				return (
 					<div className={classes.cardBox}>
@@ -152,6 +169,8 @@ export default function CovidAppointmentTable() {
 					</div>
 				);
 			})}
-		</Loader>
+			</Loader>)}
+			</>
+		
 	);
 }
