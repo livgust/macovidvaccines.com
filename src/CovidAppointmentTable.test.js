@@ -9,6 +9,13 @@ import CovidAppointmentTable from './CovidAppointmentTable';
 import prod from '../test/fixtures/api/prod.json';
 import noData from '../test/fixtures/api/no-data.json';
 
+// actual API returns `body` as a string but we store it as a POJO in the fixture for
+// ease of reading
+const prodData = {
+  ...prod,
+  body: JSON.stringify(prod.body)
+};
+
 beforeAll(function() {
   jest.spyOn(window, 'fetch');
 });
@@ -17,19 +24,31 @@ describe('the CovidAppointmentTable component', function() {
   describe('when api data is available', function() {
     beforeEach(function() {
       window.fetch.mockResolvedValueOnce({
-        json: async () => prod,
+        json: async () => prodData,
         ok: true
       });
     });
 
-    test('it correctly displays available appointments', async function() {
+    test('it displays results as a filtered list of appointment cards', async function() {
       await act(async function() {
         render(
           <CovidAppointmentTable />
         );
       });
 
-      expect(await screen.findByText(/Berkshire Community College Field House/)).toBeInTheDocument();
+      expect(await screen.findAllByRole('listitem')).toHaveLength(2);
+    });
+
+    test('disabling the filter shows all appointment cards', async function() {
+      await act(async function() {
+        render(
+          <CovidAppointmentTable />
+        );
+      });
+
+      (await screen.findByRole('switch')).click();
+
+      expect(await screen.findAllByRole('listitem')).toHaveLength(3);
     });
   });
 
@@ -41,17 +60,14 @@ describe('the CovidAppointmentTable component', function() {
       });
     });
 
-    test('it displays a loader component', async function() {
+    test('it displays a no-appointments message', async function() {
       await act(async function() {
         render(
           <CovidAppointmentTable />
         );
       });
 
-      // react-loader doesn't appear to expose any a11y attributes on the spinner it
-      // renders, which means we can't use the testing-library's API to assert on the
-      // presence of something; we have to assert on the absence of everything :(
-      expect(screen.queryByText(/Only show locations with available appointments/)).toBeNull();
+      expect(await screen.findByRole('status')).toBeInTheDocument();
     });
   });
 
@@ -60,14 +76,14 @@ describe('the CovidAppointmentTable component', function() {
       window.fetch.mockImplementationOnce(() => Promise.reject(new TypeError('network error')));
     });
 
-    test('it displays a loader component', async function() {
+    test('it displays an error message', async function() {
       await act(async function() {
         render(
           <CovidAppointmentTable />
         );
       });
 
-      expect(screen.queryByText(/Only show locations with available appointments/)).toBeNull();
+      expect(screen.getByRole('alert')).toBeInTheDocument();
     });
   });
 });
