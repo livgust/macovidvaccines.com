@@ -3,7 +3,8 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Menu from "./components/Menu";
-import { makeStyles } from "@material-ui/core";
+import {makeStyles, MuiThemeProvider} from "@material-ui/core";
+import theme from "./theme";
 
 const useStyles = makeStyles((theme) => ({
 	main: {
@@ -12,14 +13,18 @@ const useStyles = makeStyles((theme) => ({
 	heading: {
 		"text-align": "center",
 	},
+	primary: {
+		main: "#AD003B"
+	}
 }));
 
 function App() {
 	const classes = useStyles();
 	return (
+		<MuiThemeProvider theme={theme}>
 		<>
 			<Menu />
-			<div className={classes.main}>
+			<div className={classes.main} role="main">
 				<Grid container justify="center" spacing={3}>
 					<Grid item xs={1} sm={2}></Grid>
 					<Grid item xs={10} sm={8}>
@@ -35,6 +40,7 @@ This site is for informational purposes only.   Not all vaccination locations ar
 				</Grid>
 			</div>
 		</>
+		</MuiThemeProvider>
 	);
 }
 
