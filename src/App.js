@@ -3,7 +3,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Menu from "./components/Menu";
-import {makeStyles, MuiThemeProvider} from "@material-ui/core";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +21,7 @@ function App() {
 		<MuiThemeProvider theme={theme}>
         <>
             <Menu />
-            <div className={classes.main}>
+            <div className={classes.main} role="main">
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={1} sm={2}></Grid>
                     <Grid item xs={10} sm={8}>
