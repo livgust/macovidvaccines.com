@@ -5,59 +5,60 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-	accordion: {
-		"margin-top": theme.spacing(2),
-		"margin-bottom": theme.spacing(2),
-		":last-child": { "margin-bottom": theme.spacing(2) },
-	},
-	buttonText: {
-		...theme.typography.button,
-	},
-	extraDataContainer: {
-		display: "block",
-	},
-	extraData: {
-		display: "block",
-		"padding-bottom": theme.spacing(1),
-	},
+    accordion: {
+        "margin-top": theme.spacing(2),
+        "margin-bottom": theme.spacing(2),
+        ":last-child": { "margin-bottom": theme.spacing(2) },
+    },
+    buttonText: {
+        ...theme.typography.button,
+    },
+    extraDataContainer: {
+        display: "block",
+    },
+    extraData: {
+        display: "block",
+        "padding-bottom": theme.spacing(1),
+    },
 }));
 
 export default function MoreInformation({ entry }) {
-	const classes = useStyles();
-	return (
-		<Accordion className={classes.accordion}>
-			<AccordionSummary
-				expandIcon={<ExpandMoreIcon />}
-				className={classes.buttonText}
-			>
-				More Information
-			</AccordionSummary>
-			<AccordionDetails className={classes.extraDataContainer}>
-				<div className={classes.extraData}>
-					<b>Address:</b> {entry.streetAddress}, {entry.city}, MA {entry.zip}
-				</div>
-				<ExtraData data={entry.extraData} />
-			</AccordionDetails>
-		</Accordion>
-	);
+    const classes = useStyles();
+    return (
+        <Accordion className={classes.accordion}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                className={classes.buttonText}
+            >
+                More Information
+            </AccordionSummary>
+            <AccordionDetails className={classes.extraDataContainer}>
+                <div className={classes.extraData}>
+                    <b>Address:</b> {entry.streetAddress}, {entry.city}, MA{" "}
+                    {entry.zip}
+                </div>
+                <ExtraData data={entry.extraData} />
+            </AccordionDetails>
+        </Accordion>
+    );
 }
 
 function ExtraData({ data }) {
-	const classes = useStyles();
+    const classes = useStyles();
 
-	if (!data) {
-		return null;
-	} else if (typeof data == "string") {
-		return <div>data</div>;
-	} else if (typeof data == "object") {
-		let elements = [];
-		for (const key in data) {
-			elements.push(
-				<div className={classes.extraData}>
-					<b>{key}:</b> {data[key]}
-				</div>
-			);
-		}
-		return elements;
-	}
+    if (!data) {
+        return null;
+    } else if (typeof data == "string") {
+        return <div>data</div>;
+    } else if (typeof data == "object") {
+        let elements = [];
+        for (const key in data) {
+            elements.push(
+                <div className={classes.extraData}>
+                    <b>{key}:</b> {data[key]}
+                </div>
+            );
+        }
+        return elements;
+    }
 }
