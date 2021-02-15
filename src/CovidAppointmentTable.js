@@ -26,9 +26,7 @@ export default function CovidAppointmentTable(props) {
 			sortKey: "hasAppointments",
 			sortAsc: false,
 		}
-	)
-
-	console.log(sortedData);
+	);
 
 	// generate unique key for each site
 	const getSiteId = (site) => {
