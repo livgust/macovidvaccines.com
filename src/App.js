@@ -19,7 +19,7 @@ function App() {
     return (
         <>
             <Menu />
-            <main className={classes.main}>
+            <div className={classes.main}>
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={1} sm={2}></Grid>
                     <Grid item xs={10} sm={8}>
@@ -45,7 +45,7 @@ function App() {
                     </Grid>
                     <Grid item xs={1} sm={2}></Grid>
                 </Grid>
-            </main>
+            </div>
         </>
     );
 }

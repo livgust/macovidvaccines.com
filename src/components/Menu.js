@@ -42,9 +42,9 @@ export default function ButtonAppBar() {
     };
 
     return (
-        <header className={classes.root}>
-            <AppBar position="static">
-                <Toolbar component="nav">
+        <nav className={classes.root}>
+            <AppBar position="static" component="div">
+                <Toolbar>
                     <IconButton
                         edge="start"
                         className={classes.menuButton}
@@ -83,7 +83,7 @@ export default function ButtonAppBar() {
                 </MenuItem>
             </Menu>
             <AboutDialog open={aboutOpen} onClose={() => setAboutOpen(false)} />
-        </header>
+        </nav>
     );
 }
 
