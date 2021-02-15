@@ -20,10 +20,64 @@ const useStyles = makeStyles((theme) => ({
 		display: "block",
 		"padding-bottom": theme.spacing(1),
 	},
+	formattedExtraData: {
+		color: "#F50057",
+	},
 }));
 
 export default function MoreInformation({ entry }) {
 	const classes = useStyles();
+	if(!(entry.extraData == null)) {
+		//reggie lewis uses markdown but not for emphasis so it skips that site
+		if(!(entry.location == "Reggie Lewis State Track Athletic Ctr")) {
+			var currentData = entry.extraData["Additional Information"];
+			if(!(currentData == null)) {
+				var splitDataEmStr = currentData.split("***");
+				var i = 1;
+				var newDataEmStr = splitDataEmStr[0];
+				var isEmStr = false;
+				while(i < splitDataEmStr.length) {
+					if(isEmStr) {
+						newDataEmStr = newDataEmStr + "</span></em>" + splitDataEmStr[i];
+						isEmStr = false;
+					}else{
+						newDataEmStr = newDataEmStr + "<em><span class=\"formattedExtraData\">" + splitDataEmStr[i];
+						isEmStr = true;
+					}
+					i++;
+				}
+				var splitDataStr = newDataEmStr.split("**");
+				var i = 1;
+				var newDataStr = splitDataStr[0];
+				var isStr = false;
+				while(i < splitDataStr.length) {
+					if(isStr) {
+						newDataStr = newDataStr + "</span>" + splitDataStr[i];
+						isStr = false;
+					}else{
+						newDataStr = newDataStr + "<span class=\"formattedExtraData\">" + splitDataStr[i];
+						isStr = true;
+					}
+					i++;
+				}
+				var splitDataEm = newDataStr.split("*");
+				var i = 1;
+				var newDataEm = splitDataEm[0];
+				var isEm = false;
+				while(i < splitDataEm.length) {
+					if(isEm) {
+						newDataEm = newDataEm + "</em>" + splitDataEm[i];
+						isEm = false;
+					}else{
+						newDataEm = newDataEm + "<em>" + splitDataEm[i];
+						isEm = true;
+					}
+					i++;
+				}
+				entry.extraData["Additional Information"] = newDataEm;
+			}
+		}
+	}
 	return (
 		<Accordion className={classes.accordion}>
 			<AccordionSummary
