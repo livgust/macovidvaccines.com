@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
     //make UI elements slightly darker then default to improve contrast with white text
@@ -6,10 +6,10 @@ const theme = createMuiTheme({
         primary: {
             main: "#0D5A9B"
         },
-            secondary: {
-            main: '#AD003B',
-        },
-    },
+        secondary: {
+            main: "#AD003B"
+        }
+    }
 });
 
-export default theme
+export default theme;
