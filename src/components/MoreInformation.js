@@ -97,21 +97,21 @@ export default function MoreInformation({ entry }) {
 }
 
 function ExtraData({ data }) {
-	const classes = useStyles();
+    const classes = useStyles();
 
-	if (!data) {
-		return null;
-	} else if (typeof data == "string") {
-		return <div>data</div>;
-	} else if (typeof data == "object") {
-		let elements = [];
-		for (const key in data) {
-			elements.push(
-				<div className={classes.extraData}>
-					<b>{key}:</b> {data[key]}
-				</div>
-			);
-		}
-		return elements;
-	}
+    if (!data) {
+        return null;
+    } else if (typeof data == "string") {
+        return <div>data</div>;
+    } else if (typeof data == "object") {
+        let elements = [];
+        for (const key in data) {
+            elements.push(
+                <div className={classes.extraData}>
+                    <b>{key}:</b> {data[key]}
+                </div>
+            );
+        }
+        return elements;
+    }
 }
