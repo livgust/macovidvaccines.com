@@ -1,6 +1,6 @@
 ## Contributing to macovidvaccines.com
 
-First off, thank you for contributing to [MA COVID Vaccines](macovidvaccines.com)! Your help and talents are greatly appreciated.
+First off, thank you for contributing to [MA Covid Vaccine Appointments](https://www.macovidvaccines.com/)! Your help and talents are greatly appreciated.
 
 ### Opening a new issue
 
@@ -14,4 +14,4 @@ If you see an issue that you would like to work on, be sure to leave a quick com
 
 ### License
 
-All contributions are made under the **MIT Software License**. [Click on the license page](https://github.com/livgust/macovidvaccines.com/blob/master/LICENSE) for further details.
+All contributions are made under the **MIT Software License**. [See the license page](https://github.com/livgust/macovidvaccines.com/blob/master/LICENSE) for further details.
