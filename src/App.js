@@ -42,7 +42,7 @@ function App() {
                             information may not be complete or accurate.
                             <br />
                             Copyright &#169; {new Date().getFullYear()} Olivia
-                            Adams. All rights reserved.
+                            Adams/Ora Innovations LLC. All rights reserved.
                         </Typography>
                     </Grid>
                     <Grid item xs={1} sm={2}></Grid>
