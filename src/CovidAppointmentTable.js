@@ -70,7 +70,8 @@ export default function CovidAppointmentTable() {
         fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod")
             .then(async (res) => {
                 const newData = await res.json();
-                setData(JSON.parse(newData.body).results);
+              setData(JSON.parse(newData.body).results);
+              setReady(true);
             })
             .catch((ex) => {
                 console.error(ex.message);
@@ -101,7 +102,6 @@ export default function CovidAppointmentTable() {
 
             <section
                 aria-live="polite"
-                aria-describedby="progress"
                 aria-busy={!ready}
             >
                 <FormControlLabel
@@ -126,7 +126,7 @@ export default function CovidAppointmentTable() {
                         return (
                             <div
                                 role="listitem"
-                                key={`${entry.location}-${entry.city}`}
+                                key={`${entry.location}-${entry.streetAdress}-${entry.city}`}
                                 className={classes.cardBox}
                             >
                                 <Card>
