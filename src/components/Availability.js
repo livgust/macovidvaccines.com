@@ -17,7 +17,7 @@ export default function Availability({ entry }) {
             return (
                 <div>
                     {availableSlots.map((slot) => (
-                      <div key={slot.date}>
+                        <div key={slot.date}>
                             {`${slot.date}: ${
                                 slot.numberAvailableAppointments
                             } slot${
