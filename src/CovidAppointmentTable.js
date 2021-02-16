@@ -70,8 +70,8 @@ export default function CovidAppointmentTable() {
         fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod")
             .then(async (res) => {
                 const newData = await res.json();
-              setData(JSON.parse(newData.body).results);
-              setReady(true);
+                setData(JSON.parse(newData.body).results);
+                setReady(true);
             })
             .catch((ex) => {
                 console.error(ex.message);
@@ -100,10 +100,7 @@ export default function CovidAppointmentTable() {
 
             {errorMessage && <div role="alert">{errorMessage}</div>}
 
-            <section
-                aria-live="polite"
-                aria-busy={!ready}
-            >
+            <section aria-live="polite" aria-busy={!ready}>
                 <FormControlLabel
                     control={
                         <Switch
