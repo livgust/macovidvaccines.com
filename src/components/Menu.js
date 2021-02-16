@@ -98,6 +98,7 @@ export default function ButtonAppBar() {
                     <a
                         href="mailto:macovidvaccines@gmail.com"
                         className={classes.unstyledLink}
+                        target="_blank"
                     >
                         Give Feedback
                     </a>
