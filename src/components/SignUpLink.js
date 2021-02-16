@@ -72,7 +72,9 @@ function DropDownWithButton({ dateLinkPairs }) {
                 className={classes.dateSelectDropdown}
             >
                 {dateLinkPairs.map((pair, index) => (
-                    <MenuItem value={index}>{pair[0]}</MenuItem>
+                    <MenuItem key={pair[0]} value={index}>
+                        {pair[0]}
+                    </MenuItem>
                 ))}
             </Select>
             <Button
