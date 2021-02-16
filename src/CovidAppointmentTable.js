@@ -34,23 +34,23 @@ export function transformData(data) {
 }
 
 export function sortAndFilterData(
-	data,
-	{ sortKey, sortAsc },
-	onlyShowAvailable
+    data,
+    { sortKey, sortAsc },
+    onlyShowAvailable
 ) {
-	const filteredData = onlyShowAvailable
-		? data.filter((entry) => entry.hasAppointments)
-		: data;
-	const newData = filteredData.sort((a, b) => {
-		const first = sortAsc ? a[sortKey] : b[sortKey];
-		const second = sortAsc ? b[sortKey] : a[sortKey];
-		if (typeof first == "string") {
-			return first.localeCompare(second);
-		} else {
-			return first - second;
-		}
-	});
-	return newData;
+    const filteredData = onlyShowAvailable
+        ? data.filter((entry) => entry.hasAppointments)
+        : data;
+    const newData = filteredData.sort((a, b) => {
+        const first = sortAsc ? a[sortKey] : b[sortKey];
+        const second = sortAsc ? b[sortKey] : a[sortKey];
+        if (typeof first == "string") {
+            return first.localeCompare(second);
+        } else {
+            return first - second;
+        }
+    });
+    return newData;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -76,6 +76,8 @@ const useStyles = makeStyles((theme) => ({
 export default function CovidAppointmentTable() {
 	const classes = useStyles();
 	const [loading, setLoading] = useState(false)
+	const [ready, setReady] = useState(false);
+	const [errorMessage, setErrorMessage] = useState();
 	const [currentLocation, setCurrentLocation] = useState({});
 	const [zipcode, setZipcode] = useState("")
 	const [data, setData] = useState([]);
@@ -84,7 +86,7 @@ export default function CovidAppointmentTable() {
 		sortAsc: false,
 	});
 
-	const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
+    const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
 
 	useEffect(() => {
 		resetData()
@@ -99,78 +101,107 @@ export default function CovidAppointmentTable() {
 	}, [currentLocation])
 
 	const resetData = () => {
-		fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod").then(
+		fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod")
+			.then(async (res) => {
+				const newData = await res.json();
+				setData(JSON.parse(newData.body).results);
+				setReady(true);
+			})
+			.catch((ex) => {
+				console.error(ex.message);
+				setErrorMessage(
+					"something went wrong, please try again later."
+				);
+				setReady(true);
+			});
+	}
+
+    const formattedData = sortAndFilterData(
+        transformData(data),
+        sortInfo,
+        onlyShowAvailable
+    );
+
+const getCurrentLocation = () => {
+	setZipcode("")
+	navigator.geolocation.getCurrentPosition((position) => {
+	  setCurrentLocation({latitude: position.coords.latitude, longitude: position.coords.longitude});
+	  })
+}
+
+const getZipcodeLocation = () => {
+	fetch(`https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${zipcode}&facet=state&facet=timezone&facet=dst`).then(
 		async (res) => {
-			const newData = await res.json();
-			setData(JSON.parse(newData.body).results);
+			const {records} = await res.json();
+			const {fields: {latitude, longitude}} = records[0]
+			setCurrentLocation({latitude, longitude})
 		}
-		);
-	}
-
-	const formattedData = sortAndFilterData(
-		transformData(data),
-		sortInfo,
-		onlyShowAvailable
 	);
+}    
 
-	const getCurrentLocation = () => {
-		setZipcode("")
-		navigator.geolocation.getCurrentPosition((position) => {
-		  setCurrentLocation({latitude: position.coords.latitude, longitude: position.coords.longitude});
-	  	})
-	}
 
-	const getZipcodeLocation = () => {
-		fetch(`https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${zipcode}&facet=state&facet=timezone&facet=dst`).then(
-			async (res) => {
-				const {records} = await res.json();
-				const {fields: {latitude, longitude}} = records[0]
-				setCurrentLocation({latitude, longitude})
-			}
-		);
-	}
-	
-	return (
-			<>
-			<FormControlLabel
-				control={
-					<Switch
-						checked={onlyShowAvailable}
-						onChange={(event) => setOnlyShowAvailable(event.target.checked)}
-					/>
-				}
-				label="Only show locations with available appointments"
-			/>
+return (
+        <>
+            <div
+                aria-label="loading data"
+                id="progress"
+                role="progressbar"
+                aria-valuetext={ready ? "loaded" : "waiting"}
+            >
+                <Loader loaded={ready} />
+            </div>
+
 			<div >
 				<TextField id="outlined-basic" label="Enter Zipcode" variant="outlined" onChange={e => setZipcode(e.target.value)} value={zipcode}/>
 				<Button className={classes.filterButtons} variant="contained" color="secondary" onClick={getZipcodeLocation}>Search By Zip</Button>
 				<Button className={classes.filterButtons} variant="contained" color="secondary" startIcon={<GpsFixedIcon/>} onClick={getCurrentLocation}>Use My Location</Button>
 			</div>
-			{!loading && data.length === 0 ?
-				<div className={classes.notFoundBox}>
-					<h2 className={classes.locationsNotFound}>No Locations Found</h2>
-					<Button className={classes.filterButtons} variant="contained" color="secondary" onClick={resetData}>Show All Locations</Button>
-				</div> :(
-			<Loader loaded={!!data && data.length > 0 && !loading}>
-			{formattedData.map((entry) => {
-				return (
-					<div className={classes.cardBox}>
-						<Card>
-							<CardHeader
-								title={<div>{entry.location}</div>}
-								subheader={<><div>{entry.city}</div>{entry.distance && <div><RoomOutlined/>{Number.parseFloat(entry.distance).toFixed(1)} miles away</div>}</>}
-							/>
-							<CardContent>
-								<Availability entry={entry} />
-								<MoreInformation entry={entry} />
-								<SignUpLink entry={entry} />
-							</CardContent>
-						</Card>
-					</div>
-				);
-			})}
-			</Loader>)}
-			</>
-		
-	);
+
+            {errorMessage && <div role="alert">{errorMessage}</div>}
+
+            <section aria-live="polite" aria-busy={!ready}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            aria-checked={onlyShowAvailable}
+                            role="switch"
+                            checked={onlyShowAvailable}
+                            onChange={(event) =>
+                                setOnlyShowAvailable(event.target.checked)
+                            }
+                        />
+                    }
+                    label="Only show locations with available appointments"
+                />
+                {ready && formattedData.length === 0 && (
+                    <div role="status">
+                        <p>No appointments found.</p>
+                    </div>
+                )}
+                <div role="list">
+                    {formattedData.map((entry) => {
+                        return (
+                            <div
+                                role="listitem"
+                                key={`${entry.location}-${entry.streetAdress}-${entry.city}`}
+                                className={classes.cardBox}
+                            >
+                                <Card>
+                                    <CardHeader
+                                        title={<div>{entry.location}</div>}
+                                        subheader={<div>{entry.city}</div>}
+                                    />
+                                    <CardContent>
+                                        <Availability entry={entry} />
+                                        <MoreInformation entry={entry} />
+                                        <SignUpLink entry={entry} />
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        );
+                    })}
+                </div>
+            </section>
+        </>
+    );
 }
