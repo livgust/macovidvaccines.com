@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Menu from "./components/Menu";
 import { makeStyles } from "@material-ui/core";
+import StateEligibility from "./components/StateEligibility";
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -26,6 +27,7 @@ function App() {
                         <h1 className={classes.heading}>
                             MA Covid Vaccine Appointments
                         </h1>
+                        <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography
                             variant="caption"
