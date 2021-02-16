@@ -65,7 +65,8 @@ export default function StateEligibility() {
 			<Button
 				data-testid="eligibility-button"
 				variant="contained"
-				color="primary"
+                color="primary"
+                size="small"
 				onClick={() => setModalOpen(true)}
 			>
 				Check your eligibility
