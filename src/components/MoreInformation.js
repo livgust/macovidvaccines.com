@@ -27,16 +27,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MoreInformation({ entry }) {
   const classes = useStyles();
-  if (!(entry.extraData == null)) {
+  if (entry.extraData) {
     //reggie lewis uses markdown but not for emphasis so it skips that site
-    if (!(entry.location == "Reggie Lewis State Track Athletic Ctr")) {
-      var currentData = entry.extraData["Additional Information"];
-      if (!(currentData == null)) {
-        var splitDataEmStr = currentData.split("***");
-        var i = 1;
-        var newDataEmStr = splitDataEmStr[0];
-        var isEmStr = false;
-        while (i < splitDataEmStr.length) {
+    if (entry.location !== "Reggie Lewis State Track Athletic Ctr") {
+      const currentData = entry.extraData["Additional Information"];
+      if (currentData) {
+        let splitDataEmStr = currentData.split("***");
+        let i = 0;
+        let newDataEmStr = splitDataEmStr[0];
+        let isEmStr = false;
+        for(i = 1; i < splitDataEmStr.length; i++) {
           if (isEmStr) {
             newDataEmStr = newDataEmStr + "</span></em>" + splitDataEmStr[i];
             isEmStr = false;
@@ -47,13 +47,11 @@ export default function MoreInformation({ entry }) {
               splitDataEmStr[i];
             isEmStr = true;
           }
-          i++;
         }
-        var splitDataStr = newDataEmStr.split("**");
-        var i = 1;
-        var newDataStr = splitDataStr[0];
-        var isStr = false;
-        while (i < splitDataStr.length) {
+        let splitDataStr = newDataEmStr.split("**");
+        let newDataStr = splitDataStr[0];
+        let isStr = false;
+        for(i = 1; i < splitDataStr.length; i++) {
           if (isStr) {
             newDataStr = newDataStr + "</span>" + splitDataStr[i];
             isStr = false;
@@ -64,13 +62,11 @@ export default function MoreInformation({ entry }) {
               splitDataStr[i];
             isStr = true;
           }
-          i++;
         }
-        var splitDataEm = newDataStr.split("*");
-        var i = 1;
-        var newDataEm = splitDataEm[0];
-        var isEm = false;
-        while (i < splitDataEm.length) {
+        let splitDataEm = newDataStr.split("*");
+        let newDataEm = splitDataEm[0];
+        let isEm = false;
+        for(i = 1; i < splitDataEm.length; i++) {
           if (isEm) {
             newDataEm = newDataEm + "</em>" + splitDataEm[i];
             isEm = false;
@@ -78,7 +74,6 @@ export default function MoreInformation({ entry }) {
             newDataEm = newDataEm + "<em>" + splitDataEm[i];
             isEm = true;
           }
-          i++;
         }
         entry.extraData["Additional Information"] = newDataEm;
       }
