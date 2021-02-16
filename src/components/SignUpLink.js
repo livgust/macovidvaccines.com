@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useState } from "react";
+import HelpDialog from "./HelpDialog";
 
 const useStyles = makeStyles((theme) => ({
     dateSelectDropdown: {
@@ -39,7 +40,14 @@ export default function SignUpLink({ entry }) {
                 }
             }
             if (!dateLinkPairs.length) {
-                return "No sign-up link available.";
+                return (
+                    <div>
+                        No sign-up link available.
+                        <HelpDialog 
+                            title='No sign-up link available.' 
+                            text="The state website (maimmunizations.org/) is not currently providing a sign-up link for this location."
+                        />
+                    </div>);
             } else if (dateLinkPairs.length === 1) {
                 return (
                     <Button
