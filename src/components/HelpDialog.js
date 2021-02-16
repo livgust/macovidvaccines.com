@@ -1,4 +1,5 @@
 import React from "react";
+import Tooltip from '@material-ui/core/Tooltip';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -10,7 +11,9 @@ export default function HelpDialog(props) {
     const [helpOpen, setHelpOpen] = React.useState(false);
 
     return (<span>
-        <HelpOutlineIcon fontSize='small' onClick={() => setHelpOpen(true)}/>
+        <Tooltip title='Click for more info'>
+            <HelpOutlineIcon fontSize='small' onClick={() => setHelpOpen(true)}/>
+        </Tooltip>
         <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
             <DialogTitle id="about-dialog-title">{props.title}</DialogTitle>
             <DialogContent>	
