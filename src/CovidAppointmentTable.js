@@ -91,6 +91,7 @@ export default function CovidAppointmentTable() {
     return (
         <>
             <div
+                aria-label="loading data"
                 id="progress"
                 role="progressbar"
                 aria-valuetext={ready ? "loaded" : "waiting"}
@@ -104,6 +105,7 @@ export default function CovidAppointmentTable() {
                 <FormControlLabel
                     control={
                         <Switch
+                            aria-checked={onlyShowAvailable}
                             role="switch"
                             checked={onlyShowAvailable}
                             onChange={(event) =>
