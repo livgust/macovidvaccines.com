@@ -11,82 +11,81 @@ import SignUpLink from "./components/SignUpLink";
 import MoreInformation from "./components/MoreInformation";
 
 export function transformData(data) {
-	return data.map((entry, index) => {
-		return {
-			key: index,
-			location: entry.name,
-			streetAddress: entry.street,
-			city: entry.city,
-			zip: entry.zip,
-			hasAppointments: entry.hasAvailability,
-			appointmentData: entry.availability || null,
-			signUpLink: entry.signUpLink || null,
-			extraData: entry.extraData || null,
-		};
-	});
+    return data.map((entry, index) => {
+        return {
+            key: index,
+            location: entry.name,
+            streetAddress: entry.street,
+            city: entry.city,
+            zip: entry.zip,
+            hasAppointments: entry.hasAvailability,
+            appointmentData: entry.availability || null,
+            signUpLink: entry.signUpLink || null,
+            extraData: entry.extraData || null,
+        };
+    });
 }
 
 export function sortAndFilterData(
-	data,
-	{ sortKey, sortAsc },
-	onlyShowAvailable
+    data,
+    { sortKey, sortAsc },
+    onlyShowAvailable
 ) {
-	const filteredData = onlyShowAvailable
-		? data.filter((entry) => entry.hasAppointments)
-		: data;
-	const newData = filteredData.sort((a, b) => {
-		const first = sortAsc ? a[sortKey] : b[sortKey];
-		const second = sortAsc ? b[sortKey] : a[sortKey];
-		if (typeof first == "string") {
-			return first.localeCompare(second);
-		} else {
-			return first - second;
-		}
-	});
-	return newData;
+    const filteredData = onlyShowAvailable
+        ? data.filter((entry) => entry.hasAppointments)
+        : data;
+    const newData = filteredData.sort((a, b) => {
+        const first = sortAsc ? a[sortKey] : b[sortKey];
+        const second = sortAsc ? b[sortKey] : a[sortKey];
+        if (typeof first == "string") {
+            return first.localeCompare(second);
+        } else {
+            return first - second;
+        }
+    });
+    return newData;
 }
 
 const useStyles = makeStyles((theme) => ({
-	cardBox: {
-		"padding-top": theme.spacing(2),
-		"padding-bottom": theme.spacing(2),
-	},
+    cardBox: {
+        "padding-top": theme.spacing(2),
+        "padding-bottom": theme.spacing(2),
+    },
 }));
 
 export default function CovidAppointmentTable() {
-	const classes = useStyles();
+    const classes = useStyles();
 
   const [data, setData] = useState([]);
   const [ready, setReady] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-	const [sortInfo, setSortInfo] = useState({
-		sortKey: "hasAppointments",
-		sortAsc: false,
-	});
+    const [sortInfo, setSortInfo] = useState({
+        sortKey: "hasAppointments",
+        sortAsc: false,
+    });
 
-	const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
+    const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
 
-	useEffect(() => {
-		fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod").then(
-			async (res) => {
-				const newData = await res.json();
-			  setData(JSON.parse(newData.body).results);
-                          setReady(true);
-			}
-		).catch(
+    useEffect(() => {
+        fetch(
+            "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
+        ).then(async (res) => {
+            const newData = await res.json();
+            setData(JSON.parse(newData.body).results);
+        }).catch(
                   (ex) => {
                     console.error(ex.message);
                     setErrorMessage('something went wrong, please try again later.');
                     setReady(true);
                   }
                 );
-	}, []);
+    }, []);
 
-	const formattedData = sortAndFilterData(
-		transformData(data),
-		sortInfo,
-		onlyShowAvailable
-	);
+    const formattedData = sortAndFilterData(
+        transformData(data),
+        sortInfo,
+        onlyShowAvailable
+    );
 
   return (
     <>
