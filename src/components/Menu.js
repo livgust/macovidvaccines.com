@@ -47,8 +47,8 @@ export default function ButtonAppBar() {
     };
 
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
+        <nav className={classes.root}>
+            <AppBar position="static" component="div">
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -108,7 +108,7 @@ export default function ButtonAppBar() {
                 open={resourcesOpen}
                 onClose={() => setResourcesOpen(false)}
             />
-        </div>
+        </nav>
     );
 }
 
@@ -197,11 +197,11 @@ function ResourcesDialog(props) {
                         For more information on the vaccine rollout in
                         Massachusetts, visit{" "}
                         <a
-                            href="https://mass.gov/covidvaccine"
+                            href="https://www.mass.gov/covid-19-vaccine"
                             target="_blank"
                             rel="noreferrer"
                         >
-                            mass.gov/covidvaccine
+                            www.mass.gov/covid-19-vaccine
                         </a>
                         .
                     </p>
