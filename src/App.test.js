@@ -1,6 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 
-import CovidAppointmentTable from "./CovidAppointmentTable";
+import App from "./App";
 
 import prod from "../test/fixtures/api/prod.json";
 import noData from "../test/fixtures/api/no-data.json";
@@ -16,7 +16,7 @@ beforeAll(function () {
     jest.spyOn(window, "fetch");
 });
 
-describe("the CovidAppointmentTable component", function () {
+describe("the App component", function () {
     describe("when api data is available", function () {
         beforeEach(function () {
             window.fetch.mockResolvedValueOnce({
@@ -27,7 +27,7 @@ describe("the CovidAppointmentTable component", function () {
 
         test("it displays results as a filtered list of appointment cards", async function () {
             await act(async function () {
-                render(<CovidAppointmentTable />);
+                render(<App />);
             });
 
             expect(await screen.findAllByRole("listitem")).toHaveLength(2);
@@ -35,7 +35,7 @@ describe("the CovidAppointmentTable component", function () {
 
         test("disabling the filter shows all appointment cards", async function () {
             await act(async function () {
-                render(<CovidAppointmentTable />);
+                render(<App />);
             });
 
             (await screen.findByRole("switch")).click();
@@ -44,7 +44,7 @@ describe("the CovidAppointmentTable component", function () {
         });
     });
 
-    describe("when no api data is available", function () {
+    describe.only("when no api data is available", function () {
         beforeEach(function () {
             window.fetch.mockResolvedValueOnce({
                 json: async () => noData,
@@ -54,7 +54,7 @@ describe("the CovidAppointmentTable component", function () {
 
         test("it displays a no-appointments message", async function () {
             await act(async function () {
-                render(<CovidAppointmentTable />);
+                render(<App />);
             });
 
             expect(await screen.findByRole("status")).toBeInTheDocument();
@@ -70,7 +70,7 @@ describe("the CovidAppointmentTable component", function () {
 
         test("it displays an error message", async function () {
             await act(async function () {
-                render(<CovidAppointmentTable />);
+                render(<App />);
             });
 
             expect(screen.getByRole("alert")).toBeInTheDocument();

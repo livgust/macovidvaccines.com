@@ -16,10 +16,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CovidAppointmentTable(props) {
+export default function CovidAppointmentTable({ data }) {
     const classes = useStyles();
 
-    const sortedData = sortData(props.data, {
+    const sortedData = sortData(data, {
         sortKey: "hasAppointments",
         sortAsc: false,
     });
@@ -36,7 +36,7 @@ export default function CovidAppointmentTable(props) {
 
     return (
         <>
-            {sortedData.length ? (
+            {sortedData && sortedData.length ? (
                 sortedData.map((entry) => {
                     return (
                         <div
