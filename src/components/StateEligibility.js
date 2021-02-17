@@ -1,92 +1,114 @@
-import React, { useState } from "react";
-import Modal from "@material-ui/core/Modal";
-import Button from "@material-ui/core/Button";
+import React from "react";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import CheckIcon from "@material-ui/icons/Check";
 import { makeStyles } from "@material-ui/core/styles";
-
-function getModalStyle() {
-    return {
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-    };
-}
-
-function getIframeStyle() {
-    return {
-        border: "none",
-        height: "100%",
-        width: "100%",
-    };
-}
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     container: {
+        marginBottom: theme.spacing(2),
         display: "flex",
         justifyContent: "center",
-        paddingBottom: "12px",
     },
-    modal: {
-        position: "absolute",
-        width: 400,
-        maxWidth: "90%",
-        height: 532,
-        maxHeight: "90%",
-        backgroundColor: theme.palette.background.paper,
-        borderRadius: "8px",
-        boxShadow: theme.shadows[5],
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
+    accordion: {
+        width: "100%",
+    },
+    accordionDetails: {
+        display: "block",
     },
 }));
 
+function EligibilityGroupItem(props) {
+    return (
+        <ListItem>
+            <ListItemIcon>
+                <CheckIcon />
+            </ListItemIcon>
+            {props.children}
+        </ListItem>
+    );
+}
+
 export default function StateEligibility() {
-    const iframeSrc =
-        "https://docs.google.com/forms/d/e/1FAIpQLSeOcfCPu_afvFILB_nXZz3v9VMaFZZQMgGbKGiU7o3VBr5m7Q/viewform?embedded=true";
-
     const classes = useStyles();
-    const [modalStyle] = useState(getModalStyle);
-    const [iframeStyle] = useState(getIframeStyle);
-
-    const [modalOpen, setModalOpen] = useState(false);
-    const [iframeLoaded, setIframeLoaded] = useState(false);
-
-    const handleModalClose = () => {
-        setModalOpen(false);
-        setIframeLoaded(false);
-    };
 
     return (
         <div className={classes.container}>
-            <Button
-                data-testid="eligibility-button"
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={() => setModalOpen(true)}
-            >
-                Check your eligibility
-            </Button>
-            <Modal open={modalOpen} onClose={handleModalClose}>
-                <div
-                    style={modalStyle}
-                    className={classes.modal}
-                    data-testid="eligibility-modal"
-                >
-                    {!iframeLoaded && <p>Loading...</p>}
-                    <iframe
-                        onLoad={() => setIframeLoaded(true)}
-                        src={iframeSrc}
-                        style={iframeStyle}
-                        title="Vaccine Eligibility Form"
-                        data-testid="eligibility-iframe"
-                    />
-                </div>
-            </Modal>
+            <Accordion className={classes.accordion}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="subtitle1">
+                        Am I eligible to be vaccinated?
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails className={classes.accordionDetails}>
+                    <Typography>
+                        The following groups can make appointments for as early
+                        as February 18:
+                    </Typography>
+                    <List>
+                        <EligibilityGroupItem>
+                            Individuals age 65+
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            <div>
+                                Individuals with two or more of{" "}
+                                <a
+                                    href="https://www.mass.gov/info-details/certain-medical-conditions-for-phase-2-groups"
+                                    rel="noreferrer"
+                                    target="_blank"
+                                >
+                                    these
+                                </a>{" "}
+                                specific medical conditions
+                            </div>
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            <a
+                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-senior-housing-settings"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Residents and staff of low-income and affordable
+                                senior housing
+                            </a>
+                        </EligibilityGroupItem>
+                    </List>
+                    <Typography>
+                        The following groups are currently eligible:
+                    </Typography>
+                    <List>
+                        <EligibilityGroupItem>
+                            Individuals age 75+
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            Health care workers doing non-COVID-facing care
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            Home-based health care workers
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            Congregate care settings
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            First responders
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            Long term care facilities, rest homes and assisted
+                            living facilities
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            Clinical and non-clinical health care workers doing
+                            direct and COVID-facing care
+                        </EligibilityGroupItem>
+                    </List>
+                </AccordionDetails>
+            </Accordion>
         </div>
     );
 }

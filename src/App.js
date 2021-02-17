@@ -9,11 +9,11 @@ import StateEligibility from "./components/StateEligibility";
 
 const useStyles = makeStyles((theme) => ({
     main: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
     },
     heading: {
-        "text-align": "center"
-    }
+        "text-align": "center",
+    },
 }));
 
 function App() {
@@ -33,7 +33,8 @@ function App() {
                         <Typography
                             variant="caption"
                             display="block"
-                            gutterBottom>
+                            gutterBottom
+                        >
                             This site is not affiliated with or endorsed by the
                             Commonwealth of Massachusetts.
                             <br />
