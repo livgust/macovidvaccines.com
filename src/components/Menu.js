@@ -47,8 +47,8 @@ export default function ButtonAppBar() {
     };
 
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
+        <nav className={classes.root}>
+            <AppBar position="static" component="div">
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -108,7 +108,7 @@ export default function ButtonAppBar() {
                 open={resourcesOpen}
                 onClose={() => setResourcesOpen(false)}
             />
-        </div>
+        </nav>
     );
 }
 
