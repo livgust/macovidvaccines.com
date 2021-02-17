@@ -69,8 +69,14 @@ export default function StateEligibility() {
                             </div>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
-                            Residents and staff of low-income and affordable
-                            senior housing
+                            <a
+                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-senior-housing-settings"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Residents and staff of low-income and affordable
+                                senior housing
+                            </a>
                         </EligibilityGroupItem>
                     </List>
                     <Typography>
