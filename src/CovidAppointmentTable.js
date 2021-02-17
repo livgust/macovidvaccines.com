@@ -196,7 +196,7 @@ function RestrictionNotifier({ entry }) {
                 title="This site may be restricted"
                 text={
                     <>
-                    <p>"{restrictionText}"</p>
+                    <p className={classes.restrictionNotice}>"{restrictionText}"</p>
                         <p>
                             We have flagged this site as restricted based on the
                             above information (located under "MORE
