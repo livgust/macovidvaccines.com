@@ -45,7 +45,7 @@ export default function SignUpLink({ entry }) {
                         No sign-up link available.
                         <HelpDialog
                             title="No sign-up link available."
-                            text="The state website (maimmunizations.org/) is not currently providing a sign-up link for this location."
+                            text="We were unable to retrieve a sign-up link for this location. It's likely that this location is pulling from a wait list and is not scheduling any new appointments."
                         />
                     </div>
                 );

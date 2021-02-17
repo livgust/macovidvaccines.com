@@ -15,6 +15,7 @@ export default function HelpDialog(props) {
             <Tooltip title="Click for more info">
                 <HelpOutlineIcon
                     fontSize="small"
+                    color="action"
                     onClick={() => setHelpOpen(true)}
                 />
             </Tooltip>
