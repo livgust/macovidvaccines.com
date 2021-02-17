@@ -34,15 +34,10 @@ function App() {
     useEffect(() => {
         getAppointmentData()
             .then(async (res) => {
-                console.log("DATA:");
-                console.log(res);
                 setData(res);
                 setReady(true);
             })
             .catch((ex) => {
-                console.log("EXCEPTION:");
-                console.log(ex);
-                console.log(ex.message);
                 console.error(ex.message);
                 setErrorMessage(
                     "Something went wrong, please try again later."

@@ -2,14 +2,19 @@ import { act, render, screen } from "@testing-library/react";
 
 import App from "./App";
 
-import prod from "../test/fixtures/api/prod.json";
-import noData from "../test/fixtures/api/no-data.json";
+import prodExample from "../test/fixtures/api/prod.json";
+import noResultsExample from "../test/fixtures/api/no-data.json";
 
 // actual API returns `body` as a string but we store it as a POJO in the fixture for
 // ease of reading
 const prodData = {
-    ...prod,
-    body: JSON.stringify(prod.body),
+    ...prodExample,
+    body: JSON.stringify(prodExample.body),
+};
+
+const noData = {
+    ...noResultsExample
+    body: JSON.stringify(noResultsExample.body),
 };
 
 beforeAll(function () {
@@ -44,7 +49,7 @@ describe("the App component", function () {
         });
     });
 
-    describe.only("when no api data is available", function () {
+    describe("when no api data is available", function () {
         beforeEach(function () {
             window.fetch.mockResolvedValueOnce({
                 json: async () => noData,
