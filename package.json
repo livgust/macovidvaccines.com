@@ -16,7 +16,8 @@
         "web-vitals": "^0.2.4"
     },
     "devDependencies": {
-        "@axe-core/react": "^4.1.1"
+        "@axe-core/react": "^4.1.1",
+        "nan": "^2.14.2"
     },
     "scripts": {
         "start": "react-scripts start",
