@@ -1,11 +1,18 @@
-import CovidAppointmentTable from "./CovidAppointmentTable";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Loader from "react-loader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Menu from "./components/Menu";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import StateEligibility from "./components/StateEligibility";
+
+import CovidAppointmentTable from "./CovidAppointmentTable";
+import FilterPanel from "./components/FilterPanel";
+import {
+    filterData,
+    getAppointmentData,
+} from "./services/appointmentData.service";
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -18,35 +25,79 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
     const classes = useStyles();
+
+    const [data, setData] = useState([]);
+    const [ready, setReady] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
+    const [filters, setFilters] = useState({});
+
+    useEffect(() => {
+        getAppointmentData()
+            .then(async (res) => {
+                setData(res);
+                setReady(true);
+            })
+            .catch((ex) => {
+                console.error(ex.message);
+                setErrorMessage(
+                    "Something went wrong, please try again later."
+                );
+                setReady(true);
+            });
+    }, []);
+
+    const filteredData = filterData(data, filters);
+
     return (
         <MuiThemeProvider theme={theme}>
             <Menu />
             <main className={classes.main}>
                 <Grid container justify="center" spacing={3}>
-                    <Grid item xs={1} sm={2}></Grid>
-                    <Grid item xs={10} sm={8}>
-                        <h1 className={classes.heading}>
-                            MA Covid Vaccine Appointments
-                        </h1>
-                        <StateEligibility />
-                        <CovidAppointmentTable />
-                        <Typography
-                            variant="caption"
-                            display="block"
-                            gutterBottom
-                        >
-                            This site is not affiliated with or endorsed by the
-                            Commonwealth of Massachusetts.
-                            <br />
-                            This site is for informational purposes only. Not
-                            all vaccination locations are tracked and the
-                            information may not be complete or accurate.
-                            <br />
-                            Copyright &#169; {new Date().getFullYear()} Olivia
-                            Adams/Ora Innovations LLC. All rights reserved.
-                        </Typography>
+                    <Grid container={true}>
+                        <Grid item xs={false} md={3}></Grid>
+                        <Grid item xs={12} md={9}>
+                            <h1 className={classes.heading}>
+                                MA Covid Vaccine Appointments
+                            </h1>
+                        </Grid>
+                        <Grid item xs={12} md={3}>
+                            <FilterPanel data={data} onChange={setFilters} />
+                        </Grid>
+                        <Grid item xs={12} md={9}>
+                            <StateEligibility />
+                            <div
+                                aria-label="loading data"
+                                id="progress"
+                                role="progressbar"
+                                aria-valuetext={ready ? "loaded" : "waiting"}
+                            >
+                                <Loader loaded={ready}>
+                                    {errorMessage ? (
+                                        <div role="alert">{errorMessage}</div>
+                                    ) : (
+                                        <CovidAppointmentTable
+                                            data={filteredData}
+                                        />
+                                    )}
+                                </Loader>
+                            </div>
+                            <Typography
+                                variant="caption"
+                                display="block"
+                                gutterBottom
+                            >
+                                This site is not affiliated with or endorsed by
+                                the Commonwealth of Massachusetts.
+                                <br />
+                                This site is for informational purposes only.
+                                Not all vaccination locations are tracked and
+                                the information may not be complete or accurate.
+                                <br />
+                                Copyright &#169; {new Date().getFullYear()}{" "}
+                                Olivia Adams. All rights reserved.
+                            </Typography>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={1} sm={2}></Grid>
                 </Grid>
             </main>
         </MuiThemeProvider>
