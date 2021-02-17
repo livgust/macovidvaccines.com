@@ -197,11 +197,11 @@ function ResourcesDialog(props) {
                         For more information on the vaccine rollout in
                         Massachusetts, visit{" "}
                         <a
-                            href="https://mass.gov/covidvaccine"
+                            href="https://www.mass.gov/covid-19-vaccine"
                             target="_blank"
                             rel="noreferrer"
                         >
-                            mass.gov/covidvaccine
+                            www.mass.gov/covid-19-vaccine
                         </a>
                         .
                     </p>
