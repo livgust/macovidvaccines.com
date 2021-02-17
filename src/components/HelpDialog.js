@@ -10,9 +10,10 @@ import Button from "@material-ui/core/Button";
 export default function HelpDialog({
     title,
     text,
-    tooltipText,
     icon,
     iconProps,
+    children,
+    className,
 }) {
     const [helpOpen, setHelpOpen] = React.useState(false);
 
@@ -20,13 +21,19 @@ export default function HelpDialog({
 
     return (
         <>
-            <Tooltip arrow title={tooltipText || "Click for more info"}>
-                <IconComponent
-                    fontSize="small"
-                    color="action"
-                    onClick={() => setHelpOpen(true)}
-                    {...iconProps}
-                />
+            <Tooltip
+                arrow
+                title={"Click for more info"}
+                placement="bottom-start"
+            >
+                <span onClick={() => setHelpOpen(true)} className={className}>
+                    <IconComponent
+                        fontSize="small"
+                        color="action"
+                        {...iconProps}
+                    />
+                    {children}
+                </span>
             </Tooltip>
             <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
                 <DialogTitle id="about-dialog-title">{title}</DialogTitle>

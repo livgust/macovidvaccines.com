@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
+        cursor: "pointer",
         color: theme.palette.text.primary,
     },
     restrictionIcon: {
@@ -169,25 +170,24 @@ function RestrictionNotifier({ entry }) {
 
     const classes = useStyles();
     return hasRestriction ? (
-        <div className={classes.restrictionNotice}>
-            <HelpDialog
-                icon={ErrorOutlineIcon}
-                iconProps={{ className: classes.restrictionIcon }}
-                tooltipText={"This site may be restricted"}
-                title="This site may be restricted"
-                text={
-                    <>
-                        <p>
-                            We have flagged this site as restricted based on the
-                            following information (located under "MORE
-                            INFORMATION"):
-                        </p>
-                        <p>"{restrictionText}"</p>
-                    </>
-                }
-            />
+        <HelpDialog
+            className={classes.restrictionNotice}
+            icon={ErrorOutlineIcon}
+            iconProps={{ className: classes.restrictionIcon }}
+            title="This site may be restricted"
+            text={
+                <>
+                    <p>
+                        We have flagged this site as restricted based on the
+                        following information (located under "MORE
+                        INFORMATION"):
+                    </p>
+                    <p>"{restrictionText}"</p>
+                </>
+            }
+        >
             <Typography>May be restricted</Typography>
-        </div>
+        </HelpDialog>
     ) : null;
 }
 
