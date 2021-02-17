@@ -20,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
         display: "block",
         "padding-bottom": theme.spacing(1),
     },
-    formattedExtraData: {
-        color: "#F50057",
-    },
 }));
 
 export default function MoreInformation({ entry }) {
