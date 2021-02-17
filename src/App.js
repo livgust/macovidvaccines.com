@@ -3,24 +3,25 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Menu from "./components/Menu";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core";
+import theme from "./theme";
 import StateEligibility from "./components/StateEligibility";
 
 const useStyles = makeStyles((theme) => ({
     main: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(2)
     },
     heading: {
-        "text-align": "center",
-    },
+        "text-align": "center"
+    }
 }));
 
 function App() {
     const classes = useStyles();
     return (
-        <>
+        <MuiThemeProvider theme={theme}>
             <Menu />
-            <div className={classes.main}>
+            <main className={classes.main}>
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={1} sm={2}></Grid>
                     <Grid item xs={10} sm={8}>
@@ -32,8 +33,7 @@ function App() {
                         <Typography
                             variant="caption"
                             display="block"
-                            gutterBottom
-                        >
+                            gutterBottom>
                             This site is not affiliated with or endorsed by the
                             Commonwealth of Massachusetts.
                             <br />
@@ -47,8 +47,8 @@ function App() {
                     </Grid>
                     <Grid item xs={1} sm={2}></Grid>
                 </Grid>
-            </div>
-        </>
+            </main>
+        </MuiThemeProvider>
     );
 }
 
