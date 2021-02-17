@@ -24,6 +24,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function EligibilityGroupItem(props) {
+    return (
+        <ListItem>
+            <ListItemIcon>
+                <CheckIcon />
+            </ListItemIcon>
+            {props.children}
+        </ListItem>
+    );
+}
+
 export default function StateEligibility() {
     const classes = useStyles();
 
@@ -31,57 +42,64 @@ export default function StateEligibility() {
         <div className={classes.container}>
             <Accordion className={classes.accordion}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    Am I eligible?
+                    <Typography variant="subtitle1">
+                        Am I eligible to be vaccinated?
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails className={classes.accordionDetails}>
+                    <Typography>
+                        The following groups can make appointments for as early
+                        as February 18:
+                    </Typography>
+                    <List>
+                        <EligibilityGroupItem>
+                            Individuals age 65+
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            <div>
+                                Individuals with two or more of{" "}
+                                <a
+                                    href="https://www.mass.gov/info-details/certain-medical-conditions-for-phase-2-groups"
+                                    rel="noreferrer"
+                                    target="_blank"
+                                >
+                                    these
+                                </a>{" "}
+                                specific medical conditions
+                            </div>
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
+                            Residents and staff of low-income and affordable
+                            senior housing
+                        </EligibilityGroupItem>
+                    </List>
                     <Typography>
                         The following groups are currently eligible:
                     </Typography>
                     <List>
-                        <ListItem>
-                            <ListItemIcon>
-                                <CheckIcon />
-                            </ListItemIcon>
+                        <EligibilityGroupItem>
                             Individuals age 75+
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <CheckIcon />
-                            </ListItemIcon>
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
                             Health care workers doing non-COVID-facing care
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <CheckIcon />
-                            </ListItemIcon>
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
                             Home-based health care workers
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <CheckIcon />
-                            </ListItemIcon>
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
                             Congregate care settings
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <CheckIcon />
-                            </ListItemIcon>
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
                             First responders
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <CheckIcon />
-                            </ListItemIcon>
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
                             Long term care facilities, rest homes and assisted
                             living facilities
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <CheckIcon />
-                            </ListItemIcon>
+                        </EligibilityGroupItem>
+                        <EligibilityGroupItem>
                             Clinical and non-clinical health care workers doing
                             direct and COVID-facing care
-                        </ListItem>
+                        </EligibilityGroupItem>
                     </List>
                 </AccordionDetails>
             </Accordion>
