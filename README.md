@@ -29,6 +29,7 @@ yarn start
 ```
 
 ## Accessibility
+
 This project uses [axe](https://www.npmjs.com/package/@axe-core/react) as a way to encourage accessibility-friendly coding practices. Axe provides feedback when running this application locally and when running tests.
 
 This is an example of the type of feedback axe can provide in the developer console:
