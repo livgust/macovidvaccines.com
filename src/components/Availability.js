@@ -18,8 +18,8 @@ export default function Availability({ entry }) {
             return (
                 <div>
                     No date-specific data available.
-                    <HelpDialog 
-                        title='No date-specific data available.' 
+                    <HelpDialog
+                        title="No date-specific data available."
                         text="We were able to determine that there are available appointments,
                         but we can't tell when or how many. Click the sign up button to learn more
                         from the location's website."

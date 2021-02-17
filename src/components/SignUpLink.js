@@ -43,11 +43,12 @@ export default function SignUpLink({ entry }) {
                 return (
                     <div>
                         No sign-up link available.
-                        <HelpDialog 
-                            title='No sign-up link available.' 
+                        <HelpDialog
+                            title="No sign-up link available."
                             text="The state website (maimmunizations.org/) is not currently providing a sign-up link for this location."
                         />
-                    </div>);
+                    </div>
+                );
             } else if (dateLinkPairs.length === 1) {
                 return (
                     <Button
