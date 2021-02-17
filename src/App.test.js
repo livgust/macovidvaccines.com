@@ -13,7 +13,7 @@ const prodData = {
 };
 
 const noData = {
-    ...noResultsExample
+    ...noResultsExample,
     body: JSON.stringify(noResultsExample.body),
 };
 
