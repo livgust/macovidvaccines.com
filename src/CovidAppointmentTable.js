@@ -11,6 +11,7 @@ import SignUpLink from "./components/SignUpLink";
 import MoreInformation from "./components/MoreInformation";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import HelpDialog from "./components/HelpDialog";
+import Typography from "@material-ui/core/Typography";
 
 export function transformData(data) {
     return data.map((entry, index) => {
@@ -53,14 +54,15 @@ const useStyles = makeStyles((theme) => ({
         "padding-top": theme.spacing(2),
         "padding-bottom": theme.spacing(2),
     },
-    locationTitle: {
+    restrictionNotice: {
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
+        color: theme.palette.text.primary,
     },
     restrictionIcon: {
         color: theme.palette.warning.dark,
-        "padding-left": theme.spacing(1),
+        "padding-right": theme.spacing(1),
     },
 }));
 
@@ -167,22 +169,25 @@ function RestrictionNotifier({ entry }) {
 
     const classes = useStyles();
     return hasRestriction ? (
-        <HelpDialog
-            icon={ErrorOutlineIcon}
-            iconProps={{ className: classes.restrictionIcon }}
-            tooltipText={"This site may be restricted"}
-            title="This site may be restricted"
-            text={
-                <>
-                    <p>
-                        We have flagged this site as restricted based on the
-                        following information (located under "MORE
-                        INFORMATION"):
-                    </p>
-                    <p>"{restrictionText}"</p>
-                </>
-            }
-        />
+        <div className={classes.restrictionNotice}>
+            <HelpDialog
+                icon={ErrorOutlineIcon}
+                iconProps={{ className: classes.restrictionIcon }}
+                tooltipText={"This site may be restricted"}
+                title="This site may be restricted"
+                text={
+                    <>
+                        <p>
+                            We have flagged this site as restricted based on the
+                            following information (located under "MORE
+                            INFORMATION"):
+                        </p>
+                        <p>"{restrictionText}"</p>
+                    </>
+                }
+            />
+            <Typography>May be restricted</Typography>
+        </div>
     ) : null;
 }
 
@@ -195,10 +200,14 @@ function LocationCard({ entry, className }) {
                     title={
                         <div className={classes.locationTitle}>
                             <span>{entry.location}</span>
-                            <RestrictionNotifier entry={entry} />
                         </div>
                     }
-                    subheader={<div>{entry.city}</div>}
+                    subheader={
+                        <>
+                            <RestrictionNotifier entry={entry} />
+                            <div>{entry.city}</div>
+                        </>
+                    }
                 />
                 <CardContent>
                     <Availability entry={entry} />
