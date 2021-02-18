@@ -90,7 +90,7 @@ function parseMD(currentData, classes) {
      *  let workingData2 = workingData1.replaceAll(">", "&#62;");
      */
     //parses bold italics first, splitting data at each "***"
-    const splitDataEmStr = /*workingData2*/currentData.split("***");
+    const splitDataEmStr = /*workingData2*/ currentData.split("***");
     let newDataEmStr = splitDataEmStr[0];
     let isEmStr = false;
     //iterates through the split data
@@ -116,7 +116,7 @@ function parseMD(currentData, classes) {
             newDataStr += splitDataStr[i];
             isStr = false;
         } else {
-            newDataStr += `<strong class=${classes.formattedExtraData}>${splitDataEmStr[i]}</strong>`
+            newDataStr += `<strong class=${classes.formattedExtraData}>${splitDataEmStr[i]}</strong>`;
             isStr = true;
         }
     }
@@ -131,7 +131,7 @@ function parseMD(currentData, classes) {
             newDataEm += splitDataEm[i];
             isEm = false;
         } else {
-            newDataEm += `<em>${splitDataEmStr[i]}</em>`
+            newDataEm += `<em>${splitDataEmStr[i]}</em>`;
             isEm = true;
         }
     }
