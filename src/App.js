@@ -75,10 +75,10 @@ function App() {
                                     {errorMessage ? (
                                         <div role="alert">{errorMessage}</div>
                                     ) : (
-                                        <CovidAppointmentTable
-                                            data={filteredData}
-                                        />
-                                    )}
+                                            <CovidAppointmentTable
+                                                data={filteredData}
+                                            />
+                                        )}
                                 </Loader>
                             </div>
                             <Typography
@@ -86,15 +86,15 @@ function App() {
                                 display="block"
                                 gutterBottom
                             >
-                                This site is not affiliated with or endorsed by
-                                the Commonwealth of Massachusetts.
+                                This site is not affiliated with or endorsed by the
+                                Commonwealth of Massachusetts.
                                 <br />
-                                This site is for informational purposes only.
-                                Not all vaccination locations are tracked and
-                                the information may not be complete or accurate.
+                                This site is for informational purposes only. Not
+                                all vaccination locations are tracked and the
+                                information may not be complete or accurate.
                                 <br />
-                                Copyright &#169; {new Date().getFullYear()}{" "}
-                                Olivia Adams. All rights reserved.
+                                Copyright &#169; {new Date().getFullYear()} Olivia
+                                Adams/Ora Innovations LLC. All rights reserved.
                             </Typography>
                         </Grid>
                     </Grid>
