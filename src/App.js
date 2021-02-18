@@ -33,6 +33,7 @@ function App() {
                             <AlertTitle>8:01am Thursday, February 18</AlertTitle>
 	                            Due to high demand, the MA vaccination websites are experiencing technical difficulties. Once the issues are resolved, their locations will appear on this website.
                         </Alert>
+                        <br/>
                         <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography
