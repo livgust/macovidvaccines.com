@@ -1,3 +1,5 @@
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
 import Loader from "react-loader";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
@@ -76,7 +78,7 @@ export default function CovidAppointmentTable() {
     const [data, setData] = useState([]);
     const [ready, setReady] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-    const [sortInfo, setSortInfo] = useState({
+    const [sortInfo, setSortInfoIgnored] = useState({
         sortKey: "location",
         sortAsc: true,
     });
@@ -196,12 +198,12 @@ function RestrictionNotifier({ entry }) {
                 title="This site may be restricted"
                 text={
                     <>
+                    <p className={classes.restrictionNotice}>"{restrictionText}"</p>
                         <p>
                             We have flagged this site as restricted based on the
-                            following information (located under "MORE
-                            INFORMATION"):
+                            above information (located under "MORE
+                            INFORMATION").
                         </p>
-                        <p>"{restrictionText}"</p>
                     </>
                 }
             >
