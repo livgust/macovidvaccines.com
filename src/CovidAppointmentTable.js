@@ -24,7 +24,6 @@ export function transformData(data) {
             streetAddress: entry.street,
             city: entry.city,
             zip: entry.zip,
-            distance: entry.distance,
             hasAppointments: entry.hasAvailability,
             appointmentData: entry.availability || null,
             signUpLink: entry.signUpLink || null,
@@ -36,7 +35,9 @@ export function transformData(data) {
 export function sortAndFilterData(
     data,
     { sortKey, sortAsc },
-    onlyShowAvailable
+    onlyShowAvailable,
+    sortByDistance,
+    currentLocation
 ) {
     const filteredData = onlyShowAvailable
         ? data.filter((entry) => entry.hasAppointments)
@@ -50,7 +51,23 @@ export function sortAndFilterData(
             return first - second;
         }
     });
-    return newData;
+
+    if (sortByDistance && !!currentLocation) {
+        return newData
+            .map((entry) => ({
+                ...entry,
+                distance:
+                    entry.latitude && entry.longitude
+                        ? getDistance(currentLocation, {
+                              latitude: entry.latitude,
+                              longitude: entry.longitude,
+                          }) * 0.000621371
+                        : null,
+            }))
+            .sort((a, b) => (a.distance > b.distance ? 1 : -1));
+    } else {
+        return newData;
+    }
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -73,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CovidAppointmentTable() {
     const classes = useStyles();
-    const [loading, setLoading] = useState(false);
     const [ready, setReady] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
     const [currentLocation, setCurrentLocation] = useState({});
@@ -85,28 +101,11 @@ export default function CovidAppointmentTable() {
     });
 
     const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
+    const [sortByDistance, setSortByDistance] = useState(false);
 
     useEffect(() => {
         resetData();
     }, []);
-
-    useEffect(() => {
-        setLoading(true);
-        setData((data) =>
-            data
-                .filter((entry) => entry.latitude && entry.longitude)
-                .map((entry) => ({
-                    ...entry,
-                    distance:
-                        getDistance(currentLocation, {
-                            latitude: entry.latitude || 0,
-                            longitude: entry.longitude || 0,
-                        }) * 0.000621371,
-                }))
-                .sort((a, b) => (a.distance > b.distance ? 1 : -1))
-        );
-        setLoading(false);
-    }, [currentLocation]);
 
     const resetData = () => {
         fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod")
@@ -127,7 +126,9 @@ export default function CovidAppointmentTable() {
     const formattedData = sortAndFilterData(
         transformData(data),
         sortInfo,
-        onlyShowAvailable
+        onlyShowAvailable,
+        sortByDistance,
+        currentLocation
     );
 
     const getCurrentLocation = () => {
@@ -137,6 +138,7 @@ export default function CovidAppointmentTable() {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
             });
+            setSortByDistance(true);
         });
     };
 
@@ -149,6 +151,7 @@ export default function CovidAppointmentTable() {
                 fields: { latitude, longitude },
             } = records[0];
             setCurrentLocation({ latitude, longitude });
+            setSortByDistance(true);
         });
     };
 
@@ -222,7 +225,22 @@ export default function CovidAppointmentTable() {
                                 <Card>
                                     <CardHeader
                                         title={<div>{entry.location}</div>}
-                                        subheader={<div>{entry.city}</div>}
+                                        subheader={
+                                            <>
+                                                <div>{entry.city}</div>
+                                                {!!entry.distance ? (
+                                                    <div>
+                                                        <RoomOutlined />
+                                                        {Number.parseFloat(
+                                                            entry.distance
+                                                        ).toFixed(1)}{" "}
+                                                        miles away
+                                                    </div>
+                                                ) : (
+                                                    ""
+                                                )}
+                                            </>
+                                        }
                                     />
                                     <CardContent>
                                         <Availability entry={entry} />
