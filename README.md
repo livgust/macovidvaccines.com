@@ -4,7 +4,7 @@
 
 This is the front-end software that powers www.macovidvaccines.com. Technology used is React JS. This code is uploaded to AWS whenever there is a commit to the master branch.
 
-* [![CircleCI](https://circleci.com/gh/j256/macovidvaccines.com.svg?style=svg)](https://circleci.com/gh/j256/macovidvaccines.com)
+[![CircleCI](https://circleci.com/gh/j256/macovidvaccines.com.svg?style=svg)](https://circleci.com/gh/j256/macovidvaccines.com)
 
 ## Local Development
 
