@@ -3,6 +3,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core";
+import { sanitize } from "dompurify";
 
 const useStyles = makeStyles((theme) => ({
     accordion: {
@@ -107,13 +108,10 @@ function parseMD(currentData) {
     let i = 0;
     for (i = 1; i < splitDataEmStr.length; i++) {
         if (isEmStr) {
-            newDataEmStr = newDataEmStr + "</span></em>" + splitDataEmStr[i];
+            newDataEmStr = newDataEmStr + "</strong></em>" + splitDataEmStr[i];
             isEmStr = false;
         } else {
-            newDataEmStr =
-                newDataEmStr +
-                '<em><span style="color: #F50057">' +
-                splitDataEmStr[i];
+            newDataEmStr = newDataEmStr + "<em><strong>" + splitDataEmStr[i];
             isEmStr = true;
         }
     }
@@ -125,13 +123,10 @@ function parseMD(currentData) {
     //same formatting rules as 85
     for (i = 1; i < splitDataStr.length; i++) {
         if (isStr) {
-            newDataStr = newDataStr + "</span>" + splitDataStr[i];
+            newDataStr = newDataStr + "</strong>" + splitDataStr[i];
             isStr = false;
         } else {
-            newDataStr =
-                newDataStr +
-                '<span class="formattedExtraData">' +
-                splitDataStr[i];
+            newDataStr = newDataStr + "<strong>" + splitDataStr[i];
             isStr = true;
         }
     }
@@ -150,5 +145,8 @@ function parseMD(currentData) {
             isEm = true;
         }
     }
-    return newDataEm;
+    return sanitize(newDataEm, {
+        ALLOWED_TAGS: ["em", "strong"],
+        ADD_ATTR: [],
+    });
 }
