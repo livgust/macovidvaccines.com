@@ -9,6 +9,9 @@ import Switch from "@material-ui/core/Switch";
 import Availability from "./components/Availability";
 import SignUpLink from "./components/SignUpLink";
 import MoreInformation from "./components/MoreInformation";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import HelpDialog from "./components/HelpDialog";
+import Typography from "@material-ui/core/Typography";
 
 export function transformData(data) {
     return data.map((entry, index) => {
@@ -22,6 +25,7 @@ export function transformData(data) {
             appointmentData: entry.availability || null,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
+            restrictions: entry.restrictions || null,
         };
     });
 }
@@ -51,6 +55,19 @@ const useStyles = makeStyles((theme) => ({
         "padding-top": theme.spacing(2),
         "padding-bottom": theme.spacing(2),
     },
+    restrictionNotice: {
+        display: "flex",
+        alignItems: "center",
+        flexWrap: "wrap",
+        color: theme.palette.text.primary,
+    },
+    restrictionNoticeTooltip: {
+        cursor: "pointer",
+    },
+    restrictionIcon: {
+        color: theme.palette.warning.dark,
+        "padding-right": theme.spacing(1),
+    },
 }));
 
 export default function CovidAppointmentTable() {
@@ -60,8 +77,8 @@ export default function CovidAppointmentTable() {
     const [ready, setReady] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
     const [sortInfo, setSortInfo] = useState({
-        sortKey: "hasAppointments",
-        sortAsc: false,
+        sortKey: "location",
+        sortAsc: true,
     });
 
     const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
@@ -121,29 +138,103 @@ export default function CovidAppointmentTable() {
                     </div>
                 )}
                 <div role="list">
-                    {formattedData.map((entry) => {
-                        return (
-                            <div
-                                role="listitem"
-                                key={`${entry.location}-${entry.streetAdress}-${entry.city}`}
-                                className={classes.cardBox}
-                            >
-                                <Card>
-                                    <CardHeader
-                                        title={<div>{entry.location}</div>}
-                                        subheader={<div>{entry.city}</div>}
-                                    />
-                                    <CardContent>
-                                        <Availability entry={entry} />
-                                        <MoreInformation entry={entry} />
-                                        <SignUpLink entry={entry} />
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        );
-                    })}
+                    {formattedData.map((entry) => (
+                        <LocationCard
+                            entry={entry}
+                            className={classes.cardBox}
+                            key={`${entry.location}-${entry.streetAdress}-${entry.city}`}
+                        />
+                    ))}
                 </div>
             </section>
         </>
+    );
+}
+
+function RestrictionNotifier({ entry }) {
+    let hasRestriction = false;
+    let restrictionText = null;
+    let definitiveRestriction = false;
+
+    if (entry.restrictions) {
+        definitiveRestriction = true;
+        hasRestriction = true;
+        restrictionText = entry.restrictions;
+    } else if (entry.extraData && entry.extraData["Additional Information"]) {
+        const text = entry.extraData["Additional Information"];
+        if (
+            // "County residents"
+	    // "eligible residents"
+	    // " live"
+	    // " work"
+	    // "eligible populations in"
+            text
+                .toLowerCase()
+                .match(/(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/)
+        ) {
+            hasRestriction = true;
+            restrictionText = text;
+        }
+    }
+
+    const classes = useStyles();
+    if (!hasRestriction) {
+        return null;
+    } else if (definitiveRestriction) {
+        return (
+            <span className={classes.restrictionNotice}>
+                <ErrorOutlineIcon className={classes.restrictionIcon} />
+                <Typography>{restrictionText}</Typography>
+            </span>
+        );
+    } else {
+        return (
+            <HelpDialog
+                className={`${classes.restrictionNotice} ${classes.restrictionNoticeTooltip}`}
+                icon={ErrorOutlineIcon}
+                iconProps={{ className: classes.restrictionIcon }}
+                title="This site may be restricted"
+                text={
+                    <>
+                        <p>
+                            We have flagged this site as restricted based on the
+                            following information (located under "MORE
+                            INFORMATION"):
+                        </p>
+                        <p>"{restrictionText}"</p>
+                    </>
+                }
+            >
+                <Typography>May be restricted</Typography>
+            </HelpDialog>
+        );
+    }
+}
+
+function LocationCard({ entry, className }) {
+    const classes = useStyles();
+    return (
+        <div role="listitem" className={className}>
+            <Card>
+                <CardHeader
+                    title={
+                        <div className={classes.locationTitle}>
+                            <span>{entry.location}</span>
+                        </div>
+                    }
+                    subheader={
+                        <>
+                            <RestrictionNotifier entry={entry} />
+                            <div>{entry.city}</div>
+                        </>
+                    }
+                />
+                <CardContent>
+                    <Availability entry={entry} />
+                    <MoreInformation entry={entry} />
+                    <SignUpLink entry={entry} />
+                </CardContent>
+            </Card>
+        </div>
     );
 }
