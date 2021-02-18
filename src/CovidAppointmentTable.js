@@ -163,10 +163,14 @@ function RestrictionNotifier({ entry }) {
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
         const text = entry.extraData["Additional Information"];
         if (
-            //"resident" " live" " work" "eligible populations in"
+            // "County residents"
+	    // "eligible residents"
+	    // " live"
+	    // " work"
+	    // "eligible populations in"
             text
                 .toLowerCase()
-                .match(/(resident|\slive|\swork|eligible\spopulations\sin)/)
+                .match(/(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/)
         ) {
             hasRestriction = true;
             restrictionText = text;
