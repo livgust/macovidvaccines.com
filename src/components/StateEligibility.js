@@ -6,7 +6,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import Divider from '@material-ui/core/Divider';
 import CheckIcon from "@material-ui/icons/Check";
 import {makeStyles} from "@material-ui/core/styles";
 import {Typography} from "@material-ui/core";
@@ -48,11 +47,7 @@ export default function StateEligibility() {
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails className={classes.accordionDetails}>
-                    <Divider/>
                     <List>
-                        <Typography>
-                            <b>Phase 2 / Group 2</b>
-                        </Typography>
                         <EligibilityGroupItem>
                             <a
                                 href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older"
@@ -62,15 +57,13 @@ export default function StateEligibility() {
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
                             <div>
-                                Individuals with two or more of{" "}
                                 <a
                                     href="https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions"
                                     rel="noreferrer"
                                     target="_blank"
                                 >
-                                    certain medical conditions
-                                </a>{" "}
-
+                                    Individuals with two or more of certain medical conditions
+                                </a>
                             </div>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
@@ -82,12 +75,6 @@ export default function StateEligibility() {
                                 Residents and staff of low-income and affordable senior housing
                             </a>
                         </EligibilityGroupItem>
-                    </List>
-                    <Divider/>
-                    <List>
-                        <Typography>
-                            <b>Phase 2 / Group 1</b>
-                        </Typography>
                         <EligibilityGroupItem>
                             <a
                                 href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-75-and-older"
@@ -97,22 +84,13 @@ export default function StateEligibility() {
                                 Individuals age 75 and older
                             </a>
                         </EligibilityGroupItem>
-                    </List>
-                    <Divider/>
-                    <List>
-                        <Typography>
-                            <b>Phase 1</b>
-                        </Typography>
-                        <EligibilityGroupItem>
-                            Includes health care workers, congregate care settings, first responders, nursing homes
-                        </EligibilityGroupItem>
                         <EligibilityGroupItem>
                             <a
                                 href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-1-"
                                 rel="noreferrer"
                                 target="_blank"
                             >
-                                For a complete list of specific individuals in Phase 1
+                                People in Phase 1 (Health care, nursing homes, etc.)
                             </a>
                         </EligibilityGroupItem>
                     </List>
