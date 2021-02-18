@@ -146,7 +146,8 @@ function parseMD(currentData) {
         }
     }
     return sanitize(newDataEm, {
-        ALLOWED_TAGS: ["em", "strong"],
-        ADD_ATTR: [],
+        USE_PROFILES: { html: true }, // Do not allow other XML formats (e.g. SVG)
+        ALLOWED_TAGS: ["em", "strong"], // Only allow italics and bold tags
+        ALLOWED_ATTR: [], // Do not allow any attributes
     });
 }
