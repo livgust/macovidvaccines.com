@@ -28,6 +28,7 @@ function App() {
                         <h1 className={classes.heading}>
                             MA Covid Vaccine Appointments
                         </h1>
+	<i>8:01am Thursday: Due to high demand, the state-sponsored sites are experiencing technical difficulty. Once their issues are resolved, locations will appear on this website.</i>
                         <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography
