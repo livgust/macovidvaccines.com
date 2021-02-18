@@ -25,6 +25,7 @@ export function transformData(data) {
             appointmentData: entry.availability || null,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
+            restrictions: entry.restrictions || null,
         };
     });
 }
@@ -58,8 +59,10 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
-        cursor: "pointer",
         color: theme.palette.text.primary,
+    },
+    restrictionNoticeTooltip: {
+        cursor: "pointer",
     },
     restrictionIcon: {
         color: theme.palette.warning.dark,
@@ -151,8 +154,10 @@ export default function CovidAppointmentTable() {
 function RestrictionNotifier({ entry }) {
     let hasRestriction = false;
     let restrictionText = null;
+    let definitiveRestriction = false;
 
     if (entry.restrictions) {
+        definitiveRestriction = true;
         hasRestriction = true;
         restrictionText = entry.restrictions;
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
@@ -169,26 +174,37 @@ function RestrictionNotifier({ entry }) {
     }
 
     const classes = useStyles();
-    return hasRestriction ? (
-        <HelpDialog
-            className={classes.restrictionNotice}
-            icon={ErrorOutlineIcon}
-            iconProps={{ className: classes.restrictionIcon }}
-            title="This site may be restricted"
-            text={
-                <>
-                    <p>
-                        We have flagged this site as restricted based on the
-                        following information (located under "MORE
-                        INFORMATION"):
-                    </p>
-                    <p>"{restrictionText}"</p>
-                </>
-            }
-        >
-            <Typography>May be restricted</Typography>
-        </HelpDialog>
-    ) : null;
+    if (!hasRestriction) {
+        return null;
+    } else if (definitiveRestriction) {
+        return (
+            <span className={classes.restrictionNotice}>
+                <ErrorOutlineIcon className={classes.restrictionIcon} />
+                <Typography>{restrictionText}</Typography>
+            </span>
+        );
+    } else {
+        return (
+            <HelpDialog
+                className={`${classes.restrictionNotice} ${classes.restrictionNoticeTooltip}`}
+                icon={ErrorOutlineIcon}
+                iconProps={{ className: classes.restrictionIcon }}
+                title="This site may be restricted"
+                text={
+                    <>
+                        <p>
+                            We have flagged this site as restricted based on the
+                            following information (located under "MORE
+                            INFORMATION"):
+                        </p>
+                        <p>"{restrictionText}"</p>
+                    </>
+                }
+            >
+                <Typography>May be restricted</Typography>
+            </HelpDialog>
+        );
+    }
 }
 
 function LocationCard({ entry, className }) {
