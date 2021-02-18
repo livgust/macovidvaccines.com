@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: "wrap",
         color: theme.palette.text.primary,
     },
+    restrictionNoticeTooltip: {
+        cursor: "pointer",
+    },
     restrictionIcon: {
         color: theme.palette.warning.dark,
         "padding-right": theme.spacing(1),
@@ -71,17 +74,25 @@ export default function CovidAppointmentTable({ data }) {
 function RestrictionNotifier({ entry }) {
     let hasRestriction = false;
     let restrictionText = null;
+    let definitiveRestriction = false;
 
     if (entry.restrictions) {
+        definitiveRestriction = true;
         hasRestriction = true;
         restrictionText = entry.restrictions;
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
         const text = entry.extraData["Additional Information"];
         if (
-            //"resident" " live" " work" "eligible populations in"
+            // "County residents"
+            // "eligible residents"
+            // " live"
+            // " work"
+            // "eligible populations in"
             text
                 .toLowerCase()
-                .match(/(resident|\slive|\swork|eligible\spopulations\sin)/)
+                .match(
+                    /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/
+                )
         ) {
             hasRestriction = true;
             restrictionText = text;
@@ -89,27 +100,39 @@ function RestrictionNotifier({ entry }) {
     }
 
     const classes = useStyles();
-    return hasRestriction ? (
-        <div className={classes.restrictionNotice}>
+    if (!hasRestriction) {
+        return null;
+    } else if (definitiveRestriction) {
+        return (
+            <span className={classes.restrictionNotice}>
+                <ErrorOutlineIcon className={classes.restrictionIcon} />
+                <Typography>{restrictionText}</Typography>
+            </span>
+        );
+    } else {
+        return (
             <HelpDialog
+                className={`${classes.restrictionNotice} ${classes.restrictionNoticeTooltip}`}
                 icon={ErrorOutlineIcon}
                 iconProps={{ className: classes.restrictionIcon }}
-                tooltipText={"This site may be restricted"}
                 title="This site may be restricted"
                 text={
                     <>
+                        <p className={classes.restrictionNotice}>
+                            "{restrictionText}"
+                        </p>
                         <p>
                             We have flagged this site as restricted based on the
-                            following information (located under "MORE
-                            INFORMATION"):
+                            above information (located under "MORE
+                            INFORMATION").
                         </p>
-                        <p>"{restrictionText}"</p>
                     </>
                 }
-            />
-            <Typography>May be restricted</Typography>
-        </div>
-    ) : null;
+            >
+                <Typography>May be restricted</Typography>
+            </HelpDialog>
+        );
+    }
 }
 
 function LocationCard({ entry, className }) {
