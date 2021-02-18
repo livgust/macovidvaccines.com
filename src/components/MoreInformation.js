@@ -21,12 +21,13 @@ const useStyles = makeStyles((theme) => ({
         display: "block",
         "padding-bottom": theme.spacing(1),
     },
+    formattedExtraData: {
+        color: "#AD003B",
+    },
 }));
 
 export default function MoreInformation({ entry }) {
     const classes = useStyles();
-    if (entry.extraData) {
-    }
     return (
         <Accordion className={classes.accordion}>
             <AccordionSummary
@@ -48,7 +49,6 @@ export default function MoreInformation({ entry }) {
 
 function ExtraData({ data }) {
     const classes = useStyles();
-
     if (!data) {
         return null;
     } else if (typeof data == "string") {
@@ -60,7 +60,7 @@ function ExtraData({ data }) {
             if (key === "Additional Information") {
                 const currentData = data[key];
                 if (currentData) {
-                    var finalData = parseMD(currentData);
+                    let finalData = parseMD(currentData, classes);
                     //adds the parsed data as straight html
                     elements.push(
                         <div
@@ -83,24 +83,14 @@ function ExtraData({ data }) {
     }
 }
 
-function parseMD(currentData) {
+function parseMD(currentData, classes) {
     //encodes angle brackets to escape data
-    let workingData1;
-    let workingData2;
-    let indexOfLAB = currentData.indexOf("<");
-    let indexOfRAB = currentData.indexOf(">");
-    if (indexOfLAB !== -1) {
-        workingData1 = currentData.replaceAll("<", "&#60;");
-    } else {
-        workingData1 = currentData;
-    }
-    if (indexOfRAB !== -1) {
-        workingData2 = workingData1.replaceAll(">", "&#62;");
-    } else {
-        workingData2 = workingData1;
-    }
+    /** not sure if we still need this with the sanitizer so im commenting it out
+     *  let workingData1 = currentData.replaceAll("<", "&#60;");
+     *  let workingData2 = workingData1.replaceAll(">", "&#62;");
+     */
     //parses bold italics first, splitting data at each "***"
-    let splitDataEmStr = workingData2.split("***");
+    const splitDataEmStr = /*workingData2*/currentData.split("***");
     let newDataEmStr = splitDataEmStr[0];
     let isEmStr = false;
     //iterates through the split data
@@ -108,40 +98,40 @@ function parseMD(currentData) {
     let i = 0;
     for (i = 1; i < splitDataEmStr.length; i++) {
         if (isEmStr) {
-            newDataEmStr = newDataEmStr + "</strong></em>" + splitDataEmStr[i];
+            newDataEmStr += splitDataEmStr[i];
             isEmStr = false;
         } else {
-            newDataEmStr = newDataEmStr + "<em><strong>" + splitDataEmStr[i];
+            newDataEmStr += `<em><strong class=${classes.formattedExtraData}>${splitDataEmStr[i]}</strong></em>`;
             isEmStr = true;
         }
     }
     //parses bold next, splitting data at each "**"
-    let splitDataStr = newDataEmStr.split("**");
+    const splitDataStr = newDataEmStr.split("**");
     let newDataStr = splitDataStr[0];
     let isStr = false;
     //iterates through the split data
     //same formatting rules as 85
     for (i = 1; i < splitDataStr.length; i++) {
         if (isStr) {
-            newDataStr = newDataStr + "</strong>" + splitDataStr[i];
+            newDataStr += splitDataStr[i];
             isStr = false;
         } else {
-            newDataStr = newDataStr + "<strong>" + splitDataStr[i];
+            newDataStr += `<strong class=${classes.formattedExtraData}>${splitDataEmStr[i]}</strong>`
             isStr = true;
         }
     }
     //parses italics last, splitting data at each "*"
-    let splitDataEm = newDataStr.split("*");
+    const splitDataEm = newDataStr.split("*");
     let newDataEm = splitDataEm[0];
     let isEm = false;
     //iterates through the split data
     //same formatting rules as 85
     for (i = 1; i < splitDataEm.length; i++) {
         if (isEm) {
-            newDataEm = newDataEm + "</em>" + splitDataEm[i];
+            newDataEm += splitDataEm[i];
             isEm = false;
         } else {
-            newDataEm = newDataEm + "<em>" + splitDataEm[i];
+            newDataEm += `<em>${splitDataEmStr[i]}</em>`
             isEm = true;
         }
     }
