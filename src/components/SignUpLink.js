@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useState } from "react";
+import HelpDialog from "./HelpDialog";
 
 const useStyles = makeStyles((theme) => ({
     dateSelectDropdown: {
@@ -39,7 +40,15 @@ export default function SignUpLink({ entry }) {
                 }
             }
             if (!dateLinkPairs.length) {
-                return "No sign-up link available.";
+                return (
+                    <div>
+                        No sign-up link available.
+                        <HelpDialog
+                            title="No sign-up link available."
+                            text="We were unable to retrieve a sign-up link for this location. It's likely that this location is pulling from a wait list and is not scheduling any new appointments."
+                        />
+                    </div>
+                );
             } else if (dateLinkPairs.length === 1) {
                 return (
                     <Button
@@ -72,7 +81,9 @@ function DropDownWithButton({ dateLinkPairs }) {
                 className={classes.dateSelectDropdown}
             >
                 {dateLinkPairs.map((pair, index) => (
-                    <MenuItem value={index}>{pair[0]}</MenuItem>
+                    <MenuItem key={pair[0]} value={index}>
+                        {pair[0]}
+                    </MenuItem>
                 ))}
             </Select>
             <Button

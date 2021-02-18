@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
     },
+    unstyledLink: {
+        textDecoration: "auto",
+        color: "inherit",
+    },
 }));
 
 export default function ButtonAppBar() {
@@ -32,6 +36,7 @@ export default function ButtonAppBar() {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [aboutOpen, setAboutOpen] = React.useState(false);
+    const [resourcesOpen, setResourcesOpen] = React.useState(false);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -42,8 +47,8 @@ export default function ButtonAppBar() {
     };
 
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
+        <nav className={classes.root}>
+            <AppBar position="static" component="div">
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -81,9 +86,29 @@ export default function ButtonAppBar() {
                 >
                     About
                 </MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        handleClose();
+                        setResourcesOpen(true);
+                    }}
+                >
+                    Resources
+                </MenuItem>
+                <MenuItem>
+                    <a
+                        href="mailto:macovidvaccines@gmail.com"
+                        className={classes.unstyledLink}
+                    >
+                        Give Feedback
+                    </a>
+                </MenuItem>
             </Menu>
             <AboutDialog open={aboutOpen} onClose={() => setAboutOpen(false)} />
-        </div>
+            <ResourcesDialog
+                open={resourcesOpen}
+                onClose={() => setResourcesOpen(false)}
+            />
+        </nav>
     );
 }
 
@@ -113,7 +138,7 @@ function AboutDialog(props) {
                         It is YOUR responsibility to verify that you are
                         eligible before signing up. For more information, click{" "}
                         <a
-                            href="http://www.mass.gov/covidvaccine"
+                            href="https://www.mass.gov/covidvaccine"
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -122,24 +147,63 @@ function AboutDialog(props) {
                         .
                     </p>
                     <p>
-                        Currently, information is gathered from/for:
-                        <ul>
-                            <li>maimmunizations.org (many locations)</li>
-                            <li>Hannaford (5 locations)</li>
-                            <li>UMass Amherst</li>
-                            <li>Springfield: Eastfield Mall</li>
-                            <li>Danvers: Doubletree Hotel</li>
-                            <li>Arlington: Family Practice Group, PC</li>
-                        </ul>
-                    </p>
-                    <p>
-                        I'm working as fast as I can to gather more information
-                        from other sources. To contact me,{" "}
+                        We're working as fast as we can to gather more
+                        information from other sources. To contact us,{" "}
                         <a href="mailto:macovidvaccines@gmail.com">
                             send an email
                         </a>
-                        . I'll try to get back to you but I'm getting a lot of
-                        outreach!
+                        .
+                    </p>
+                </DialogContentText>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+function ResourcesDialog(props) {
+    return (
+        <Dialog {...props}>
+            <DialogTitle id="about-dialog-title">{"Resources"}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="about-dialog-description">
+                    <p>
+                        There are two other websites for the state of
+                        Massachusetts that compile information on vaccine
+                        availability. They are:
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://vaccinatema.com"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Vaccinate MA
+                                </a>{" "}
+                                (volunteer-run)
+                            </li>
+                            <li>
+                                <a
+                                    href="https://vaxfinder.mass.gov"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Vax Finder
+                                </a>{" "}
+                                (state-run)
+                            </li>
+                        </ul>
+                    </p>
+                    <p>
+                        For more information on the vaccine rollout in
+                        Massachusetts, visit{" "}
+                        <a
+                            href="https://www.mass.gov/covid-19-vaccine"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            www.mass.gov/covid-19-vaccine
+                        </a>
+                        .
                     </p>
                 </DialogContentText>
             </DialogContent>
