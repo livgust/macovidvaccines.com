@@ -8,7 +8,11 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
+        color: theme.palette.text.primary,
+    },
+    staleIcon: {
         color: theme.palette.warning.dark,
+        "padding-right": theme.spacing(1),
     },
 }));
 
@@ -27,25 +31,33 @@ export default function StaleDataIndicator({
         return null;
     } else {
         let message = "";
-        const minutesBeforeNow = parseInt(
-            (new Date() - timestamp) / (1000 * 60)
-        );
-        if (minutesBeforeNow < 60) {
-            message = `${minutesBeforeNow} minute${
-                minutesBeforeNow > 1 ? "s" : ""
-            }`;
-        } else if (minutesBeforeNow < 60 * 24) {
-            const hoursBeforeNow = parseInt(minutesBeforeNow / 60);
-            message = `${hoursBeforeNow} hour${hoursBeforeNow > 1 ? "s" : ""}`;
-        } else {
-            const daysBeforeNow = parseInt(minutesBeforeNow / (60 * 24));
-            message = `${daysBeforeNow} day${daysBeforeNow > 1 ? "s" : ""}`;
+        let yesterday = new Date();
+        yesterday.setDate(new Date().getDate() - 1);
+        yesterday.setHours(0, 0, 0, 0);
+
+        // timestamp is today
+        if (timestamp >= new Date().setHours(0, 0, 0, 0)) {
+            // 12:30:31 PM, for example
+            let timeString = new Date(timestamp).toLocaleTimeString("en-US");
+            // chop off the seconds
+            timeString = timeString.replace(/:[0-9]{2}\s/, " ");
+            message = `Last updated ${timeString}`;
+        }
+        // timestamp is yesterday
+        else if (timestamp >= yesterday) {
+            message = "Last updated yesterday";
+        }
+        // timestamp is older than yesterday
+        else {
+            message = `Last updated ${
+                new Date(timestamp).getMonth() + 1
+            }/${new Date(timestamp).getDate()}`;
         }
 
         return (
             <div className={classes.staleIndicator}>
-                <HistoryOutlinedIcon />
-                {message} ago
+                <HistoryOutlinedIcon className={classes.staleIcon} />
+                {message}
             </div>
         );
     }
