@@ -61,13 +61,17 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
+        fontWeight: "bold",
         color: theme.palette.text.primary,
     },
     restrictionNoticeTooltip: {
         cursor: "pointer",
     },
+    restrictionWarning: {
+        color: theme.palette.error.dark,
+    },
     restrictionIcon: {
-        color: theme.palette.warning.dark,
+        color: theme.palette.error.dark,
         "padding-right": theme.spacing(1),
     },
 }));
@@ -144,7 +148,7 @@ export default function CovidAppointmentTable() {
                         <LocationCard
                             entry={entry}
                             className={classes.cardBox}
-                            key={`${entry.location}-${entry.streetAdress}-${entry.city}`}
+                            key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
                         />
                     ))}
                 </div>
@@ -185,8 +189,8 @@ function RestrictionNotifier({ entry }) {
     } else if (definitiveRestriction) {
         return (
             <span className={classes.restrictionNotice}>
-                <ErrorOutlineIcon className={classes.restrictionIcon} />
-                <Typography>{restrictionText}</Typography>
+                <ErrorOutlineIcon fontSize="small" className={classes.restrictionIcon} />
+                <Typography className={classes.restrictionWarning}>{restrictionText}</Typography>
             </span>
         );
     } else {
@@ -195,19 +199,11 @@ function RestrictionNotifier({ entry }) {
                 className={`${classes.restrictionNotice} ${classes.restrictionNoticeTooltip}`}
                 icon={ErrorOutlineIcon}
                 iconProps={{ className: classes.restrictionIcon }}
-                title="This site may be restricted"
                 text={
-                    <>
-                    <p className={classes.restrictionNotice}>"{restrictionText}"</p>
-                        <p>
-                            We have flagged this site as restricted based on the
-                            above information (located under "MORE
-                            INFORMATION").
-                        </p>
-                    </>
+                    <p className={classes.restrictionNotice}>{restrictionText}</p>
                 }
             >
-                <Typography>May be restricted</Typography>
+                <Typography className={classes.restrictionWarning}>Important Eligibility Notice</Typography>
             </HelpDialog>
         );
     }
