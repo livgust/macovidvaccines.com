@@ -28,6 +28,8 @@ npm run start
 yarn start
 ```
 
+Before checking in any commits, be sure to run `prettier` and `eslint` on your changes.
+
 ## Accessibility
 
 This project uses [axe](https://www.npmjs.com/package/@axe-core/react) as a way to encourage accessibility-friendly coding practices. Axe provides feedback when running this application locally and when running tests.
