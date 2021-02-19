@@ -1,18 +1,19 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
-import Loader from "react-loader";
-import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Availability from "./components/Availability";
-import SignUpLink from "./components/SignUpLink";
-import MoreInformation from "./components/MoreInformation";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import HelpDialog from "./components/HelpDialog";
+import Loader from "react-loader";
+import MoreInformation from "./components/MoreInformation";
+import React, { useState, useEffect } from "react";
+import SignUpLink from "./components/SignUpLink";
+import StaleDataIndicator from "./components/StaleDataIndicator";
+import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 
 export function transformData(data) {
@@ -28,6 +29,7 @@ export function transformData(data) {
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
             restrictions: entry.restrictions || null,
+            timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
         };
     });
 }
@@ -170,13 +172,15 @@ function RestrictionNotifier({ entry }) {
         const text = entry.extraData["Additional Information"];
         if (
             // "County residents"
-	    // "eligible residents"
-	    // " live"
-	    // " work"
-	    // "eligible populations in"
+            // "eligible residents"
+            // " live"
+            // " work"
+            // "eligible populations in"
             text
                 .toLowerCase()
-                .match(/(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/)
+                .match(
+                    /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/
+                )
         ) {
             hasRestriction = true;
             restrictionText = text;
@@ -224,6 +228,7 @@ function LocationCard({ entry, className }) {
                         <>
                             <RestrictionNotifier entry={entry} />
                             <div>{entry.city}</div>
+                            <StaleDataIndicator timestamp={entry.timestamp} />
                         </>
                     }
                 />
