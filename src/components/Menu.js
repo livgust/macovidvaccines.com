@@ -1,3 +1,7 @@
+/*
+  Copyright © 2021 Olivia Adams/Ora Innovations LLC. All rights reserved
+ */
+
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
