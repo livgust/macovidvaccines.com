@@ -1,15 +1,17 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
-import Availability from "./components/Availability";
-import SignUpLink from "./components/SignUpLink";
-import MoreInformation from "./components/MoreInformation";
+import { makeStyles } from "@material-ui/core";
 import { sortData } from "./services/appointmentData.service";
+import Availability from "./components/Availability";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import HelpDialog from "./components/HelpDialog";
+import MoreInformation from "./components/MoreInformation";
+import React from "react";
+import SignUpLink from "./components/SignUpLink";
+import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
@@ -150,6 +152,7 @@ function LocationCard({ entry, className }) {
                         <>
                             <RestrictionNotifier entry={entry} />
                             <div>{entry.city}</div>
+                            <StaleDataIndicator timestamp={entry.timestamp} />
                         </>
                     }
                 />

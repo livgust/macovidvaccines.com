@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import { Button, makeStyles, MuiThemeProvider } from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
+// import { Alert, AlertTitle } from "@material-ui/lab"
 import theme from "./theme";
 import CovidAppointmentTable from "./CovidAppointmentTable";
 import Menu from "./components/Menu";
@@ -17,6 +17,20 @@ import {
 } from "./services/appointmentData.service";
 
 const drawerWidth = 300;
+
+/* Alert to put under page title when necessary
+const alert = (
+    <>
+        <Alert severity="warning">
+            <AlertTitle>8:01am Thursday, February 18</AlertTitle>
+            Due to high demand, the MA vaccination websites are experiencing
+            technical difficulties. Once the issues are resolved, their
+            locations will appear on this website.
+        </Alert>
+        <br />
+    </>
+);
+*/
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -136,16 +150,6 @@ function App() {
                             <h1 className={classes.heading}>
                                 MA Covid Vaccine Appointments
                             </h1>
-                            <Alert severity="warning">
-                                <AlertTitle>
-                                    8:01am Thursday, February 18
-                                </AlertTitle>
-                                Due to high demand, the MA vaccination websites
-                                are experiencing technical difficulties. Once
-                                the issues are resolved, their locations will
-                                appear on this website.
-                            </Alert>
-                            <br />
                             <StateEligibility />
                             <Hidden mdUp implementation="css">
                                 <Button

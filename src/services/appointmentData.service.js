@@ -10,6 +10,7 @@ export function transformData(data) {
             appointmentData: entry.availability || null,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
+            timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
         };
     });
 }
@@ -30,7 +31,7 @@ export function sortData(data, { sortKey, sortAsc }) {
 export function filterData(data, filters) {
     const filterNames = Object.keys(filters);
 
-    return data.filter(d => {
+    return data.filter((d) => {
         for (let i = 0; i < filterNames.length; i++) {
             if (!filters[filterNames[i]](d)) {
                 return false;
@@ -41,7 +42,9 @@ export function filterData(data, filters) {
 }
 
 export function getAppointmentData() {
-    return fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod").then(async (res) => {
+    return fetch(
+        "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
+    ).then(async (res) => {
         return transformData(JSON.parse((await res.json()).body).results);
     });
 }
