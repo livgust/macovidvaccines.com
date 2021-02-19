@@ -47,25 +47,26 @@ export default function StateEligibility() {
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails className={classes.accordionDetails}>
-                    <Typography>
-                        The following groups can make appointments for as early
-                        as February 18:
-                    </Typography>
                     <List>
                         <EligibilityGroupItem>
-                            Individuals age 65+
+                            <a
+                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Individuals age 65 and older
+                            </a>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
                             <div>
-                                Individuals with two or more of{" "}
                                 <a
-                                    href="https://www.mass.gov/info-details/certain-medical-conditions-for-phase-2-groups"
+                                    href="https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions"
                                     rel="noreferrer"
                                     target="_blank"
                                 >
-                                    these
-                                </a>{" "}
-                                specific medical conditions
+                                    Individuals with two or more of certain
+                                    medical conditions
+                                </a>
                             </div>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
@@ -78,33 +79,24 @@ export default function StateEligibility() {
                                 senior housing
                             </a>
                         </EligibilityGroupItem>
-                    </List>
-                    <Typography>
-                        The following groups are currently eligible:
-                    </Typography>
-                    <List>
                         <EligibilityGroupItem>
-                            Individuals age 75+
+                            <a
+                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-75-and-older"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Individuals age 75 and older
+                            </a>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
-                            Health care workers doing non-COVID-facing care
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            Home-based health care workers
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            Congregate care settings
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            First responders
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            Long term care facilities, rest homes and assisted
-                            living facilities
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            Clinical and non-clinical health care workers doing
-                            direct and COVID-facing care
+                            <a
+                                href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-1-"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                People in Phase 1 (Health care, nursing homes,
+                                etc.)
+                            </a>
                         </EligibilityGroupItem>
                     </List>
                 </AccordionDetails>
