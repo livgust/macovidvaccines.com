@@ -148,9 +148,12 @@ function App() {
                             <br />
                             <StateEligibility />
                             <Hidden mdUp implementation="css">
-                                <Button onClick={handleDrawerToggle}>
-                                    {/* TODO THIS IS UGLY */}
-                                    {"<<< "}Filter Sites
+                                <Button
+                                    color="primary"
+                                    variant="contained"
+                                    onClick={handleDrawerToggle}
+                                >
+                                    Show Filters
                                 </Button>
                             </Hidden>
                             <div
