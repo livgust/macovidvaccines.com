@@ -132,27 +132,43 @@ export default function CovidAppointmentTable() {
     );
 
     const getCurrentLocation = () => {
+        setErrorMessage("");
         setZipcode("");
-        navigator.geolocation.getCurrentPosition((position) => {
-            setCurrentLocation({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-            });
-            setSortByDistance(true);
-        });
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setCurrentLocation({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+                setSortByDistance(true);
+            },
+            () => setErrorMessage("Get location failed. Please try again later")
+        );
     };
 
     const getZipcodeLocation = () => {
-        fetch(
-            `https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${zipcode}&facet=state&facet=timezone&facet=dst`
-        ).then(async (res) => {
-            const { records } = await res.json();
-            const {
-                fields: { latitude, longitude },
-            } = records[0];
-            setCurrentLocation({ latitude, longitude });
+        setErrorMessage("");
+        if (zipcode) {
+            fetch(
+                `https://public.opendatasoft.com/api/records/1.0/search/?dataset=us-zip-code-latitude-and-longitude&q=${zipcode}&facet=state&facet=timezone&facet=dst`
+            ).then(async (res) => {
+                const { records } = await res.json();
+
+                if (records.length === 0) {
+                    setErrorMessage("Invalid zipcode");
+                    return;
+                }
+
+                const {
+                    fields: { latitude, longitude },
+                } = records[0];
+                setCurrentLocation({ latitude, longitude });
+                setSortByDistance(true);
+            });
+        } else {
             setSortByDistance(true);
-        });
+            setErrorMessage("No Zipcode Specified");
+        }
     };
 
     return (
@@ -169,6 +185,7 @@ export default function CovidAppointmentTable() {
             <div>
                 <TextField
                     id="outlined-basic"
+                    error={!zipcode && errorMessage}
                     label="Enter Zipcode"
                     variant="outlined"
                     onChange={(e) => setZipcode(e.target.value)}
