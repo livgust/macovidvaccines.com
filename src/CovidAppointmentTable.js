@@ -144,7 +144,7 @@ export default function CovidAppointmentTable() {
                         <LocationCard
                             entry={entry}
                             className={classes.cardBox}
-                            key={`${entry.location}-${entry.streetAdress}-${entry.city}`}
+                            key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
                         />
                     ))}
                 </div>
