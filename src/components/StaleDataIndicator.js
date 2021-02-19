@@ -1,9 +1,23 @@
-export const staleMinutesDefault = 10;
+import { makeStyles } from "@material-ui/core";
+import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
+
+export const staleMinutesDefault = 8;
+
+const useStyles = makeStyles((theme) => ({
+    staleIndicator: {
+        display: "flex",
+        alignItems: "center",
+        flexWrap: "wrap",
+        color: theme.palette.warning.dark,
+    },
+}));
 
 export default function StaleDataIndicator({
     timestamp,
     staleMinutesOverride,
 }) {
+    const classes = useStyles();
+
     let staleMinutes = staleMinutesDefault;
     if (staleMinutesOverride || staleMinutesOverride === 0) {
         staleMinutes = staleMinutesOverride;
@@ -28,6 +42,11 @@ export default function StaleDataIndicator({
             message = `${daysBeforeNow} day${daysBeforeNow > 1 ? "s" : ""}`;
         }
 
-        return <div>{message} ago</div>;
+        return (
+            <div className={classes.staleIndicator}>
+                <HistoryOutlinedIcon />
+                {message} ago
+            </div>
+        );
     }
 }
