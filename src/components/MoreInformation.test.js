@@ -37,3 +37,14 @@ it("shows if extra data", async () => {
     });
     expect(screen.queryByText("More Information")).toBeTruthy();
 });
+
+it("doesn't have address line if no address", async () => {
+    await act(async () => {
+        render(
+            <MoreInformation
+                entry={{ extraData: { exampleKey: "exampleValue" } }}
+            />
+        );
+    });
+    expect(screen.queryByText("Address:")).toBeNull();
+});

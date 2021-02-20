@@ -37,10 +37,12 @@ export default function MoreInformation({ entry }) {
                     More Information
                 </AccordionSummary>
                 <AccordionDetails className={classes.extraDataContainer}>
-                    <div className={classes.extraData}>
-                        <b>Address:</b> {entry.streetAddress}, {entry.city}, MA{" "}
-                        {entry.zip}
-                    </div>
+                    {entry.streetAddress && (
+                        <div className={classes.extraData}>
+                            <b>Address:</b> {entry.streetAddress}, {entry.city},
+                            MA {entry.zip}
+                        </div>
+                    )}
                     {entry.restrictions && (
                         <div className={classes.extraData}>
                             <b>Restrictions:</b> {entry.restrictions}
