@@ -20,8 +20,10 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
+        "test": "react-scripts test --no-watch",
         "eject": "react-scripts eject",
+        "check:prettier": "prettier --check .",
+        "check:eslint": "eslint",
         "postinstall": "husky install"
     },
     "eslintConfig": {
@@ -43,6 +45,7 @@
         ]
     },
     "devDependencies": {
-        "husky": "^5.0.9"
+        "husky": "^5.0.9",
+        "prettier": "^2.2.1"
     }
 }

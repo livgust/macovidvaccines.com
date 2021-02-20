@@ -193,8 +193,13 @@ function RestrictionNotifier({ entry }) {
     } else if (definitiveRestriction) {
         return (
             <span className={classes.restrictionNotice}>
-                <ErrorOutlineIcon fontSize="small" className={classes.restrictionIcon} />
-                <Typography className={classes.restrictionWarning}>{restrictionText}</Typography>
+                <ErrorOutlineIcon
+                    fontSize="small"
+                    className={classes.restrictionIcon}
+                />
+                <Typography className={classes.restrictionWarning}>
+                    {restrictionText}
+                </Typography>
             </span>
         );
     } else {
@@ -204,10 +209,14 @@ function RestrictionNotifier({ entry }) {
                 icon={ErrorOutlineIcon}
                 iconProps={{ className: classes.restrictionIcon }}
                 text={
-                    <p className={classes.restrictionNotice}>{restrictionText}</p>
+                    <p className={classes.restrictionNotice}>
+                        {restrictionText}
+                    </p>
                 }
             >
-                <Typography className={classes.restrictionWarning}>Important Eligibility Notice</Typography>
+                <Typography className={classes.restrictionWarning}>
+                    Important Eligibility Notice
+                </Typography>
             </HelpDialog>
         );
     }
