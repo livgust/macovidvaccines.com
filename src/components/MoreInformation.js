@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme) => ({
         display: "block",
         "padding-bottom": theme.spacing(1),
     },
-    formattedExtraData: {
-        color: "#AD003B",
-    },
 }));
 
 export default function MoreInformation({ entry }) {
@@ -101,12 +98,13 @@ function parseMD(currentData, classes) {
             newDataEmStr += splitDataEmStr[i];
             isEmStr = false;
         } else {
-            newDataEmStr += `<em><strong class=${classes.formattedExtraData}>${splitDataEmStr[i]}</strong></em>`;
+            newDataEmStr += `<em><strong>${splitDataEmStr[i]}</strong></em>`;
             isEmStr = true;
         }
     }
     //parses bold next, splitting data at each "**"
     const splitDataStr = newDataEmStr.split("**");
+    console.log(splitDataStr);
     let newDataStr = splitDataStr[0];
     let isStr = false;
     //iterates through the split data
@@ -116,7 +114,7 @@ function parseMD(currentData, classes) {
             newDataStr += splitDataStr[i];
             isStr = false;
         } else {
-            newDataStr += `<strong class=${classes.formattedExtraData}>${splitDataEmStr[i]}</strong>`;
+            newDataStr += `<strong>${splitDataStr[i]}</strong>`;
             isStr = true;
         }
     }
@@ -131,7 +129,7 @@ function parseMD(currentData, classes) {
             newDataEm += splitDataEm[i];
             isEm = false;
         } else {
-            newDataEm += `<em>${splitDataEmStr[i]}</em>`;
+            newDataEm += `<em>${splitDataEm[i]}</em>`;
             isEm = true;
         }
     }
