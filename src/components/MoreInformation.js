@@ -24,28 +24,33 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MoreInformation({ entry }) {
     const classes = useStyles();
-    return (
-        <Accordion className={classes.accordion}>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                className={classes.buttonText}
-            >
-                More Information
-            </AccordionSummary>
-            <AccordionDetails className={classes.extraDataContainer}>
-                <div className={classes.extraData}>
-                    <b>Address:</b> {entry.streetAddress}, {entry.city}, MA{" "}
-                    {entry.zip}
-                </div>
-                {entry.restrictions && (
+
+    if (!(entry.streetAddress || entry.restrictions || entry.extraData)) {
+        return null;
+    } else {
+        return (
+            <Accordion className={classes.accordion}>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    className={classes.buttonText}
+                >
+                    More Information
+                </AccordionSummary>
+                <AccordionDetails className={classes.extraDataContainer}>
                     <div className={classes.extraData}>
-                        <b>Restrictions:</b> {entry.restrictions}
+                        <b>Address:</b> {entry.streetAddress}, {entry.city}, MA{" "}
+                        {entry.zip}
                     </div>
-                )}
-                <ExtraData data={entry.extraData} />
-            </AccordionDetails>
-        </Accordion>
-    );
+                    {entry.restrictions && (
+                        <div className={classes.extraData}>
+                            <b>Restrictions:</b> {entry.restrictions}
+                        </div>
+                    )}
+                    <ExtraData data={entry.extraData} />
+                </AccordionDetails>
+            </Accordion>
+        );
+    }
 }
 
 function ExtraData({ data }) {
