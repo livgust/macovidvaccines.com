@@ -39,9 +39,13 @@ export function sortAndFilterData(
     { sortKey, sortAsc },
     onlyShowAvailable
 ) {
+    const tooStaleMinutes = 60;
+    const oldestGoodTimestamp = new Date() - (tooStaleMinutes * 60 * 1000);
+
     const filteredData = onlyShowAvailable
-        ? data.filter((entry) => entry.hasAppointments)
-        : data;
+        ? data.filter((entry) => (entry.hasAppointments && entry.timestamp >= oldestGoodTimestamp))
+        : data.filter((entry) => (entry.timestamp >= oldestGoodTimestamp));
+
     const newData = filteredData.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
         const second = sortAsc ? b[sortKey] : a[sortKey];
