@@ -100,10 +100,10 @@ export default function ButtonAppBar() {
                 </MenuItem>
                 <MenuItem>
                     <a
-                        href="mailto:macovidvaccines@gmail.com"
+                        href={"mailto:macovidvaccines@gmail.com?subject=Site feedback"}
                         className={classes.unstyledLink}
                     >
-                        Give Feedback
+                        Give feedback
                     </a>
                 </MenuItem>
             </Menu>
@@ -153,40 +153,48 @@ function AboutDialog(props) {
                     <p>
                         We're working as fast as we can to gather more
                         information from other sources. To contact us,{" "}
-                        <a href="mailto:macovidvaccines@gmail.com">
+                        <a href={"mailto:macovidvaccines@gmail.com"}>
                             send an email
                         </a>
                         .
                     </p>
                     <h3>Get Involved</h3>
-                    <p>If you would like to help in the design or development of this website, read on.</p>
                     <p>
-                        You can connect with the team on our{" "}
-                        <a
-                            href={"https://macovidvaccines.slack.com/"}
+                        If you have experience with designing or developing web site software, and you want to get
+                        involved in the site, please
+                        <a href={
+                            "mailto:macovidvaccines@gmail.com?subject=I want to help with MACovidVaccines.com&body=Here's how I can help..."
+                            }
                             target="_blank"
                             rel="noreferrer"
-                        >
-                            Slack workspace
-                        </a>.
+                        >{" "}
+                        email the team
+                        </a> with a note about how you can contribute.
                     </p>
                     <p>
-                        The website source code can be found on Github. The code that gathers data from
-                        other sites is in the{" "}
+                        The website source code can be found on Github. The code
+                        that gathers data from other sites is in the{" "}
                         <a
-                            href={"https://github.com/livgust/covid-vaccine-scrapers"}
+                            href={
+                                "https://github.com/livgust/covid-vaccine-scrapers"
+                            }
                             target="_blank"
                             rel="noreferrer"
                         >
                             covid-vaccine-scrapers
-                        </a> repository. The code that generates the website is in the{" "}
+                        </a>{" "}
+                        repository. The code that generates the website is in
+                        the{" "}
                         <a
-                            href={"https://github.com/livgust/macovidvaccines.com"}
+                            href={
+                                "https://github.com/livgust/macovidvaccines.com"
+                            }
                             target="_blank"
                             rel="noreferrer"
                         >
                             macovidvaccines.com
-                        </a> repository.
+                        </a>{" "}
+                        repository.
                     </p>
                 </DialogContentText>
             </DialogContent>
