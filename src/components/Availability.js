@@ -3,6 +3,16 @@ import HelpDialog from "./HelpDialog";
 export default function Availability({ entry }) {
     if (!entry.hasAppointments) {
         return <div>No availability.</div>;
+    } else if (
+        entry.totalAvailability &&
+        (!entry.availability || !Object.keys(entry.availability).length)
+    ) {
+        return (
+            <div>
+                {entry.totalAvailability} slot
+                {entry.totalAvailability > 1 ? "s" : ""}
+            </div>
+        );
     } else {
         const availableSlots = [];
         for (const date in entry.appointmentData) {
