@@ -38,6 +38,11 @@ export default function MoreInformation({ entry }) {
                     <b>Address:</b> {entry.streetAddress}, {entry.city}, MA{" "}
                     {entry.zip}
                 </div>
+                {entry.restrictions && (
+                    <div className={classes.extraData}>
+                        <b>Restrictions:</b> {entry.restrictions}
+                    </div>
+                )}
                 <ExtraData data={entry.extraData} />
             </AccordionDetails>
         </Accordion>

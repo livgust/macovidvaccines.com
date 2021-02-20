@@ -4,6 +4,8 @@
 
 This is the front-end software that powers www.macovidvaccines.com. Technology used is React JS. This code is uploaded to AWS whenever there is a commit to the master branch.
 
+[![CircleCI](https://circleci.com/gh/livgust/macovidvaccines.com.svg?style=svg)](https://circleci.com/gh/livgust/macovidvaccines.com)
+
 ## Local Development
 
 Once you've cloned the repository, install dependencies:
@@ -25,6 +27,8 @@ npm run start
 # with yarn
 yarn start
 ```
+
+Before checking in any commits, be sure to run `prettier` and `eslint` on your changes.
 
 ## Accessibility
 

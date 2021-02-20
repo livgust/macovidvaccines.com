@@ -1,16 +1,19 @@
-import Loader from "react-loader";
-import React, { useState, useEffect } from "react";
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
 import { makeStyles } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Availability from "./components/Availability";
-import SignUpLink from "./components/SignUpLink";
-import MoreInformation from "./components/MoreInformation";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import HelpDialog from "./components/HelpDialog";
+import Loader from "react-loader";
+import MoreInformation from "./components/MoreInformation";
+import React, { useState, useEffect } from "react";
+import SignUpLink from "./components/SignUpLink";
+import StaleDataIndicator from "./components/StaleDataIndicator";
+import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 
 export function transformData(data) {
@@ -25,6 +28,8 @@ export function transformData(data) {
             appointmentData: entry.availability || null,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
+            restrictions: entry.restrictions || null,
+            timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
         };
     });
 }
@@ -58,11 +63,17 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
-        cursor: "pointer",
+        fontWeight: "bold",
         color: theme.palette.text.primary,
     },
+    restrictionNoticeTooltip: {
+        cursor: "pointer",
+    },
+    restrictionWarning: {
+        color: theme.palette.error.dark,
+    },
     restrictionIcon: {
-        color: theme.palette.warning.dark,
+        color: theme.palette.error.dark,
         "padding-right": theme.spacing(1),
     },
 }));
@@ -73,7 +84,7 @@ export default function CovidAppointmentTable() {
     const [data, setData] = useState([]);
     const [ready, setReady] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-    const [sortInfo, setSortInfo] = useState({
+    const [sortInfo, setSortInfoIgnored] = useState({
         sortKey: "location",
         sortAsc: true,
     });
@@ -139,7 +150,7 @@ export default function CovidAppointmentTable() {
                         <LocationCard
                             entry={entry}
                             className={classes.cardBox}
-                            key={`${entry.location}-${entry.streetAdress}-${entry.city}`}
+                            key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
                         />
                     ))}
                 </div>
@@ -151,17 +162,25 @@ export default function CovidAppointmentTable() {
 function RestrictionNotifier({ entry }) {
     let hasRestriction = false;
     let restrictionText = null;
+    let definitiveRestriction = false;
 
     if (entry.restrictions) {
+        definitiveRestriction = true;
         hasRestriction = true;
         restrictionText = entry.restrictions;
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
         const text = entry.extraData["Additional Information"];
         if (
-            //"resident" " live" " work" "eligible populations in"
+            // "County residents"
+            // "eligible residents"
+            // " live"
+            // " work"
+            // "eligible populations in"
             text
                 .toLowerCase()
-                .match(/(resident|\slive|\swork|eligible\spopulations\sin)/)
+                .match(
+                    /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/
+                )
         ) {
             hasRestriction = true;
             restrictionText = text;
@@ -169,26 +188,29 @@ function RestrictionNotifier({ entry }) {
     }
 
     const classes = useStyles();
-    return hasRestriction ? (
-        <HelpDialog
-            className={classes.restrictionNotice}
-            icon={ErrorOutlineIcon}
-            iconProps={{ className: classes.restrictionIcon }}
-            title="This site may be restricted"
-            text={
-                <>
-                    <p>
-                        We have flagged this site as restricted based on the
-                        following information (located under "MORE
-                        INFORMATION"):
-                    </p>
-                    <p>"{restrictionText}"</p>
-                </>
-            }
-        >
-            <Typography>May be restricted</Typography>
-        </HelpDialog>
-    ) : null;
+    if (!hasRestriction) {
+        return null;
+    } else if (definitiveRestriction) {
+        return (
+            <span className={classes.restrictionNotice}>
+                <ErrorOutlineIcon fontSize="small" className={classes.restrictionIcon} />
+                <Typography className={classes.restrictionWarning}>{restrictionText}</Typography>
+            </span>
+        );
+    } else {
+        return (
+            <HelpDialog
+                className={`${classes.restrictionNotice} ${classes.restrictionNoticeTooltip}`}
+                icon={ErrorOutlineIcon}
+                iconProps={{ className: classes.restrictionIcon }}
+                text={
+                    <p className={classes.restrictionNotice}>{restrictionText}</p>
+                }
+            >
+                <Typography className={classes.restrictionWarning}>Important Eligibility Notice</Typography>
+            </HelpDialog>
+        );
+    }
 }
 
 function LocationCard({ entry, className }) {
@@ -206,6 +228,7 @@ function LocationCard({ entry, className }) {
                         <>
                             <RestrictionNotifier entry={entry} />
                             <div>{entry.city}</div>
+                            <StaleDataIndicator timestamp={entry.timestamp} />
                         </>
                     }
                 />

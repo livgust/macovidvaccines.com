@@ -7,8 +7,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import CheckIcon from "@material-ui/icons/Check";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -28,7 +28,7 @@ function EligibilityGroupItem(props) {
     return (
         <ListItem>
             <ListItemIcon>
-                <CheckIcon />
+                <CheckIcon/>
             </ListItemIcon>
             {props.children}
         </ListItem>
@@ -41,31 +41,29 @@ export default function StateEligibility() {
     return (
         <div className={classes.container}>
             <Accordion className={classes.accordion}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                     <Typography variant="subtitle1">
                         Am I eligible to be vaccinated?
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails className={classes.accordionDetails}>
-                    <Typography>
-                        The following groups can make appointments for as early
-                        as February 18:
-                    </Typography>
                     <List>
                         <EligibilityGroupItem>
-                            Individuals age 65+
+                            <a
+                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older"
+                                rel="noreferrer"
+                                target="_blank"
+                            >Individuals age 65 and older</a>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
                             <div>
-                                Individuals with two or more of{" "}
                                 <a
-                                    href="https://www.mass.gov/info-details/certain-medical-conditions-for-phase-2-groups"
+                                    href="https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions"
                                     rel="noreferrer"
                                     target="_blank"
                                 >
-                                    these
-                                </a>{" "}
-                                specific medical conditions
+                                    Individuals with two or more of certain medical conditions
+                                </a>
                             </div>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
@@ -74,37 +72,26 @@ export default function StateEligibility() {
                                 rel="noreferrer"
                                 target="_blank"
                             >
-                                Residents and staff of low-income and affordable
-                                senior housing
+                                Residents and staff of low-income and affordable senior housing
                             </a>
                         </EligibilityGroupItem>
-                    </List>
-                    <Typography>
-                        The following groups are currently eligible:
-                    </Typography>
-                    <List>
                         <EligibilityGroupItem>
-                            Individuals age 75+
+                            <a
+                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-75-and-older"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Individuals age 75 and older
+                            </a>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
-                            Health care workers doing non-COVID-facing care
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            Home-based health care workers
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            Congregate care settings
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            First responders
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            Long term care facilities, rest homes and assisted
-                            living facilities
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            Clinical and non-clinical health care workers doing
-                            direct and COVID-facing care
+                            <a
+                                href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-1-"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                People in Phase 1 (Health care, nursing homes, etc.)
+                            </a>
                         </EligibilityGroupItem>
                     </List>
                 </AccordionDetails>
