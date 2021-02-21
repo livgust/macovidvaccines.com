@@ -93,13 +93,16 @@ function ExtraData({ data }) {
 }
 
 function parseMD(currentData, classes) {
-    //encodes angle brackets to escape data
-    /** not sure if we still need this with the sanitizer so im commenting it out
-     *  let workingData1 = currentData.replaceAll("<", "&#60;");
-     *  let workingData2 = workingData1.replaceAll(">", "&#62;");
-     */
+    //replaces first instance of additional information if it's at the beginning of the string
+    let splitAddInfo = currentData.split("Additional Information:");
+    let workingData = "";
+    if(splitAddInfo[0] === "") {
+        workingData = currentData.replace("Additional Information:", "");
+    }else{
+        workingData = currentData;
+    }
     //parses bold italics first, splitting data at each "***"
-    const splitDataEmStr = /*workingData2*/ currentData.split("***");
+    const splitDataEmStr = workingData.split("***");
     let newDataEmStr = splitDataEmStr[0];
     let isEmStr = false;
     //iterates through the split data
@@ -116,7 +119,6 @@ function parseMD(currentData, classes) {
     }
     //parses bold next, splitting data at each "**"
     const splitDataStr = newDataEmStr.split("**");
-    console.log(splitDataStr);
     let newDataStr = splitDataStr[0];
     let isStr = false;
     //iterates through the split data
