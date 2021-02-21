@@ -16,6 +16,9 @@ import StaleDataIndicator from "./components/StaleDataIndicator";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 
+// any location with data older than this will not be displayed at all
+export const tooStaleMinutes = 60;  // unit in minutes
+
 export function transformData(data) {
     return data.map((entry, index) => {
         return {
@@ -39,10 +42,17 @@ export function sortAndFilterData(
     { sortKey, sortAsc },
     onlyShowAvailable
 ) {
-    const filteredData = onlyShowAvailable
-        ? data.filter((entry) => hasSignUpLink(entry))
-        : data;
-    const newData = filteredData.sort((a, b) => {
+    // Filter the locations that have "non-stale" data
+    const oldestGoodTimestamp = new Date() - (tooStaleMinutes * 60 * 1000);
+    let filteredData = data.filter(({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp);
+
+    // Filter only the locations that have a sign up link, if desired
+    if (onlyShowAvailable) {
+        filteredData = filteredData.filter((entry) => hasSignUpLink(entry));
+    }
+
+    // Sort the data
+    return filteredData.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
         const second = sortAsc ? b[sortKey] : a[sortKey];
         if (typeof first == "string") {
@@ -51,7 +61,6 @@ export function sortAndFilterData(
             return first - second;
         }
     });
-    return newData;
 }
 
 const useStyles = makeStyles((theme) => ({
