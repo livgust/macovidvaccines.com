@@ -22,7 +22,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "check:prettier": "prettier --check .",
+        "check:prettier": "prettier --check ./src",
         "check:eslint": "eslint",
         "postinstall": "husky install"
     },
