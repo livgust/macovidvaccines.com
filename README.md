@@ -28,7 +28,18 @@ npm run start
 yarn start
 ```
 
-Before checking in any commits, be sure to run `prettier` and `eslint` on your changes.
+Before checking in any commits, be sure to run `prettier` and `eslint` and unit tests on your changes.
+
+## Unit Testing
+
+There are unit tests (*.test.js) that can be run at anytime.
+```sh
+# with npm
+npm run test
+
+# with yarn
+yarn test
+```
 
 ## Accessibility
 
