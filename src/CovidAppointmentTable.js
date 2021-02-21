@@ -150,7 +150,7 @@ export default function CovidAppointmentTable() {
                                 No Appointments Found
                             </AlertTitle>
                                 <p>
-                                    This website scrapes data from other websites every 5 minutes and tells you
+                                    This website scrapes data from other websites every few minutes and tells you
                                     what places currently are advertising available appointments for COVID vaccines.
                                 </p>
                                 <p>
