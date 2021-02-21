@@ -1,6 +1,7 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
 import { makeStyles } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import Availability from "./components/Availability";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -15,6 +16,7 @@ import SignUpLink from "./components/SignUpLink";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
+import { AlertTitle } from "@material-ui/lab";
 
 export function transformData(data) {
     return data.map((entry, index) => {
@@ -142,7 +144,21 @@ export default function CovidAppointmentTable() {
                 />
                 {ready && formattedData.length === 0 && (
                     <div role="status">
-                        <p>No appointments found.</p>
+                        <br/>
+                        <Alert severity={"info"}>
+                            <AlertTitle >
+                                No Appointments Found
+                            </AlertTitle>
+                                <p>
+                                    This website scrapes data from other websites every 5 minutes and tells you
+                                    what places currently are advertising available appointments for COVID vaccines.
+                                </p>
+                                <p>
+                                    Mass vaccination locations have the most appointments and update their schedules every Thursday.
+                                    Smaller locations offer fewer appointments but update their schedules daily.
+                                </p>
+                        </Alert>
+                        <br/>
                     </div>
                 )}
                 <div role="list">
