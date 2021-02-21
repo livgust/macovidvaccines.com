@@ -16,6 +16,9 @@ import StaleDataIndicator from "./components/StaleDataIndicator";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 
+// any location with data older than this will not be displayed at all
+export const tooStaleMinutes = 60;  // unit in minutes
+
 export function transformData(data) {
     return data.map((entry, index) => {
         return {
@@ -39,14 +42,20 @@ export function sortAndFilterData(
     { sortKey, sortAsc },
     onlyShowAvailable
 ) {
-    const tooStaleMinutes = 60;
+    // Filter the locations that have "non-stale" data
     const oldestGoodTimestamp = new Date() - (tooStaleMinutes * 60 * 1000);
+    let filteredData = data.filter(
+        (entry) => (new Date(entry.timestamp).getTime() === 0
+            ? true  // keep entries with no timestamp
+            : (entry.timestamp >= oldestGoodTimestamp)));
 
-    const filteredData = onlyShowAvailable
-        ? data.filter((entry) => (entry.hasAppointments && entry.timestamp >= oldestGoodTimestamp))
-        : data.filter((entry) => (entry.timestamp >= oldestGoodTimestamp));
+    // Filter only the locations that have appointments, if desired
+    if (onlyShowAvailable) {
+        filteredData = filteredData.filter((entry) => (entry.hasAppointments));
+    }
 
-    const newData = filteredData.sort((a, b) => {
+    // Sort the data
+    return filteredData.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
         const second = sortAsc ? b[sortKey] : a[sortKey];
         if (typeof first == "string") {
@@ -55,7 +64,6 @@ export function sortAndFilterData(
             return first - second;
         }
     });
-    return newData;
 }
 
 const useStyles = makeStyles((theme) => ({
