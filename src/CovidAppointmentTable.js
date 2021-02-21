@@ -40,7 +40,7 @@ export function sortAndFilterData(
     onlyShowAvailable
 ) {
     const filteredData = onlyShowAvailable
-        ? data.filter((entry) => hasSignUpLink({ entry }))
+        ? data.filter((entry) => hasSignUpLink(entry))
         : data;
     const newData = filteredData.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
