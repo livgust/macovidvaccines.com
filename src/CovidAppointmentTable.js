@@ -12,11 +12,14 @@ import HelpDialog from "./components/HelpDialog";
 import Loader from "react-loader";
 import MoreInformation from "./components/MoreInformation";
 import React, { useState, useEffect } from "react";
-import SignUpLink from "./components/SignUpLink";
+import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import { AlertTitle } from "@material-ui/lab";
+
+// any location with data older than this will not be displayed at all
+export const tooStaleMinutes = 60;  // unit in minutes
 
 export function transformData(data) {
     return data.map((entry, index) => {
@@ -41,10 +44,17 @@ export function sortAndFilterData(
     { sortKey, sortAsc },
     onlyShowAvailable
 ) {
-    const filteredData = onlyShowAvailable
-        ? data.filter((entry) => entry.hasAppointments)
-        : data;
-    const newData = filteredData.sort((a, b) => {
+    // Filter the locations that have "non-stale" data
+    const oldestGoodTimestamp = new Date() - (tooStaleMinutes * 60 * 1000);
+    let filteredData = data.filter(({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp);
+
+    // Filter only the locations that have a sign up link, if desired
+    if (onlyShowAvailable) {
+        filteredData = filteredData.filter((entry) => hasSignUpLink(entry));
+    }
+
+    // Sort the data
+    return filteredData.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
         const second = sortAsc ? b[sortKey] : a[sortKey];
         if (typeof first == "string") {
@@ -53,7 +63,6 @@ export function sortAndFilterData(
             return first - second;
         }
     });
-    return newData;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -181,7 +190,8 @@ function RestrictionNotifier({ entry }) {
     let definitiveRestriction = false;
 
     if (entry.restrictions) {
-        definitiveRestriction = true;
+        //if the restrictions text is long, put it behind a dialog
+        definitiveRestriction = entry.restrictions.length <= 50;
         hasRestriction = true;
         restrictionText = entry.restrictions;
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
@@ -209,8 +219,13 @@ function RestrictionNotifier({ entry }) {
     } else if (definitiveRestriction) {
         return (
             <span className={classes.restrictionNotice}>
-                <ErrorOutlineIcon fontSize="small" className={classes.restrictionIcon} />
-                <Typography className={classes.restrictionWarning}>{restrictionText}</Typography>
+                <ErrorOutlineIcon
+                    fontSize="small"
+                    className={classes.restrictionIcon}
+                />
+                <Typography className={classes.restrictionWarning}>
+                    {restrictionText}
+                </Typography>
             </span>
         );
     } else {
@@ -220,10 +235,14 @@ function RestrictionNotifier({ entry }) {
                 icon={ErrorOutlineIcon}
                 iconProps={{ className: classes.restrictionIcon }}
                 text={
-                    <p className={classes.restrictionNotice}>{restrictionText}</p>
+                    <p className={classes.restrictionNotice}>
+                        {restrictionText}
+                    </p>
                 }
             >
-                <Typography className={classes.restrictionWarning}>Important Eligibility Notice</Typography>
+                <Typography className={classes.restrictionWarning}>
+                    Important Eligibility Notice
+                </Typography>
             </HelpDialog>
         );
     }
