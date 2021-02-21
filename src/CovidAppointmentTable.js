@@ -165,7 +165,8 @@ function RestrictionNotifier({ entry }) {
     let definitiveRestriction = false;
 
     if (entry.restrictions) {
-        definitiveRestriction = true;
+        //if the restrictions text is long, put it behind a dialog
+        definitiveRestriction = entry.restrictions.length <= 50;
         hasRestriction = true;
         restrictionText = entry.restrictions;
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
