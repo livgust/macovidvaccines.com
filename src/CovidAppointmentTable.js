@@ -44,10 +44,7 @@ export function sortAndFilterData(
 ) {
     // Filter the locations that have "non-stale" data
     const oldestGoodTimestamp = new Date() - (tooStaleMinutes * 60 * 1000);
-    let filteredData = data.filter(
-        (entry) => (new Date(entry.timestamp).getTime() === 0
-            ? true  // keep entries with no timestamp
-            : (entry.timestamp >= oldestGoodTimestamp)));
+    let filteredData = data.filter(({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp);
 
     // Filter only the locations that have appointments, if desired
     if (onlyShowAvailable) {
