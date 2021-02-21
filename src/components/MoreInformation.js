@@ -3,6 +3,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core";
+import { sanitize } from "dompurify";
 
 const useStyles = makeStyles((theme) => ({
     accordion: {
@@ -57,7 +58,6 @@ export default function MoreInformation({ entry }) {
 
 function ExtraData({ data }) {
     const classes = useStyles();
-
     if (!data) {
         return null;
     } else if (typeof data == "string") {
@@ -65,12 +65,89 @@ function ExtraData({ data }) {
     } else if (typeof data == "object") {
         let elements = [];
         for (const key in data) {
-            elements.push(
-                <div key={key} className={classes.extraData}>
-                    <b>{key}:</b> {data[key]}
-                </div>
-            );
+            //formats additional information instead of just adding it to the more information section
+            if (key === "Additional Information") {
+                const currentData = data[key];
+                if (currentData) {
+                    let finalData = parseMD(currentData, classes);
+                    //adds the parsed data as straight html
+                    elements.push(
+                        <div
+                            className={classes.extraData}
+                            dangerouslySetInnerHTML={{
+                                __html: `<b>${key}:</b> ${finalData}`,
+                            }}
+                        />
+                    );
+                }
+            } else {
+                elements.push(
+                    <div key={key} className={classes.extraData}>
+                        <b>{key}:</b> {data[key]}
+                    </div>
+                );
+            }
         }
         return elements;
     }
+}
+
+function parseMD(currentData, classes) {
+    //encodes angle brackets to escape data
+    /** not sure if we still need this with the sanitizer so im commenting it out
+     *  let workingData1 = currentData.replaceAll("<", "&#60;");
+     *  let workingData2 = workingData1.replaceAll(">", "&#62;");
+     */
+    //parses bold italics first, splitting data at each "***"
+    const splitDataEmStr = /*workingData2*/ currentData.split("***");
+    let newDataEmStr = splitDataEmStr[0];
+    let isEmStr = false;
+    //iterates through the split data
+    //uses em to italicize and span with the secondary color for bolding (went with a color change since the titles were bold)
+    let i = 0;
+    for (i = 1; i < splitDataEmStr.length; i++) {
+        if (isEmStr) {
+            newDataEmStr += splitDataEmStr[i];
+            isEmStr = false;
+        } else {
+            newDataEmStr += `<em><strong>${splitDataEmStr[i]}</strong></em>`;
+            isEmStr = true;
+        }
+    }
+    //parses bold next, splitting data at each "**"
+    const splitDataStr = newDataEmStr.split("**");
+    console.log(splitDataStr);
+    let newDataStr = splitDataStr[0];
+    let isStr = false;
+    //iterates through the split data
+    //same formatting rules as 85
+    for (i = 1; i < splitDataStr.length; i++) {
+        if (isStr) {
+            newDataStr += splitDataStr[i];
+            isStr = false;
+        } else {
+            newDataStr += `<strong>${splitDataStr[i]}</strong>`;
+            isStr = true;
+        }
+    }
+    //parses italics last, splitting data at each "*"
+    const splitDataEm = newDataStr.split("*");
+    let newDataEm = splitDataEm[0];
+    let isEm = false;
+    //iterates through the split data
+    //same formatting rules as 85
+    for (i = 1; i < splitDataEm.length; i++) {
+        if (isEm) {
+            newDataEm += splitDataEm[i];
+            isEm = false;
+        } else {
+            newDataEm += `<em>${splitDataEm[i]}</em>`;
+            isEm = true;
+        }
+    }
+    return sanitize(newDataEm, {
+        USE_PROFILES: { html: true }, // Do not allow other XML formats (e.g. SVG)
+        ALLOWED_TAGS: ["em", "strong"], // Only allow italics and bold tags
+        ALLOWED_ATTR: [], // Do not allow any attributes
+    });
 }
