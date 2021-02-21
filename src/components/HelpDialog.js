@@ -38,8 +38,11 @@ export default function HelpDialog({
             <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
                 <DialogTitle id="about-dialog-title">{title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="about-dialog-description">
-                        <p>{text}</p>
+                    <DialogContentText
+                        id="about-dialog-description"
+                        component={typeof text === "string" ? "p" : "div"}
+                    >
+                        {text}
                     </DialogContentText>
                     <Button onClick={() => setHelpOpen(false)}>OK</Button>
                 </DialogContent>
