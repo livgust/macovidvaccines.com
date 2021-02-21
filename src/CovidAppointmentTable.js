@@ -159,12 +159,19 @@ export default function CovidAppointmentTable() {
                                 No Appointments Found
                             </AlertTitle>
                                 <p>
-                                    This website scrapes data from other websites every few minutes and tells you
-                                    what places currently are advertising available appointments for COVID vaccines.
+                                    None of the vaccine sites that we monitor currently have available appointments. This website gathers data every minute from COVID-19 vaccine sites across Massachusetts.
                                 </p>
                                 <p>
-                                    Mass vaccination locations have the most appointments and update their schedules every Thursday.
-                                    Smaller locations offer fewer appointments but update their schedules daily.
+                                    Check back occasionally for updated information.
+                                    For more information on the vaccine rollout in Massachusetts, visit{" "}
+                                    <a
+                                        href="https://www.mass.gov/covid-19-vaccine"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        www.mass.gov/covid-19-vaccine
+                                    </a>
+                                    .
                                 </p>
                         </Alert>
                         <br/>
