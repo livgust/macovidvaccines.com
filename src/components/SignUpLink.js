@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function HasSignUpLink({ entry }) {
+export function hasSignUpLink(entry) {
     if (entry.hasAppointments) {
         if (entry.signUpLink) {
             // one sign-up link for all availabilities

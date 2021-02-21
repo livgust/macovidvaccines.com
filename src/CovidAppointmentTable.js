@@ -11,7 +11,7 @@ import HelpDialog from "./components/HelpDialog";
 import Loader from "react-loader";
 import MoreInformation from "./components/MoreInformation";
 import React, { useState, useEffect } from "react";
-import SignUpLink, { HasSignUpLink } from "./components/SignUpLink";
+import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
@@ -40,7 +40,7 @@ export function sortAndFilterData(
     onlyShowAvailable
 ) {
     const filteredData = onlyShowAvailable
-        ? data.filter((entry) => HasSignUpLink({ entry }))
+        ? data.filter((entry) => hasSignUpLink({ entry }))
         : data;
     const newData = filteredData.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
