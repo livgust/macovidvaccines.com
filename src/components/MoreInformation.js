@@ -69,7 +69,7 @@ function ExtraData({ data }) {
             if (key === "Additional Information") {
                 const currentData = data[key];
                 if (currentData) {
-                    let finalData = parseMD(currentData, classes);
+                    let finalData = parseMD(currentData);
                     //adds the parsed data as straight html
                     elements.push(
                         <div
@@ -92,7 +92,7 @@ function ExtraData({ data }) {
     }
 }
 
-function parseMD(currentData, classes) {
+function parseMD(currentData) {
     //replaces first instance of additional information if it's at the beginning of the string
     let splitAddInfo = currentData.split("Additional Information:");
     let workingData = "";
