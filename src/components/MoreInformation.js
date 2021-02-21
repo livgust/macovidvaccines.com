@@ -96,9 +96,9 @@ function parseMD(currentData) {
     //replaces first instance of additional information if it's at the beginning of the string
     let splitAddInfo = currentData.split("Additional Information:");
     let workingData = "";
-    if(splitAddInfo[0] === "") {
+    if (splitAddInfo[0] === "") {
         workingData = currentData.replace("Additional Information:", "");
-    }else{
+    } else {
         workingData = currentData;
     }
     //parses bold italics first, splitting data at each "***"
