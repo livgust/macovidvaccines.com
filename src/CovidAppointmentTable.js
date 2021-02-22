@@ -1,6 +1,8 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
 import { makeStyles } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import Availability from "./components/Availability";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -151,7 +153,29 @@ export default function CovidAppointmentTable() {
                 />
                 {ready && formattedData.length === 0 && (
                     <div role="status">
-                        <p>No appointments found.</p>
+                        <br />
+                        <Alert severity={"info"}>
+                            <AlertTitle>
+                                No Appointments Found
+                            </AlertTitle>
+                            <p>
+                                None of the vaccine sites that we monitor currently have available appointments. This
+                                website gathers data every minute from COVID-19 vaccine sites across Massachusetts.
+                            </p>
+                            <p>
+                                Check back for updated information.
+                                For more information on the vaccine rollout in Massachusetts, visit{" "}
+                                <a
+                                    href="https://www.mass.gov/covid-19-vaccine"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    www.mass.gov/covid-19-vaccine
+                                </a>
+                                .
+                            </p>
+                        </Alert>
+                        <br />
                     </div>
                 )}
                 <div role="list">
