@@ -2,14 +2,19 @@ import { act, render, screen } from "@testing-library/react";
 
 import CovidAppointmentTable from "./CovidAppointmentTable";
 
-import prod from "../test/fixtures/api/prod.json";
-import noData from "../test/fixtures/api/no-data.json";
+import prodResults from "../test/fixtures/api/prod.json";
+import noResults from "../test/fixtures/api/no-data.json";
 
 // actual API returns `body` as a string but we store it as a POJO in the fixture for
 // ease of reading
 const prodData = {
-    ...prod,
-    body: JSON.stringify(prod.body),
+    ...prodResults,
+    body: JSON.stringify(prodResults.body),
+};
+
+const noData = {
+    ...noResults,
+    body: JSON.stringify(noResults.body),
 };
 
 beforeAll(function () {
@@ -73,7 +78,11 @@ describe("the CovidAppointmentTable component", function () {
                 render(<CovidAppointmentTable />);
             });
 
-            expect(screen.getByRole("alert")).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    "something went wrong, please try again later."
+                )
+            ).toBeInTheDocument();
         });
     });
 });

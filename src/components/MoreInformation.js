@@ -60,9 +60,9 @@ function ExtraData({ data }) {
     const classes = useStyles();
     if (!data) {
         return null;
-    } else if (typeof data == "string") {
-        return <div>data</div>;
-    } else if (typeof data == "object") {
+    } else if (typeof data === "string") {
+        return <div>{data}</div>;
+    } else if (typeof data === "object") {
         let elements = [];
         for (const key in data) {
             //formats additional information instead of just adding it to the more information section
@@ -73,6 +73,7 @@ function ExtraData({ data }) {
                     //adds the parsed data as straight html
                     elements.push(
                         <div
+                            key={key}
                             className={classes.extraData}
                             dangerouslySetInnerHTML={{
                                 __html: `<b>${key}:</b> ${finalData}`,
@@ -116,7 +117,6 @@ function parseMD(currentData, classes) {
     }
     //parses bold next, splitting data at each "**"
     const splitDataStr = newDataEmStr.split("**");
-    console.log(splitDataStr);
     let newDataStr = splitDataStr[0];
     let isStr = false;
     //iterates through the split data
