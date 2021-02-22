@@ -34,7 +34,9 @@ describe("staleness messaging", () => {
             screen.getByText(
                 `Last updated ${
                     timestampDate.getHours() % 12
-                }:${timestampDate.getMinutes()} PM`
+                }:${timestampDate.getMinutes()} ${
+                    timestampDate.getHours() >= 12 ? "PM" : "AM"
+                }`
             )
         ).toBeTruthy();
     });
@@ -55,7 +57,7 @@ describe("staleness messaging", () => {
     });
 
     it("shows date if older than yesterday", async () => {
-        const minutesStaleTimestamp = new Date("2021-01-10T00:00");
+        const minutesStaleTimestamp = new Date("2021-01-21T00:00");
         await act(async () => {
             render(
                 <StaleDataIndicator
@@ -65,6 +67,6 @@ describe("staleness messaging", () => {
             );
         });
 
-        expect(screen.getByText("Last updated 1/10")).toBeTruthy();
+        expect(screen.getByText("Last updated 1/21")).toBeTruthy();
     });
 });
