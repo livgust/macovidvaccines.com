@@ -2,7 +2,7 @@
 
 import { makeStyles } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
-import AlertTitle from '@material-ui/lab/AlertTitle';
+import AlertTitle from "@material-ui/lab/AlertTitle";
 import Availability from "./components/Availability";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -19,7 +19,7 @@ import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 
 // any location with data older than this will not be displayed at all
-export const tooStaleMinutes = 60;  // unit in minutes
+export const tooStaleMinutes = 60; // unit in minutes
 
 export function transformData(data) {
     return data.map((entry, index) => {
@@ -45,8 +45,10 @@ export function sortAndFilterData(
     onlyShowAvailable
 ) {
     // Filter the locations that have "non-stale" data
-    const oldestGoodTimestamp = new Date() - (tooStaleMinutes * 60 * 1000);
-    let filteredData = data.filter(({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp);
+    const oldestGoodTimestamp = new Date() - tooStaleMinutes * 60 * 1000;
+    let filteredData = data.filter(
+        ({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp
+    );
 
     // Filter only the locations that have a sign up link, if desired
     if (onlyShowAvailable) {
@@ -155,16 +157,17 @@ export default function CovidAppointmentTable() {
                     <div role="status">
                         <br />
                         <Alert severity={"info"}>
-                            <AlertTitle>
-                                No Appointments Found
-                            </AlertTitle>
+                            <AlertTitle>No Appointments Found</AlertTitle>
                             <p>
-                                None of the vaccine sites that we monitor currently have available appointments. This
-                                website gathers data every minute from COVID-19 vaccine sites across Massachusetts.
+                                None of the vaccine sites that we monitor
+                                currently have available appointments. This
+                                website gathers data every minute from COVID-19
+                                vaccine sites across Massachusetts.
                             </p>
                             <p>
-                                Check back for updated information.
-                                For more information on the vaccine rollout in Massachusetts, visit{" "}
+                                Check back for updated information. For more
+                                information on the vaccine rollout in
+                                Massachusetts, visit{" "}
                                 <a
                                     href="https://www.mass.gov/covid-19-vaccine"
                                     target="_blank"
