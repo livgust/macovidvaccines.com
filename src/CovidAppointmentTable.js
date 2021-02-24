@@ -107,17 +107,28 @@ export default function CovidAppointmentTable() {
 
         if (process.env.NODE_ENV !== "production") {
             // This is a testing branch to get data from a local file instead of the production file.
-            // It will read a file called "test/devtest.json" in the src directory.
+            // It will read a file called "test/devtest-temp.json" in the src directory.
+            // You can obtain a cached file using a cmd line:
+            //
+            //     aws s3 cp s3://ma-covid-vaccine/data-2021-02-23T2253Z.json src/test/devtest-temp.json
+
             try {
                 const testData = require("./test/devtest.json");
                 tooStaleMinutes = 60 * 24 * 31; // one month! otherwise, you might not see anything
 
-                setData(JSON.parse(testData.body).results);
-                setReady(true);
-                dataFetched = true;
-            }
-            catch (err)
-            {
+                // If it has 'results' then this looks like a timestamp cached json file from S3
+                if (testData.hasOwnProperty('results')) {
+                    setData(testData.results);
+                    setReady(true);
+                    dataFetched = true;
+                }
+                // If it has 'body', then this looks like something pasted from a browser (View Source)
+                else if (testData.hasOwnProperty('body')) {
+                    setData(JSON.parse(testData.body).results);
+                    setReady(true);
+                    dataFetched = true;
+                }
+            } catch (err) {
                 dataFetched = false; // if the file doesn't exist, just get the prod file
             }
         }
