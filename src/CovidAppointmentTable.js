@@ -19,7 +19,7 @@ import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 
 // any location with data older than this will not be displayed at all
-export let tooStaleMinutes = 60;  // unit in minutes
+export const tooStaleMinutes = 60;  // unit in minutes
 
 export function transformData(data) {
     return data.map((entry, index) => {
@@ -103,51 +103,19 @@ export default function CovidAppointmentTable() {
     const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
 
     useEffect(() => {
-        let dataFetched = false;
-
-        if (process.env.NODE_ENV !== "production") {
-            // This is a testing branch to get data from a local file instead of the production file.
-            // It will read a file called "test/devtest-temp.json" in the src directory.
-            // You can obtain a cached file using a cmd line:
-            //
-            //     aws s3 cp s3://ma-covid-vaccine/data-2021-02-23T2253Z.json src/test/devtest-temp.json
-
-            try {
-                const testData = require("./test/devtest.json");
-                tooStaleMinutes = 60 * 24 * 31; // one month! otherwise, you might not see anything
-
-                // If it has 'results' then this looks like a timestamp cached json file from S3
-                if (testData.hasOwnProperty('results')) {
-                    setData(testData.results);
-                    setReady(true);
-                    dataFetched = true;
-                }
-                // If it has 'body', then this looks like something pasted from a browser (View Source)
-                else if (testData.hasOwnProperty('body')) {
-                    setData(JSON.parse(testData.body).results);
-                    setReady(true);
-                    dataFetched = true;
-                }
-            } catch (err) {
-                dataFetched = false; // if the file doesn't exist, just get the prod file
-            }
-        }
-
-        if (!dataFetched) {
-            fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod")
-                .then(async (res) => {
-                    const newData = await res.json();
-                    setData(JSON.parse(newData.body).results);
-                    setReady(true);
-                })
-                .catch((ex) => {
-                    console.error(ex.message);
-                    setErrorMessage(
-                        "something went wrong, please try again later."
-                    );
-                    setReady(true);
-                });
-        }
+        fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod")
+            .then(async (res) => {
+                const newData = await res.json();
+                setData(JSON.parse(newData.body).results);
+                setReady(true);
+            })
+            .catch((ex) => {
+                console.error(ex.message);
+                setErrorMessage(
+                    "something went wrong, please try again later."
+                );
+                setReady(true);
+            });
     }, []);
 
     const formattedData = sortAndFilterData(
