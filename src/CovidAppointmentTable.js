@@ -204,6 +204,7 @@ export default function CovidAppointmentTable() {
                         <LocationCard
                             entry={entry}
                             className={classes.cardBox}
+                            onlyShowAvailable={onlyShowAvailable}
                             key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
                         />
                     ))}
@@ -277,7 +278,7 @@ function RestrictionNotifier({ entry }) {
     }
 }
 
-function LocationCard({ entry, className }) {
+function LocationCard({ entry, className, onlyShowAvailable }) {
     const classes = useStyles();
     return (
         <div role="listitem" className={className}>
@@ -297,7 +298,7 @@ function LocationCard({ entry, className }) {
                     }
                 />
                 <CardContent>
-                    <Availability entry={entry} />
+                    <Availability entry={entry} onlyShowAvailable={onlyShowAvailable}/>
                     <MoreInformation entry={entry} />
                     <SignUpLink entry={entry} />
                 </CardContent>
