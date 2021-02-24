@@ -1,19 +1,25 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
-import Loader from "react-loader";
-import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import Alert from "@material-ui/lab/Alert";
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import Availability from "./components/Availability";
-import SignUpLink from "./components/SignUpLink";
-import MoreInformation from "./components/MoreInformation";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import HelpDialog from "./components/HelpDialog";
+import Loader from "react-loader";
+import MoreInformation from "./components/MoreInformation";
+import React, { useState, useEffect } from "react";
+import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
+import StaleDataIndicator from "./components/StaleDataIndicator";
+import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
+
+// any location with data older than this will not be displayed at all
+export const tooStaleMinutes = 60;  // unit in minutes
 
 export function transformData(data) {
     return data.map((entry, index) => {
@@ -28,6 +34,7 @@ export function transformData(data) {
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
             restrictions: entry.restrictions || null,
+            timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
         };
     });
 }
@@ -37,10 +44,17 @@ export function sortAndFilterData(
     { sortKey, sortAsc },
     onlyShowAvailable
 ) {
-    const filteredData = onlyShowAvailable
-        ? data.filter((entry) => entry.hasAppointments)
-        : data;
-    const newData = filteredData.sort((a, b) => {
+    // Filter the locations that have "non-stale" data
+    const oldestGoodTimestamp = new Date() - (tooStaleMinutes * 60 * 1000);
+    let filteredData = data.filter(({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp);
+
+    // Filter only the locations that have a sign up link, if desired
+    if (onlyShowAvailable) {
+        filteredData = filteredData.filter((entry) => hasSignUpLink(entry));
+    }
+
+    // Sort the data
+    return filteredData.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
         const second = sortAsc ? b[sortKey] : a[sortKey];
         if (typeof first == "string") {
@@ -49,7 +63,6 @@ export function sortAndFilterData(
             return first - second;
         }
     });
-    return newData;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -61,13 +74,17 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
+        fontWeight: "bold",
         color: theme.palette.text.primary,
     },
     restrictionNoticeTooltip: {
         cursor: "pointer",
     },
+    restrictionWarning: {
+        color: theme.palette.error.dark,
+    },
     restrictionIcon: {
-        color: theme.palette.warning.dark,
+        color: theme.palette.error.dark,
         "padding-right": theme.spacing(1),
     },
 }));
@@ -136,7 +153,29 @@ export default function CovidAppointmentTable() {
                 />
                 {ready && formattedData.length === 0 && (
                     <div role="status">
-                        <p>No appointments found.</p>
+                        <br />
+                        <Alert severity={"info"}>
+                            <AlertTitle>
+                                No Appointments Found
+                            </AlertTitle>
+                            <p>
+                                None of the vaccine sites that we monitor currently have available appointments. This
+                                website gathers data every minute from COVID-19 vaccine sites across Massachusetts.
+                            </p>
+                            <p>
+                                Check back for updated information.
+                                For more information on the vaccine rollout in Massachusetts, visit{" "}
+                                <a
+                                    href="https://www.mass.gov/covid-19-vaccine"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    www.mass.gov/covid-19-vaccine
+                                </a>
+                                .
+                            </p>
+                        </Alert>
+                        <br />
                     </div>
                 )}
                 <div role="list">
@@ -144,7 +183,7 @@ export default function CovidAppointmentTable() {
                         <LocationCard
                             entry={entry}
                             className={classes.cardBox}
-                            key={`${entry.location}-${entry.streetAdress}-${entry.city}`}
+                            key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
                         />
                     ))}
                 </div>
@@ -159,20 +198,23 @@ function RestrictionNotifier({ entry }) {
     let definitiveRestriction = false;
 
     if (entry.restrictions) {
-        definitiveRestriction = true;
+        //if the restrictions text is long, put it behind a dialog
+        definitiveRestriction = entry.restrictions.length <= 50;
         hasRestriction = true;
         restrictionText = entry.restrictions;
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
         const text = entry.extraData["Additional Information"];
         if (
             // "County residents"
-	    // "eligible residents"
-	    // " live"
-	    // " work"
-	    // "eligible populations in"
+            // "eligible residents"
+            // " live"
+            // " work"
+            // "eligible populations in"
             text
                 .toLowerCase()
-                .match(/(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/)
+                .match(
+                    /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/
+                )
         ) {
             hasRestriction = true;
             restrictionText = text;
@@ -185,8 +227,13 @@ function RestrictionNotifier({ entry }) {
     } else if (definitiveRestriction) {
         return (
             <span className={classes.restrictionNotice}>
-                <ErrorOutlineIcon className={classes.restrictionIcon} />
-                <Typography>{restrictionText}</Typography>
+                <ErrorOutlineIcon
+                    fontSize="small"
+                    className={classes.restrictionIcon}
+                />
+                <Typography className={classes.restrictionWarning}>
+                    {restrictionText}
+                </Typography>
             </span>
         );
     } else {
@@ -195,19 +242,15 @@ function RestrictionNotifier({ entry }) {
                 className={`${classes.restrictionNotice} ${classes.restrictionNoticeTooltip}`}
                 icon={ErrorOutlineIcon}
                 iconProps={{ className: classes.restrictionIcon }}
-                title="This site may be restricted"
                 text={
-                    <>
-                    <p className={classes.restrictionNotice}>"{restrictionText}"</p>
-                        <p>
-                            We have flagged this site as restricted based on the
-                            above information (located under "MORE
-                            INFORMATION").
-                        </p>
-                    </>
+                    <p className={classes.restrictionNotice}>
+                        {restrictionText}
+                    </p>
                 }
             >
-                <Typography>May be restricted</Typography>
+                <Typography className={classes.restrictionWarning}>
+                    Important Eligibility Notice
+                </Typography>
             </HelpDialog>
         );
     }
@@ -228,6 +271,7 @@ function LocationCard({ entry, className }) {
                         <>
                             <RestrictionNotifier entry={entry} />
                             <div>{entry.city}</div>
+                            <StaleDataIndicator timestamp={entry.timestamp} />
                         </>
                     }
                 />

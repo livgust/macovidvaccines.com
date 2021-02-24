@@ -1,16 +1,20 @@
+/*
+  Copyright © 2021 Olivia Adams/Ora Innovations LLC. All rights reserved
+ */
+
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuIcon from "@material-ui/icons/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Toolbar from "@material-ui/core/Toolbar";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -96,10 +100,12 @@ export default function ButtonAppBar() {
                 </MenuItem>
                 <MenuItem>
                     <a
-                        href="mailto:macovidvaccines@gmail.com"
+                        href={
+                            "mailto:macovidvaccines@gmail.com?subject=Site feedback"
+                        }
                         className={classes.unstyledLink}
                     >
-                        Give Feedback
+                        Give feedback
                     </a>
                 </MenuItem>
             </Menu>
@@ -132,8 +138,8 @@ function AboutDialog(props) {
                         .
                     </p>
                     <p>
-                        This website scrapes data from other websites every 5
-                        minutes and tells you what places currently are
+                        This website scrapes data from other websites every
+                        minute and tells you what places currently are
                         advertising available appointments for COVID vaccines.
                         It is YOUR responsibility to verify that you are
                         eligible before signing up. For more information, click{" "}
@@ -149,10 +155,51 @@ function AboutDialog(props) {
                     <p>
                         We're working as fast as we can to gather more
                         information from other sources. To contact us,{" "}
-                        <a href="mailto:macovidvaccines@gmail.com">
+                        <a href={"mailto:macovidvaccines@gmail.com"}>
                             send an email
                         </a>
                         .
+                    </p>
+                    <h3>Get Involved</h3>
+                    <p>
+                        If you have experience with designing or developing web
+                        site software, and you want to get involved in the site,
+                        please{" "}
+                        <a
+                            href={
+                                "mailto:macovidvaccines@gmail.com?subject=I want to help with MACovidVaccines.com&body=Here's how I can help..."
+                            }
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            email the team
+                        </a>{" "}
+                        with a note about how you can contribute.
+                    </p>
+                    <p>
+                        The website source code can be found on Github. The code
+                        that gathers data from other sites is in the{" "}
+                        <a
+                            href={
+                                "https://github.com/livgust/covid-vaccine-scrapers"
+                            }
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            covid-vaccine-scrapers
+                        </a>{" "}
+                        repository. The code that generates the website is in
+                        the{" "}
+                        <a
+                            href={
+                                "https://github.com/livgust/macovidvaccines.com"
+                            }
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            macovidvaccines.com
+                        </a>{" "}
+                        repository.
                     </p>
                 </DialogContentText>
             </DialogContent>
