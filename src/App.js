@@ -44,6 +44,7 @@ function App() {
                         <h1 className={classes.heading}>
                             MA Covid Vaccine Appointments
                         </h1>
+                        {alert}
                         <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography
