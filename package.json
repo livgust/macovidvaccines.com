@@ -22,7 +22,10 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "check:prettier": "prettier --check ./src",
+        "check:eslint": "eslint",
+        "postinstall": "husky install"
     },
     "eslintConfig": {
         "extends": [
@@ -41,5 +44,9 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "husky": "^5.0.9",
+        "prettier": "^2.2.1"
     }
 }
