@@ -80,9 +80,11 @@ describe("the CovidAppointmentTable component", function () {
 
             expect(
                 screen.getByText(
-                    "something went wrong, please try again later."
+                    "Something went wrong, please try again later."
                 )
             ).toBeInTheDocument();
+
+            expect(await screen.findByRole("alert")).toBeInTheDocument();
         });
     });
 });
