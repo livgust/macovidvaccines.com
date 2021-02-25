@@ -114,7 +114,7 @@ export default function CovidAppointmentTable() {
             .catch((ex) => {
                 console.error(ex.message);
                 setErrorMessage(
-                    "something went wrong, please try again later."
+                    "Something went wrong, please try again later."
                 );
                 setReady(true);
             });
@@ -137,60 +137,37 @@ export default function CovidAppointmentTable() {
                 <Loader loaded={ready} />
             </div>
 
-            {errorMessage && <div role="alert">{errorMessage}</div>}
+            {errorMessage && <ErrorMessageAlert message={errorMessage} />}
 
-            <section aria-live="polite" aria-busy={!ready}>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            aria-checked={onlyShowAvailable}
-                            role="switch"
-                            checked={onlyShowAvailable}
-                            onChange={(event) =>
-                                setOnlyShowAvailable(event.target.checked)
-                            }
-                        />
-                    }
-                    label="Only show locations with available appointments"
-                />
-                {ready && formattedData.length === 0 && (
-                    <div role="status">
-                        <br />
-                        <Alert severity={"info"}>
-                            <AlertTitle>No Appointments Found</AlertTitle>
-                            <p>
-                                None of the vaccine sites that we monitor
-                                currently have available appointments. This
-                                website gathers data every minute from COVID-19
-                                vaccine sites across Massachusetts.
-                            </p>
-                            <p>
-                                Check back for updated information. For more
-                                information on the vaccine rollout in
-                                Massachusetts, visit{" "}
-                                <a
-                                    href="https://www.mass.gov/covid-19-vaccine"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    www.mass.gov/covid-19-vaccine
-                                </a>
-                                .
-                            </p>
-                        </Alert>
-                        <br />
+            {!errorMessage && (
+                <section aria-live="polite" aria-busy={!ready}>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                aria-checked={onlyShowAvailable}
+                                role="switch"
+                                checked={onlyShowAvailable}
+                                onChange={(event) =>
+                                    setOnlyShowAvailable(event.target.checked)
+                                }
+                            />
+                        }
+                        label="Only show locations with available appointments"
+                    />
+                    {ready && formattedData.length === 0 && (
+                        <NoAppointmentsAlert />
+                    )}
+                    <div role="list">
+                        {formattedData.map((entry) => (
+                            <LocationCard
+                                entry={entry}
+                                className={classes.cardBox}
+                                key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
+                            />
+                        ))}
                     </div>
-                )}
-                <div role="list">
-                    {formattedData.map((entry) => (
-                        <LocationCard
-                            entry={entry}
-                            className={classes.cardBox}
-                            key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
-                        />
-                    ))}
-                </div>
-            </section>
+                </section>
+            )}
         </>
     );
 }
@@ -285,5 +262,53 @@ function LocationCard({ entry, className }) {
                 </CardContent>
             </Card>
         </div>
+    );
+}
+
+function NoAppointmentsAlert() {
+    //const classes = useStyles();
+    return (
+        <div role="status">
+            <br />
+            <Alert severity={"info"}>
+                <AlertTitle>
+                    No Appointments Found
+                </AlertTitle>
+                <p>
+                    None of the vaccine sites that we monitor currently have available appointments. This
+                    website gathers data every minute from COVID-19 vaccine sites across Massachusetts.
+                </p>
+                <p>
+                    Check back for updated information.
+                    For more information on the vaccine rollout in Massachusetts, visit{" "}
+                    <a
+                        href="https://www.mass.gov/covid-19-vaccine"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        www.mass.gov/covid-19-vaccine
+                    </a>
+                    .
+                </p>
+            </Alert>
+            <br />
+        </div>
+    );
+}
+
+function ErrorMessageAlert({ message }) {
+    //const classes = useStyles();
+    return (
+        <>
+            <Alert severity={"error"}>
+                <AlertTitle>
+                    Unexpected Internal Error
+                </AlertTitle>
+                <p>
+                    {message}
+                </p>
+            </Alert>
+            <br />
+        </>
     );
 }
