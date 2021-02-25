@@ -1,6 +1,8 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
 import { makeStyles } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 import Availability from "./components/Availability";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,10 +13,13 @@ import HelpDialog from "./components/HelpDialog";
 import Loader from "react-loader";
 import MoreInformation from "./components/MoreInformation";
 import React, { useState, useEffect } from "react";
-import SignUpLink from "./components/SignUpLink";
+import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
+
+// any location with data older than this will not be displayed at all
+export const tooStaleMinutes = 60; // unit in minutes
 
 export function transformData(data) {
     return data.map((entry, index) => {
@@ -39,10 +44,19 @@ export function sortAndFilterData(
     { sortKey, sortAsc },
     onlyShowAvailable
 ) {
-    const filteredData = onlyShowAvailable
-        ? data.filter((entry) => entry.hasAppointments)
-        : data;
-    const newData = filteredData.sort((a, b) => {
+    // Filter the locations that have "non-stale" data
+    const oldestGoodTimestamp = new Date() - tooStaleMinutes * 60 * 1000;
+    let filteredData = data.filter(
+        ({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp
+    );
+
+    // Filter only the locations that have a sign up link, if desired
+    if (onlyShowAvailable) {
+        filteredData = filteredData.filter((entry) => hasSignUpLink(entry));
+    }
+
+    // Sort the data
+    return filteredData.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
         const second = sortAsc ? b[sortKey] : a[sortKey];
         if (typeof first == "string") {
@@ -51,7 +65,6 @@ export function sortAndFilterData(
             return first - second;
         }
     });
-    return newData;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +114,7 @@ export default function CovidAppointmentTable() {
             .catch((ex) => {
                 console.error(ex.message);
                 setErrorMessage(
-                    "something went wrong, please try again later."
+                    "Something went wrong, please try again later."
                 );
                 setReady(true);
             });
@@ -124,37 +137,37 @@ export default function CovidAppointmentTable() {
                 <Loader loaded={ready} />
             </div>
 
-            {errorMessage && <div role="alert">{errorMessage}</div>}
+            {errorMessage && <ErrorMessageAlert message={errorMessage} />}
 
-            <section aria-live="polite" aria-busy={!ready}>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            aria-checked={onlyShowAvailable}
-                            role="switch"
-                            checked={onlyShowAvailable}
-                            onChange={(event) =>
-                                setOnlyShowAvailable(event.target.checked)
-                            }
-                        />
-                    }
-                    label="Only show locations with available appointments"
-                />
-                {ready && formattedData.length === 0 && (
-                    <div role="status">
-                        <p>No appointments found.</p>
+            {!errorMessage && (
+                <section aria-live="polite" aria-busy={!ready}>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                aria-checked={onlyShowAvailable}
+                                role="switch"
+                                checked={onlyShowAvailable}
+                                onChange={(event) =>
+                                    setOnlyShowAvailable(event.target.checked)
+                                }
+                            />
+                        }
+                        label="Only show locations with available appointments"
+                    />
+                    {ready && formattedData.length === 0 && (
+                        <NoAppointmentsAlert />
+                    )}
+                    <div role="list">
+                        {formattedData.map((entry) => (
+                            <LocationCard
+                                entry={entry}
+                                className={classes.cardBox}
+                                key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
+                            />
+                        ))}
                     </div>
-                )}
-                <div role="list">
-                    {formattedData.map((entry) => (
-                        <LocationCard
-                            entry={entry}
-                            className={classes.cardBox}
-                            key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
-                        />
-                    ))}
-                </div>
-            </section>
+                </section>
+            )}
         </>
     );
 }
@@ -249,5 +262,48 @@ function LocationCard({ entry, className }) {
                 </CardContent>
             </Card>
         </div>
+    );
+}
+
+function NoAppointmentsAlert() {
+    //const classes = useStyles();
+    return (
+        <div role="status">
+            <br />
+            <Alert severity={"info"}>
+                <AlertTitle>No Appointments Found</AlertTitle>
+                <p>
+                    None of the vaccine sites that we monitor currently have
+                    available appointments. This website gathers data every
+                    minute from COVID-19 vaccine sites across Massachusetts.
+                </p>
+                <p>
+                    Check back for updated information. For more information on
+                    the vaccine rollout in Massachusetts, visit{" "}
+                    <a
+                        href="https://www.mass.gov/covid-19-vaccine"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        www.mass.gov/covid-19-vaccine
+                    </a>
+                    .
+                </p>
+            </Alert>
+            <br />
+        </div>
+    );
+}
+
+function ErrorMessageAlert({ message }) {
+    //const classes = useStyles();
+    return (
+        <>
+            <Alert severity={"error"}>
+                <AlertTitle>Unexpected Internal Error</AlertTitle>
+                <p>{message}</p>
+            </Alert>
+            <br />
+        </>
     );
 }

@@ -2,7 +2,7 @@ import CovidAppointmentTable from "./CovidAppointmentTable";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-// import { Alert, AlertTitle } from "@material-ui/lab"
+// import { Alert, AlertTitle } from "@material-ui/lab";
 import Menu from "./components/Menu";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import theme from "./theme";
@@ -12,15 +12,14 @@ import StateEligibility from "./components/StateEligibility";
 const alert = (
     <>
         <Alert severity="warning">
-            <AlertTitle>8:01am Thursday, February 18</AlertTitle>
-            Due to high demand, the MA vaccination websites are experiencing
-            technical difficulties. Once the issues are resolved, their
-            locations will appear on this website.
+            <AlertTitle>8:08am Thursday, February 25</AlertTitle>
+            The high demand for appointments right now is causing delays in
+            collecting data. We will report up-to-the-minute availability when
+            wait times decrease. We apologize for the inconvenience.
         </Alert>
         <br />
     </>
-);
-*/
+); */
 
 const useStyles = makeStyles((theme) => ({
     main: {

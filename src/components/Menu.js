@@ -100,7 +100,9 @@ export default function ButtonAppBar() {
                 </MenuItem>
                 <MenuItem>
                     <a
-                        href={"mailto:macovidvaccines@gmail.com?subject=Site feedback"}
+                        href={
+                            "mailto:macovidvaccines@gmail.com?subject=Site feedback"
+                        }
                         className={classes.unstyledLink}
                     >
                         Give feedback
@@ -136,8 +138,8 @@ function AboutDialog(props) {
                         .
                     </p>
                     <p>
-                        This website scrapes data from other websites every 5
-                        minutes and tells you what places currently are
+                        This website scrapes data from other websites every
+                        minute and tells you what places currently are
                         advertising available appointments for COVID vaccines.
                         It is YOUR responsibility to verify that you are
                         eligible before signing up. For more information, click{" "}
@@ -160,16 +162,19 @@ function AboutDialog(props) {
                     </p>
                     <h3>Get Involved</h3>
                     <p>
-                        If you have experience with designing or developing web site software, and you want to get
-                        involved in the site, please
-                        <a href={
-                            "mailto:macovidvaccines@gmail.com?subject=I want to help with MACovidVaccines.com&body=Here's how I can help..."
+                        If you have experience with designing or developing web
+                        site software, and you want to get involved in the site,
+                        please{" "}
+                        <a
+                            href={
+                                "mailto:macovidvaccines@gmail.com?subject=I want to help with MACovidVaccines.com&body=Here's how I can help..."
                             }
                             target="_blank"
                             rel="noreferrer"
-                        >{" "}
-                        email the team
-                        </a> with a note about how you can contribute.
+                        >
+                            email the team
+                        </a>{" "}
+                        with a note about how you can contribute.
                     </p>
                     <p>
                         The website source code can be found on Github. The code
