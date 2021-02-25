@@ -271,16 +271,15 @@ function NoAppointmentsAlert() {
         <div role="status">
             <br />
             <Alert severity={"info"}>
-                <AlertTitle>
-                    No Appointments Found
-                </AlertTitle>
+                <AlertTitle>No Appointments Found</AlertTitle>
                 <p>
-                    None of the vaccine sites that we monitor currently have available appointments. This
-                    website gathers data every minute from COVID-19 vaccine sites across Massachusetts.
+                    None of the vaccine sites that we monitor currently have
+                    available appointments. This website gathers data every
+                    minute from COVID-19 vaccine sites across Massachusetts.
                 </p>
                 <p>
-                    Check back for updated information.
-                    For more information on the vaccine rollout in Massachusetts, visit{" "}
+                    Check back for updated information. For more information on
+                    the vaccine rollout in Massachusetts, visit{" "}
                     <a
                         href="https://www.mass.gov/covid-19-vaccine"
                         target="_blank"
@@ -301,12 +300,8 @@ function ErrorMessageAlert({ message }) {
     return (
         <>
             <Alert severity={"error"}>
-                <AlertTitle>
-                    Unexpected Internal Error
-                </AlertTitle>
-                <p>
-                    {message}
-                </p>
+                <AlertTitle>Unexpected Internal Error</AlertTitle>
+                <p>{message}</p>
             </Alert>
             <br />
         </>

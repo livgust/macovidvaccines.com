@@ -67,10 +67,16 @@ describe("the CovidAppointmentTable component", function () {
     });
 
     describe("when the api endpoint can not be reached", function () {
+        let spy;
         beforeEach(function () {
+            spy = jest.spyOn(console, "error").mockImplementation();
             window.fetch.mockImplementationOnce(() =>
                 Promise.reject(new TypeError("network error"))
             );
+        });
+
+        afterEach(function () {
+            spy.mockRestore();
         });
 
         test("it displays an error message", async function () {

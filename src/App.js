@@ -13,11 +13,9 @@ const alert = (
     <>
         <Alert severity="warning">
             <AlertTitle>8:08am Thursday, February 25</AlertTitle>
-            Due to high demand, the MA vaccination websites are experiencing
-            wait times upward of one hour. Because our website also needs to
-            "wait" in line, we will be unable to report real-time availability
-            until wait time decreases substantially. We apologize for the
-            inconvenience.
+            The high demand for appointments right now is causing delays in
+            collecting data. We will report up-to-the-minute availability when
+            wait times decrease. We apologize for the inconvenience.
         </Alert>
         <br />
     </>
