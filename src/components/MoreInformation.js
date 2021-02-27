@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MoreInformation({ entry }) {
     const classes = useStyles();
+    const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+        `${entry.streetAddress}, ${entry.city}, MA`
+    )}`;
+
     return (
         <Accordion className={classes.accordion}>
             <AccordionSummary
@@ -34,8 +38,11 @@ export default function MoreInformation({ entry }) {
             </AccordionSummary>
             <AccordionDetails className={classes.extraDataContainer}>
                 <div className={classes.extraData}>
-                    <b>Address:</b> {entry.streetAddress}, {entry.city}, MA{" "}
-                    {entry.zip}
+                    <b>Address:</b>
+                    <a target="_blank" rel="noreferrer" href={googleMapsLink}>
+                        {entry.streetAddress}, {entry.city}, MA
+                        {entry.zip}
+                    </a>
                 </div>
                 {entry.restrictions && (
                     <div className={classes.extraData}>
