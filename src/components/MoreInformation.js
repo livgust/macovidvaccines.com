@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MoreInformation({ entry }) {
     const classes = useStyles();
     const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-        `${entry.streetAddress}, ${entry.city}, MA`
+        `${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`
     )}`;
 
     return (
