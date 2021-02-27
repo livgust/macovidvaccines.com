@@ -36,6 +36,10 @@ export default function Availability({ entry }) {
                 </div>
             );
         } else {
+            const totalAavailableSlots = availableSlots.reduce(
+                (total, slot) => total + slot.numberAvailableAppointments,
+                0
+            );
             return (
                 <div>
                     {availableSlots.map((slot) => (
@@ -47,6 +51,11 @@ export default function Availability({ entry }) {
                             }`}
                         </div>
                     ))}
+                    {totalAavailableSlots > 1 && availableSlots.length > 0 && (
+                        <div>
+                            {`Total available: ${totalAavailableSlots} slots`}
+                        </div>
+                    )}
                 </div>
             );
         }
