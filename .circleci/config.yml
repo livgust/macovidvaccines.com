@@ -1,24 +1,24 @@
 # config file for circleci
-version: 2 
+version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:14.15.4
-    steps:
-      - checkout
-      - restore_cache:
-          key: livgust-macovidvaccines.com-{{ checksum "package.json" }}2
-      - run:
-          name: npm ci
-          command: npm ci
-      - run:
-          name: npm run build
-          command: npm run build
-      - run:
-          name: npm test
-          command: npm test
-      - save_cache:
-          paths:
-            - ~/.npm
-            - node_modules
-          key: livgust-macovidvaccines.com-{{ checksum "package.json" }}2
+    build:
+        docker:
+            - image: circleci/node:14.15.4
+        steps:
+            - checkout
+            - restore_cache:
+                  key: livgust-macovidvaccines.com-{{ checksum "package.json" }}2
+            - run:
+                  name: npm ci
+                  command: npm ci
+            - run:
+                  name: npm run build
+                  command: npm run build
+            - run:
+                  name: npm test
+                  command: npm test
+            - save_cache:
+                  paths:
+                      - ~/.npm
+                      - node_modules
+                  key: livgust-macovidvaccines.com-{{ checksum "package.json" }}2
