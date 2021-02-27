@@ -49,3 +49,40 @@ it("shows total slots if availability has no content", async () => {
     });
     expect(screen.queryByText("45 slots")).toBeTruthy();
 });
+
+it("shows total slots across all available days", async () => {
+    await act(async () => {
+        render(
+            <Availability
+                entry={{
+                    hasAppointments: true,
+                    appointmentData: {
+                        "10/11/2021": {
+                            hasAvailability: true,
+                            numberAvailableAppointments: 35,
+                        },
+                        "10/12/2021": {
+                            hasAvailability: true,
+                            numberAvailableAppointments: 35,
+                        },
+                    },
+                }}
+            />
+        );
+    });
+    expect(screen.queryByText("Total available: 70 slots")).toBeTruthy();
+});
+
+it("does not show total slots across all available days if there aren't any", async () => {
+    await act(async () => {
+        render(
+            <Availability
+                entry={{
+                    hasAppointments: false,
+                    totalAvailability: 0,
+                }}
+            />
+        );
+    });
+    expect(screen.queryByText("Total available")).toBeFalsy();
+});
