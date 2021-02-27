@@ -15,7 +15,7 @@ export default function Availability({entry, onlyShowAvailable}) {
         );
     } else {
         const availableSlots = [];
-        const singleSignupLink = (entry.signUpLink !== null);
+        const singleSignupLink = (!!entry.signUpLink);
         for (const date in entry.appointmentData) {
 
             // Show dates that have availability AND one of these three conditions:
