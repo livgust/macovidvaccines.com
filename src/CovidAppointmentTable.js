@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core";
 import MoreInformation from "./components/MoreInformation";
 import React from "react";
 import SignUpLink from "./components/SignUpLink";
-import { sortData } from "./services/appointmentData.service";
+import { sortData, sortedByMiles } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
 
@@ -64,10 +64,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CovidAppointmentTable({ data }) {
     const classes = useStyles();
 
-    const sortedData = sortData(data, {
-        sortKey: "location",
-        sortAsc: true,
-    });
+    const sortedData = sortData(data);
 
     // generate unique key for each site
     const getSiteId = (site) => {
@@ -176,7 +173,12 @@ function LocationCard({ entry, className, onlyShowAvailable }) {
                     subheader={
                         <>
                             <RestrictionNotifier entry={entry} />
-                            <div>{entry.city}</div>
+                            <div>
+                                {entry.city}{" "}
+                                {sortedByMiles()
+                                    ? `(${entry.miles} miles)`
+                                    : ""}
+                            </div>
                             <StaleDataIndicator timestamp={entry.timestamp} />
                         </>
                     }

@@ -1,3 +1,6 @@
+let sortKey = "location";
+let sortAsc = true;
+
 export function transformData(data) {
     return data.map((entry, index) => {
         return {
@@ -10,12 +13,25 @@ export function transformData(data) {
             appointmentData: entry.availability || null,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
+            coordinates: {
+                latitude: entry.latitude,
+                longitude: entry.longitude,
+            },
             timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
         };
     });
 }
 
-export function sortData(data, { sortKey, sortAsc }) {
+export function setSortBy(sortBy) {
+    sortKey = sortBy;
+    sortAsc = true;
+}
+
+export function sortedByMiles() {
+    return sortKey === "miles";
+}
+
+export function sortData(data) {
     const newData = data.sort((a, b) => {
         const first = sortAsc ? a[sortKey] : b[sortKey];
         const second = sortAsc ? b[sortKey] : a[sortKey];

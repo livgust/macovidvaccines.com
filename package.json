@@ -11,12 +11,14 @@
         "@testing-library/react": "^11.2.3",
         "@testing-library/user-event": "^12.6.2",
         "dompurify": "^2.2.6",
+        "geolib": "^3.3.1",
         "is-ci": "^3.0.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-loader": "^2.4.7",
         "react-scripts": "4.0.1",
         "react-sortable-table": "^1.4.0",
+        "us-zips": "^4.0.2",
         "web-vitals": "^0.2.4"
     },
     "scripts": {
