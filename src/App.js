@@ -1,22 +1,20 @@
-import { Button, makeStyles, MuiThemeProvider } from "@material-ui/core";
-import CovidAppointmentTable from "./CovidAppointmentTable";
-import Drawer from "@material-ui/core/Drawer";
-import FilterPanel from "./components/FilterPanel";
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import Loader from "react-loader";
-import Menu from "./components/Menu";
 import React, { useEffect, useState } from "react";
-import StateEligibility from "./components/StateEligibility";
-import theme from "./theme";
+import Loader from "react-loader";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import { Button, makeStyles, MuiThemeProvider } from "@material-ui/core";
+// import { Alert, AlertTitle } from "@material-ui/lab"
+import theme from "./theme";
+import CovidAppointmentTable from "./CovidAppointmentTable";
+import Menu from "./components/Menu";
+import StateEligibility from "./components/StateEligibility";
+import FilterPanel from "./components/FilterPanel";
 import {
     filterData,
     getAppointmentData,
 } from "./services/appointmentData.service";
-import Alert from "@material-ui/lab/Alert";
-import AlertTitle from "@material-ui/lab/AlertTitle";
-import ArrowBack from "@material-ui/icons/ArrowBack";
 
 const drawerWidth = 300;
 
@@ -24,14 +22,15 @@ const drawerWidth = 300;
 const alert = (
     <>
         <Alert severity="warning">
-            <AlertTitle>8:08am Thursday, February 25</AlertTitle>
-            The high demand for appointments right now is causing delays in
-            collecting data. We will report up-to-the-minute availability when
-            wait times decrease. We apologize for the inconvenience.
+            <AlertTitle>8:01am Thursday, February 18</AlertTitle>
+            Due to high demand, the MA vaccination websites are experiencing
+            technical difficulties. Once the issues are resolved, their
+            locations will appear on this website.
         </Alert>
         <br />
     </>
-); */
+);
+*/
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -151,16 +150,14 @@ function App() {
                             <h1 className={classes.heading}>
                                 MA Covid Vaccine Appointments
                             </h1>
-                            <br />
                             <StateEligibility />
                             <Hidden mdUp implementation="css">
                                 <Button
+                                    color="primary"
                                     variant="contained"
-                                    startIcon={<ArrowBack />}
                                     onClick={handleDrawerToggle}
                                 >
-                                    {/* TODO THIS IS UGLY */}
-                                    Filter Locations
+                                    Show Filters
                                 </Button>
                             </Hidden>
                             <div
@@ -171,9 +168,7 @@ function App() {
                             >
                                 <Loader loaded={ready}>
                                     {errorMessage ? (
-                                        <ErrorMessageAlert
-                                            message={errorMessage}
-                                        />
+                                        <div role="alert">{errorMessage}</div>
                                     ) : (
                                         <CovidAppointmentTable
                                             data={filteredData}
@@ -199,23 +194,9 @@ function App() {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid item xs={1} sm={2}></Grid>
                 </Grid>
             </main>
         </MuiThemeProvider>
-    );
-}
-
-function ErrorMessageAlert({ message }) {
-    //const classes = useStyles();
-    return (
-        <>
-            <Alert severity={"error"}>
-                <AlertTitle>Unexpected Internal Error</AlertTitle>
-                <p>{message}</p>
-            </Alert>
-            <br />
-        </>
     );
 }
 

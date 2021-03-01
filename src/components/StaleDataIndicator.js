@@ -1,8 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
 
-// any location with data older than this will be labeled as "stale"
-export const staleMinutesDefault = 8; // unit is Minutes
+export const staleMinutesDefault = 8;
 
 const useStyles = makeStyles((theme) => ({
     staleIndicator: {

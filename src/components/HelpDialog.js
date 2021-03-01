@@ -36,9 +36,7 @@ export default function HelpDialog({
                 </span>
             </Tooltip>
             <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
-                {title && (
-                    <DialogTitle id="about-dialog-title">{title}</DialogTitle>
-                )}
+                <DialogTitle id="about-dialog-title">{title}</DialogTitle>
                 <DialogContent>
                     <DialogContentText
                         id="about-dialog-description"
@@ -46,13 +44,7 @@ export default function HelpDialog({
                     >
                         {text}
                     </DialogContentText>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => setHelpOpen(false)}
-                    >
-                        OK
-                    </Button>
+                    <Button onClick={() => setHelpOpen(false)}>OK</Button>
                 </DialogContent>
             </Dialog>
         </>
