@@ -36,12 +36,20 @@ export default function HelpDialog({
                 </span>
             </Tooltip>
             <Dialog open={helpOpen} onClose={() => setHelpOpen(false)}>
-                {title && <DialogTitle id="about-dialog-title">{title}</DialogTitle>}
+                {title && (
+                    <DialogTitle id="about-dialog-title">{title}</DialogTitle>
+                )}
                 <DialogContent>
                     <DialogContentText id="about-dialog-description">
                         <p>{text}</p>
                     </DialogContentText>
-                    <Button variant="contained" color="primary" onClick={() => setHelpOpen(false)}>OK</Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => setHelpOpen(false)}
+                    >
+                        OK
+                    </Button>
                 </DialogContent>
             </Dialog>
         </>

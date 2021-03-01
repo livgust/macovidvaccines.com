@@ -7,8 +7,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import CheckIcon from "@material-ui/icons/Check";
-import {makeStyles} from "@material-ui/core/styles";
-import {Typography} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -28,7 +28,7 @@ function EligibilityGroupItem(props) {
     return (
         <ListItem>
             <ListItemIcon>
-                <CheckIcon/>
+                <CheckIcon />
             </ListItemIcon>
             {props.children}
         </ListItem>
@@ -41,7 +41,7 @@ export default function StateEligibility() {
     return (
         <div className={classes.container}>
             <Accordion className={classes.accordion}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="subtitle1">
                         Am I eligible to be vaccinated?
                     </Typography>
@@ -53,7 +53,9 @@ export default function StateEligibility() {
                                 href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older"
                                 rel="noreferrer"
                                 target="_blank"
-                            >Individuals age 65 and older</a>
+                            >
+                                Individuals age 65 and older
+                            </a>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
                             <div>
@@ -62,7 +64,8 @@ export default function StateEligibility() {
                                     rel="noreferrer"
                                     target="_blank"
                                 >
-                                    Individuals with two or more of certain medical conditions
+                                    Individuals with two or more of certain
+                                    medical conditions
                                 </a>
                             </div>
                         </EligibilityGroupItem>
@@ -72,7 +75,8 @@ export default function StateEligibility() {
                                 rel="noreferrer"
                                 target="_blank"
                             >
-                                Residents and staff of low-income and affordable senior housing
+                                Residents and staff of low-income and affordable
+                                senior housing
                             </a>
                         </EligibilityGroupItem>
                         <EligibilityGroupItem>
@@ -90,7 +94,8 @@ export default function StateEligibility() {
                                 rel="noreferrer"
                                 target="_blank"
                             >
-                                People in Phase 1 (Health care, nursing homes, etc.)
+                                People in Phase 1 (Health care, nursing homes,
+                                etc.)
                             </a>
                         </EligibilityGroupItem>
                     </List>
