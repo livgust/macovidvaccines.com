@@ -8,27 +8,53 @@ This is the front-end software that powers www.macovidvaccines.com. Technology u
 
 ## Local Development
 
-Once you've cloned the repository, install dependencies:
+Once you've cloned the repository, follow these steps to set up a local development environment.
+
+### Set Up Node
+
+If you do not have NodeJS installed, please go to the [NodeJS Downloads Page](https://nodejs.org/en/download/) to download and install it. Choose the latest version corresponding to the major version number defined in `.nvmrc`.
+
+If you use [nvm](https://github.com/nvm-sh/nvm) to manage installed versions of `node` and `npm`, switch to the node version defined in `.nvmrc` via `nvm use`. Run `nvm install` if you get a "not yet installed" error.
+
+_**NOTE:** If you use a different major version of `node`, you may experience errors when running commands from this repo with `node` or `npm`. Additionally, please avoid running `npm install` if `npm --version` returns version `7.0.0` or greater._
+
+Once you have `node` set up, install the modules declared in `package-lock.json`:
 
 ```sh
-# with npm
 npm ci
-
-# with yarn
-yarn
 ```
 
-Then run the local development server:
+### Start a Development Server
+
+To run the local development server:
 
 ```sh
-# with npm
 npm run start
-
-# with yarn
-yarn start
 ```
 
-Before checking in any commits, be sure to run `prettier` and `eslint` on your changes.
+## Code Formatting
+
+This project use `prettier` and `eslint` to enforce good code formatting practices.
+
+### Prettier
+
+Prettier is installed as a dependency and will run a check automatically before every `git commit`. There are also extensions you can use to run Prettier on save within your IDE. To run prettier manually:
+
+```sh
+npm run check:prettier
+```
+
+### ESLint
+
+Eslint is not currently installed as a dependency. You can install it yourself via `npm install eslint` and run it manually, or use an extension provided by your IDE.
+
+## Unit Testing
+
+There are unit tests (\*.test.js) that can be run at anytime. They will run automatically before every `git commit`. To run them interactively:
+
+```sh
+npm run test
+```
 
 ## Accessibility
 
