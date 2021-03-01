@@ -16,7 +16,7 @@ it("shows no indicator if the data is less than 10 minutes old", async () => {
 });
 
 describe("staleness messaging", () => {
-    it("shows time if it's today", async () => {
+    it.skip("shows time if it's today", async () => {
         const minutesStaleTimestamp = new Date().setHours(12, 0, 0, 0); // 35 mins stale
         await act(async () => {
             render(
