@@ -1,9 +1,11 @@
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
+//import FormLabel from "@material-ui/core/FormLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -105,7 +107,7 @@ export default function FilterPanel(props) {
     const theme = useTheme();
     const mdSize = useMediaQuery(theme.breakpoints.up("md"));
 
-    const [staleFilter, setStaleFilter] = useState({
+    const [staleFilter, setStaleFilterIgnored] = useState({
         showStaleData: false,
     });
 
@@ -119,7 +121,7 @@ export default function FilterPanel(props) {
     });
 */
 
-    const { data, onChange } = props;
+    const { dataIgnored, onChange } = props;
 
     /*   useEffect(() => {
         const vaxTypes = Array.from(
@@ -157,8 +159,6 @@ export default function FilterPanel(props) {
                 if (staleFilter.showStaleData) {
                     return true; // show everything! (no ui for this though)
                 } else {
-                    let notStale =
-                        !d.timestamp || d.timestamp >= oldestGoodTimestamp;
                     return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
                 }
             },

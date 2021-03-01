@@ -6,7 +6,6 @@ import CovidAppointmentTable from "./CovidAppointmentTable";
 import Drawer from "@material-ui/core/Drawer";
 import FilterPanel from "./components/FilterPanel";
 import {
-    sortData,
     filterData,
     getAppointmentData,
 } from "./services/appointmentData.service";

@@ -11,7 +11,7 @@ import HelpDialog from "./components/HelpDialog";
 import { makeStyles } from "@material-ui/core";
 import MoreInformation from "./components/MoreInformation";
 import React from "react";
-import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
+import SignUpLink from "./components/SignUpLink";
 import { sortData } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
@@ -34,34 +34,6 @@ export function transformData(data) {
             restrictions: entry.restrictions || null,
             timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
         };
-    });
-}
-
-export function sortAndFilterData(
-    data,
-    { sortKey, sortAsc },
-    onlyShowAvailable
-) {
-    // Filter the locations that have "non-stale" data
-    const oldestGoodTimestamp = new Date() - tooStaleMinutes * 60 * 1000;
-    let filteredData = data.filter(
-        ({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp
-    );
-
-    // Filter only the locations that have a sign up link, if desired
-    if (onlyShowAvailable) {
-        filteredData = filteredData.filter((entry) => hasSignUpLink(entry));
-    }
-
-    // Sort the data
-    return filteredData.sort((a, b) => {
-        const first = sortAsc ? a[sortKey] : b[sortKey];
-        const second = sortAsc ? b[sortKey] : a[sortKey];
-        if (typeof first == "string") {
-            return first.localeCompare(second);
-        } else {
-            return first - second;
-        }
     });
 }
 
