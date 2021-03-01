@@ -36,7 +36,7 @@ export default function Availability({ entry }) {
                 </div>
             );
         } else {
-            const totalAavailableSlots = availableSlots.reduce(
+            const totalAvailableSlots = availableSlots.reduce(
                 (total, slot) => total + slot.numberAvailableAppointments,
                 0
             );
@@ -51,9 +51,9 @@ export default function Availability({ entry }) {
                             }`}
                         </div>
                     ))}
-                    {totalAavailableSlots > 1 && availableSlots.length > 0 && (
+                    {totalAvailableSlots > 1 && availableSlots.length > 1 && (
                         <div>
-                            {`Total available: ${totalAavailableSlots} slots`}
+                            {`Total available: ${totalAvailableSlots} slots`}
                         </div>
                     )}
                 </div>
