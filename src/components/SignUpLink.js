@@ -11,26 +11,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function hasSignUpLink(entry) {
-    if (entry.hasAppointments) {
-        if (entry.signUpLink) {
-            // one sign-up link for all availabilities
-            return true;
-        } else {
-            for (const date in entry.appointmentData) {
-                if (
-                    entry.appointmentData[date].hasAvailability &&
-                    entry.appointmentData[date].signUpLink
-                ) {
-                    // at least one sign-up link found, we're done.
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
 export default function SignUpLink({ entry }) {
     if (entry.hasAppointments) {
         if (entry.signUpLink) {

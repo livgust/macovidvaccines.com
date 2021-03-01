@@ -10,8 +10,6 @@
         "@testing-library/jest-dom": "^5.11.9",
         "@testing-library/react": "^11.2.3",
         "@testing-library/user-event": "^12.6.2",
-        "dompurify": "^2.2.6",
-        "is-ci": "^3.0.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-loader": "^2.4.7",
@@ -23,10 +21,7 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "check:prettier": "prettier --check ./src",
-        "check:eslint": "eslint",
-        "postinstall": "is-ci || husky install"
+        "eject": "react-scripts eject"
     },
     "eslintConfig": {
         "extends": [
@@ -45,9 +40,5 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "devDependencies": {
-        "husky": "^5.0.9",
-        "prettier": "^2.2.1"
     }
 }

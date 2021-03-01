@@ -1,8 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-printf "\nRunning jest tests.\n";
-CI=true npm run test --env=jsdom
-
-printf "\nRunning prettier. If this step fails, run 'npx prettier --write ./src' to fix.\n"
-npm run check:prettier
