@@ -1,5 +1,8 @@
+// any location with data older than this will not be displayed at all
+const tooStaleMinutes = 60; // unit in minutes
+
 export function transformData(data) {
-    return data.map((entry, index) => {
+    let mappedData = data.map((entry, index) => {
         return {
             key: index,
             location: entry.name,
@@ -12,6 +15,12 @@ export function transformData(data) {
             extraData: entry.extraData || null,
             timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
         };
+    });
+
+    // Pre-Filter the locations that have "non-stale" data
+    const oldestGoodTimestamp = new Date() - tooStaleMinutes * 60 * 1000;
+    return mappedData.filter((d) => {
+        return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
     });
 }
 

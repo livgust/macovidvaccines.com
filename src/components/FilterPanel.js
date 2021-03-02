@@ -13,9 +13,6 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { hasSignUpLink } from "./SignUpLink";
 
-// any location with data older than this will not be displayed at all
-export const tooStaleMinutes = 60; // unit in minutes
-
 const useStyles = makeStyles((theme) => ({
     formControlLabel: {
         "text-align": "left",
@@ -106,10 +103,6 @@ export default function FilterPanel(props) {
     const theme = useTheme();
     const mdSize = useMediaQuery(theme.breakpoints.up("md"));
 
-    const [staleFilter, setStaleFilterIgnored] = useState({
-        showStaleData: false,
-    });
-
     const [appointmentFilter, setAppointmentFilter] = useState({
         onlyShowAvailable: true,
     });
@@ -151,16 +144,6 @@ export default function FilterPanel(props) {
 */
     useEffect(() => {
         onChange({
-            showStaleData: (d) => {
-                // Filter the locations that have "non-stale" data
-                const oldestGoodTimestamp =
-                    new Date() - tooStaleMinutes * 60 * 1000;
-                if (staleFilter.showStaleData) {
-                    return true; // show everything! (no ui for this though)
-                } else {
-                    return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
-                }
-            },
             hasAppointments: (d) => {
                 if (appointmentFilter.onlyShowAvailable) {
                     return hasSignUpLink(d);
@@ -187,7 +170,7 @@ export default function FilterPanel(props) {
             },
 */
         });
-    }, [onChange, appointmentFilter, staleFilter]); //,vaxTypeFilter]);
+    }, [onChange, appointmentFilter]); //,vaxTypeFilter]);
 
     return (
         <Grid container={true} className={mdSize ? classes.mdPanel : ""}>
