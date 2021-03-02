@@ -1,7 +1,7 @@
 const dayjs = require("dayjs");
 
 // any location with data older than this will not be displayed at all
-export const tooStaleMinutes = 6000; // unit in minutes
+export const tooStaleMinutes = 60; // unit in minutes
 
 export function transformData(data) {
     const ourDateFormat = "M/D/YY"; // 3/2
