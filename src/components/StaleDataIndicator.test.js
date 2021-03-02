@@ -30,13 +30,14 @@ describe("staleness messaging", () => {
         });
 
         const timestampDate = new Date(minutesStaleTimestamp);
+        function padMinutes(minutes) {
+            return minutes < 10 ? `0${minutes}` : minutes;
+        }
         expect(
             screen.getByText(
-                `Last updated ${
-                    timestampDate.getHours() % 12
-                }:${timestampDate.getMinutes()} ${
-                    timestampDate.getHours() >= 12 ? "PM" : "AM"
-                }`
+                `Last updated ${timestampDate.getHours() % 12}:${padMinutes(
+                    timestampDate.getMinutes()
+                )} ${timestampDate.getHours() >= 12 ? "PM" : "AM"}`
             )
         ).toBeTruthy();
     });
