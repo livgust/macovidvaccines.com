@@ -24,7 +24,8 @@ const dayjs = require("dayjs");
 export const tooStaleMinutes = 60; // unit in minutes
 
 export function transformData(data) {
-    const ourDateFormat = "ddd MMM D"; // Tue Mar 2
+    const ourDateFormat = "M/D/YY"; // 3/2
+    // future format?    "ddd, MMM D"; // Tue Mar 2
 
     return data.map((entry, index) => {
         let availability = [];
