@@ -1,18 +1,41 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
-import { makeStyles } from "@material-ui/core";
-import { sortData } from "./services/appointmentData.service";
+import Alert from "@material-ui/lab/Alert";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 import Availability from "./components/Availability";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import HelpDialog from "./components/HelpDialog";
+import { makeStyles } from "@material-ui/core";
 import MoreInformation from "./components/MoreInformation";
 import React from "react";
 import SignUpLink from "./components/SignUpLink";
+import { sortData } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
+
+// any location with data older than this will not be displayed at all
+export const tooStaleMinutes = 60; // unit in minutes
+
+export function transformData(data) {
+    return data.map((entry, index) => {
+        return {
+            key: index,
+            location: entry.name,
+            streetAddress: entry.street,
+            city: entry.city,
+            zip: entry.zip,
+            hasAppointments: entry.hasAvailability,
+            appointmentData: entry.availability || null,
+            signUpLink: entry.signUpLink || null,
+            extraData: entry.extraData || null,
+            restrictions: entry.restrictions || null,
+            timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
+        };
+    });
+}
 
 const useStyles = makeStyles((theme) => ({
     cardBox: {
@@ -23,13 +46,17 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
+        fontWeight: "bold",
         color: theme.palette.text.primary,
     },
     restrictionNoticeTooltip: {
         cursor: "pointer",
     },
+    restrictionWarning: {
+        color: theme.palette.error.dark,
+    },
     restrictionIcon: {
-        color: theme.palette.warning.dark,
+        color: theme.palette.error.dark,
         "padding-right": theme.spacing(1),
     },
 }));
@@ -65,9 +92,7 @@ export default function CovidAppointmentTable({ data }) {
                     );
                 })
             ) : (
-                <div role="status">
-                    <p>No appointments found.</p>
-                </div>
+                <NoAppointmentsAlert />
             )}
         </>
     );
@@ -79,7 +104,8 @@ function RestrictionNotifier({ entry }) {
     let definitiveRestriction = false;
 
     if (entry.restrictions) {
-        definitiveRestriction = true;
+        //if the restrictions text is long, put it behind a dialog
+        definitiveRestriction = entry.restrictions.length <= 50;
         hasRestriction = true;
         restrictionText = entry.restrictions;
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
@@ -107,8 +133,13 @@ function RestrictionNotifier({ entry }) {
     } else if (definitiveRestriction) {
         return (
             <span className={classes.restrictionNotice}>
-                <ErrorOutlineIcon className={classes.restrictionIcon} />
-                <Typography>{restrictionText}</Typography>
+                <ErrorOutlineIcon
+                    fontSize="small"
+                    className={classes.restrictionIcon}
+                />
+                <Typography className={classes.restrictionWarning}>
+                    {restrictionText}
+                </Typography>
             </span>
         );
     } else {
@@ -117,27 +148,21 @@ function RestrictionNotifier({ entry }) {
                 className={`${classes.restrictionNotice} ${classes.restrictionNoticeTooltip}`}
                 icon={ErrorOutlineIcon}
                 iconProps={{ className: classes.restrictionIcon }}
-                title="This site may be restricted"
                 text={
-                    <>
-                        <p className={classes.restrictionNotice}>
-                            "{restrictionText}"
-                        </p>
-                        <p>
-                            We have flagged this site as restricted based on the
-                            above information (located under "MORE
-                            INFORMATION").
-                        </p>
-                    </>
+                    <p className={classes.restrictionNotice}>
+                        {restrictionText}
+                    </p>
                 }
             >
-                <Typography>May be restricted</Typography>
+                <Typography className={classes.restrictionWarning}>
+                    Important Eligibility Notice
+                </Typography>
             </HelpDialog>
         );
     }
 }
 
-function LocationCard({ entry, className }) {
+function LocationCard({ entry, className, onlyShowAvailable }) {
     const classes = useStyles();
     return (
         <div role="listitem" className={className}>
@@ -157,11 +182,44 @@ function LocationCard({ entry, className }) {
                     }
                 />
                 <CardContent>
-                    <Availability entry={entry} />
+                    <Availability
+                        entry={entry}
+                        onlyShowAvailable={onlyShowAvailable}
+                    />
                     <MoreInformation entry={entry} />
                     <SignUpLink entry={entry} />
                 </CardContent>
             </Card>
+        </div>
+    );
+}
+
+function NoAppointmentsAlert() {
+    //const classes = useStyles();
+    return (
+        <div role="status">
+            <br />
+            <Alert severity={"info"}>
+                <AlertTitle>No Appointments Found</AlertTitle>
+                <p>
+                    None of the vaccine sites that we monitor currently have
+                    available appointments. This website gathers data every
+                    minute from COVID-19 vaccine sites across Massachusetts.
+                </p>
+                <p>
+                    Check back for updated information. For more information on
+                    the vaccine rollout in Massachusetts, visit{" "}
+                    <a
+                        href="https://www.mass.gov/covid-19-vaccine"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        www.mass.gov/covid-19-vaccine
+                    </a>
+                    .
+                </p>
+            </Alert>
+            <br />
         </div>
     );
 }

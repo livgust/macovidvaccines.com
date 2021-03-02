@@ -1,15 +1,20 @@
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import { hasSignUpLink } from "./SignUpLink";
+
+// any location with data older than this will not be displayed at all
+export const tooStaleMinutes = 60; // unit in minutes
 
 const useStyles = makeStyles((theme) => ({
     formControlLabel: {
@@ -40,32 +45,22 @@ function AvailabilityFilter(props) {
 
     return (
         <FormControl component="fieldset" className={classes.formControl}>
-            <FormLabel component="legend">Availability</FormLabel>
             <FormGroup>
                 <FormControlLabel
                     control={
                         <Checkbox
-                            checked={props.hasAvailability}
+                            checked={props.onlyShowAvailable}
                             onChange={handleChange}
-                            name="hasAvailability"
+                            name="onlyShowAvailable"
                         />
                     }
                     label="Has Available Appointments"
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={props.hasNoAvailability}
-                            onChange={handleChange}
-                            name="hasNoAvailability"
-                        />
-                    }
-                    label="No Available Appointments"
                 />
             </FormGroup>
         </FormControl>
     );
 }
+/*
 
 function VaxTypeFilter(props) {
     const classes = useStyles();
@@ -104,24 +99,30 @@ function VaxTypeFilter(props) {
         </FormControl>
     );
 }
+*/
 
 export default function FilterPanel(props) {
     const classes = useStyles();
     const theme = useTheme();
     const mdSize = useMediaQuery(theme.breakpoints.up("md"));
 
-    const [appointmentFilter, setAppointmentFilter] = useState({
-        hasAvailability: true,
-        hasNoAvailability: false,
+    const [staleFilter, setStaleFilterIgnored] = useState({
+        showStaleData: false,
     });
+
+    const [appointmentFilter, setAppointmentFilter] = useState({
+        onlyShowAvailable: true,
+    });
+    /*
     const [vaxTypeFilter, setVaxTypeFilter] = useState({
         types: [],
         include: [],
     });
+*/
 
-    const { data, onChange } = props;
+    const { dataIgnored, onChange } = props;
 
-    useEffect(() => {
+    /*   useEffect(() => {
         const vaxTypes = Array.from(
             new Set(
                 data.reduce((acc, cur) => {
@@ -147,21 +148,26 @@ export default function FilterPanel(props) {
             include: Array.apply(null, Array(vaxTypes.length)).map((d) => true),
         });
     }, [data]);
-
+*/
     useEffect(() => {
         onChange({
-            hasAppointments: (d) => {
-                if (d.hasAppointments && appointmentFilter.hasAvailability) {
-                    return true;
-                } else if (
-                    !d.hasAppointments &&
-                    appointmentFilter.hasNoAvailability
-                ) {
-                    return true;
+            showStaleData: (d) => {
+                // Filter the locations that have "non-stale" data
+                const oldestGoodTimestamp =
+                    new Date() - tooStaleMinutes * 60 * 1000;
+                if (staleFilter.showStaleData) {
+                    return true; // show everything! (no ui for this though)
+                } else {
+                    return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
                 }
-
-                return false;
             },
+            hasAppointments: (d) => {
+                if (appointmentFilter.onlyShowAvailable) {
+                    return hasSignUpLink(d);
+                }
+                return true;
+            },
+            /*
             vaxType: (d) => {
                 if (d.extraData && d.extraData["Vaccinations offered"]) {
                     const vaxes = d.extraData["Vaccinations offered"];
@@ -179,8 +185,9 @@ export default function FilterPanel(props) {
                     return vaxTypeFilter.include[vaxTypeFilter.include.length];
                 }
             },
+*/
         });
-    }, [onChange, appointmentFilter, vaxTypeFilter]);
+    }, [onChange, appointmentFilter, staleFilter]); //,vaxTypeFilter]);
 
     return (
         <Grid container={true} className={mdSize ? classes.mdPanel : ""}>
@@ -192,18 +199,19 @@ export default function FilterPanel(props) {
 
             <Grid item xs={12}>
                 <AvailabilityFilter
-                    hasAvailability={appointmentFilter.hasAvailability}
-                    hasNoAvailability={appointmentFilter.hasNoAvailability}
+                    onlyShowAvailable={appointmentFilter.onlyShowAvailable}
                     onChange={setAppointmentFilter}
                 />
             </Grid>
 
+            {/*
             <Grid item xs={12}>
                 <VaxTypeFilter
                     vaxTypeFilter={vaxTypeFilter}
                     onChange={setVaxTypeFilter}
                 />
             </Grid>
+*/}
         </Grid>
     );
 }
