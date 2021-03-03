@@ -1,6 +1,6 @@
 import HelpDialog from "./HelpDialog";
 
-export default function Availability({entry, onlyShowAvailable}) {
+export default function Availability({ entry, onlyShowAvailable }) {
     if (!entry.hasAppointments) {
         return <div>No availability.</div>;
     } else if (
@@ -9,22 +9,25 @@ export default function Availability({entry, onlyShowAvailable}) {
     ) {
         return (
             <div>
-                {entry.totalAvailability}
-                {entry.totalAvailability === 1 ? "slot" : "slots"}
+                {`${entry.totalAvailability} ${
+                    entry.totalAvailability === 1 ? "slot" : "slots"
+                }`}
             </div>
         );
     } else {
         const availableSlots = [];
-        const singleSignupLink = (!!entry.signUpLink);
+        const singleSignupLink = !!entry.signUpLink;
         for (const date in entry.appointmentData) {
-
             // Show dates that have availability AND one of these three conditions:
             // (1) We are showing all appointments; OR
             // (2) The site has a single signup link; OR
             // (3) This date has it's own signup link
-            if (entry.appointmentData[date].hasAvailability &&
-                (!onlyShowAvailable || singleSignupLink || entry.appointmentData[date].signUpLink)) {
-
+            if (
+                entry.appointmentData[date].hasAvailability &&
+                (!onlyShowAvailable ||
+                    singleSignupLink ||
+                    entry.appointmentData[date].signUpLink)
+            ) {
                 availableSlots.push({
                     date: date,
                     ...entry.appointmentData[date],

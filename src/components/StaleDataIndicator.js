@@ -22,24 +22,26 @@ export default function StaleDataIndicator({
     staleMinutesOverride,
 }) {
     const classes = useStyles();
+    const now = new Date();
 
     let staleMinutes = staleMinutesDefault;
     if (staleMinutesOverride || staleMinutesOverride === 0) {
         staleMinutes = staleMinutesOverride;
     }
 
-    if (!timestamp || timestamp >= new Date() - staleMinutes * 60 * 1000) {
+    if (!timestamp || timestamp >= now - staleMinutes * 60 * 1000) {
         return null;
     } else {
         let message = "";
-        let yesterday = new Date();
-        yesterday.setDate(new Date().getDate() - 1);
+        const yesterday = new Date(now);
+        yesterday.setDate(now.getDate() - 1);
         yesterday.setHours(0, 0, 0, 0);
 
         // timestamp is today
-        if (timestamp >= new Date().setHours(0, 0, 0, 0)) {
+        const timestampDate = new Date(timestamp);
+        if (timestamp >= now.setHours(0, 0, 0, 0)) {
             // 12:30:31 PM, for example
-            let timeString = new Date(timestamp).toLocaleTimeString("en-US");
+            let timeString = timestampDate.toLocaleTimeString("en-US");
             // chop off the seconds
             timeString = timeString.replace(/:[0-9]{2}\s/, " ");
             message = `Last updated ${timeString}`;
@@ -51,8 +53,8 @@ export default function StaleDataIndicator({
         // timestamp is older than yesterday
         else {
             message = `Last updated ${
-                new Date(timestamp).getMonth() + 1
-            }/${new Date(timestamp).getDate()}`;
+                timestampDate.getMonth() + 1
+            }/${timestampDate.getDate()}`;
         }
 
         return (
