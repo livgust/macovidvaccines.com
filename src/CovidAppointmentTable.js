@@ -16,9 +16,6 @@ import { sortData } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
 
-// any location with data older than this will not be displayed at all
-export const tooStaleMinutes = 60; // unit in minutes
-
 export function transformData(data) {
     return data.map((entry, index) => {
         return {
