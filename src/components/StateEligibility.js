@@ -109,7 +109,8 @@ export default function StateEligibility() {
                                 rel="noreferrer"
                                 target="_blank"
                             >
-                                Early education/daycare, and K-12 workers
+                                Pre-K to 12 Teachers and Staff, Early Educators,
+                                and Child Care Workers
                             </a>
                         </EligibilityGroupItem>
                     </List>
