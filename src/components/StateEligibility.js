@@ -109,8 +109,8 @@ export default function StateEligibility() {
                                 rel="noreferrer"
                                 target="_blank"
                             >
-                                Pre-K to 12 Teachers and Staff, Early Educators,
-                                and Child Care Workers
+                                Pre-K to 12 teachers and staff, early educators,
+                                and child care workers
                             </a>
                         </EligibilityGroupItem>
                     </List>
