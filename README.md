@@ -64,4 +64,15 @@ This is an example of the type of feedback axe can provide in the developer cons
 
 ![axe sample report](axe-sample-report.png)
 
+## Lighthouse
+
+This project uses [lighthouse-ci](https://github.com/GoogleChrome/lighthouse-ci) check for generate [lighthouse](https://github.com/GoogleChrome/lighthouse) reports. To generate these reports locally, you can use the following:
+
+```sh
+npm install -g lhci
+npm run build && lhci autorun
+```
+
+The lighthouse configuration can be changed by updating [.lighthouserc.json](.lighthouserc.json) and the GitHub Action can be configured by updating [lighthouse-ci.yaml](.github/workflows/lighthouse-ci.yaml).
+
 ###### Copyright 2021 Olivia Adams and Ora Innovations, LLC. All rights reserved.

@@ -80,7 +80,7 @@ export default function CovidAppointmentTable({ data }) {
     };
 
     return (
-        <>
+        <div role="list">
             {sortedData && sortedData.length ? (
                 sortedData.map((entry) => {
                     return (
@@ -94,7 +94,7 @@ export default function CovidAppointmentTable({ data }) {
             ) : (
                 <NoAppointmentsAlert />
             )}
-        </>
+        </div>
     );
 }
 

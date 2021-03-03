@@ -42,7 +42,7 @@ export default function StateEligibility() {
         <div className={classes.container}>
             <Accordion className={classes.accordion}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="subtitle1">
+                    <Typography variant="body1">
                         Am I eligible to be vaccinated?
                     </Typography>
                 </AccordionSummary>
