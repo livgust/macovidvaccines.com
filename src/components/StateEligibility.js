@@ -94,7 +94,7 @@ export default function StateEligibility() {
                                 rel="noreferrer"
                                 target="_blank"
                             >
-                                People in Phase 1 (Health care, nursing homes,
+                                People in Phase 1 (healthcare, nursing homes,
                                 etc.)
                             </a>
                         </EligibilityGroupItem>
