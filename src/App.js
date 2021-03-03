@@ -2,7 +2,7 @@ import CovidAppointmentTable from "./CovidAppointmentTable";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-// import { Alert, AlertTitle } from "@material-ui/lab";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import Menu from "./components/Menu";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import theme from "./theme";
@@ -42,6 +42,14 @@ function App() {
                         <h1 className={classes.heading}>
                             MA Covid Vaccine Appointments
                         </h1>
+                        <Alert severity="warning">
+                            <AlertTitle>Thursday, March 4</AlertTitle>
+                            Due to high demand, the MA vaccination websites are
+                            experiencing technical difficulties. Once the issues
+                            are resolved, their locations will appear on this
+                            website.
+                        </Alert>
+                        <br />
                         <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography
