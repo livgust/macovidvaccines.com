@@ -98,6 +98,20 @@ export default function StateEligibility() {
                                 etc.)
                             </a>
                         </EligibilityGroupItem>
+                        {/* TODO - remove the following div after March 11, and update link to be appropriate link from https://www.mass.gov/covid-19-vaccine*/}
+                        <br></br>
+                        <br></br>
+                        <div>Eligible to sign up starting March 11: </div>
+                        <br></br>
+                        <EligibilityGroupItem>
+                            <a
+                                href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Early education/daycare, and K-12 workers
+                            </a>
+                        </EligibilityGroupItem>
                     </List>
                 </AccordionDetails>
             </Accordion>
