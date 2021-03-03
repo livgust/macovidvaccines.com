@@ -50,6 +50,26 @@ export default function StateEligibility() {
                     <List>
                         <EligibilityGroupItem>
                             <a
+                                href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Early education/daycare, and K-12 workers
+                            </a>
+                        </EligibilityGroupItem>
+                        {/*
+                        <EligibilityGroupItem>
+                            <a
+                                href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+	                     Transit, grocery, utility, food and agriculture, restaurant and cafe workers
+                            </a>
+                        </EligibilityGroupItem>
+	                */}
+                        <EligibilityGroupItem>
+                            <a
                                 href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older"
                                 rel="noreferrer"
                                 target="_blank"
