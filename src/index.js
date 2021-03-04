@@ -5,6 +5,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import axe from "@axe-core/react";
 
+import "./i18n"; // load translations
+
 //Use Axe for accessibility profiling when not in production mode
 if (process.env.NODE_ENV !== "production") {
     axe(React, ReactDOM, 1000);

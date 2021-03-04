@@ -7,6 +7,7 @@ import Menu from "./components/Menu";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import StateEligibility from "./components/StateEligibility";
+import { useTranslation } from "react-i18next";
 
 /* Alert to put under page title when necessary
 const alert = (
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
     const classes = useStyles();
+    const { t } = useTranslation("main");
     return (
         <MuiThemeProvider theme={theme}>
             <Menu />
@@ -39,9 +41,7 @@ function App() {
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={1} sm={2}></Grid>
                     <Grid item xs={10} sm={8}>
-                        <h1 className={classes.heading}>
-                            MA Covid Vaccine Appointments
-                        </h1>
+                        <h1 className={classes.heading}>{t("page_title")}</h1>
                         <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography
