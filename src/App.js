@@ -2,9 +2,24 @@ import CovidAppointmentTable from "./CovidAppointmentTable";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import Menu from "./components/Menu";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core";
+import theme from "./theme";
 import StateEligibility from "./components/StateEligibility";
+
+// Alert to put under page title when necessary
+const alert = new Date() > new Date("2021-03-04T06:00:00-05:00") && (
+    <>
+        <Alert severity="warning">
+            <AlertTitle>Thursday, March 4</AlertTitle>
+            Due to high demand, the MA vaccination websites are experiencing
+            technical difficulties. Once the issues are resolved, their
+            locations will appear on this website.
+        </Alert>
+        <br />
+    </>
+);
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -18,15 +33,16 @@ const useStyles = makeStyles((theme) => ({
 function App() {
     const classes = useStyles();
     return (
-        <>
+        <MuiThemeProvider theme={theme}>
             <Menu />
-            <div className={classes.main}>
+            <main className={classes.main}>
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={1} sm={2}></Grid>
                     <Grid item xs={10} sm={8}>
                         <h1 className={classes.heading}>
                             MA Covid Vaccine Appointments
                         </h1>
+                        {alert}
                         <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography
@@ -47,8 +63,8 @@ function App() {
                     </Grid>
                     <Grid item xs={1} sm={2}></Grid>
                 </Grid>
-            </div>
-        </>
+            </main>
+        </MuiThemeProvider>
     );
 }
 

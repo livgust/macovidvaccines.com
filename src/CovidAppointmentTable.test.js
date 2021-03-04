@@ -2,14 +2,19 @@ import { act, render, screen } from "@testing-library/react";
 
 import CovidAppointmentTable from "./CovidAppointmentTable";
 
-import prod from "../test/fixtures/api/prod.json";
-import noData from "../test/fixtures/api/no-data.json";
+import prodResults from "../test/fixtures/api/prod.json";
+import noResults from "../test/fixtures/api/no-data.json";
 
 // actual API returns `body` as a string but we store it as a POJO in the fixture for
 // ease of reading
 const prodData = {
-    ...prod,
-    body: JSON.stringify(prod.body),
+    ...prodResults,
+    body: JSON.stringify(prodResults.body),
+};
+
+const noData = {
+    ...noResults,
+    body: JSON.stringify(noResults.body),
 };
 
 beforeAll(function () {
@@ -62,10 +67,16 @@ describe("the CovidAppointmentTable component", function () {
     });
 
     describe("when the api endpoint can not be reached", function () {
+        let spy;
         beforeEach(function () {
+            spy = jest.spyOn(console, "error").mockImplementation();
             window.fetch.mockImplementationOnce(() =>
                 Promise.reject(new TypeError("network error"))
             );
+        });
+
+        afterEach(function () {
+            spy.mockRestore();
         });
 
         test("it displays an error message", async function () {
@@ -73,7 +84,13 @@ describe("the CovidAppointmentTable component", function () {
                 render(<CovidAppointmentTable />);
             });
 
-            expect(screen.getByRole("alert")).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    "Something went wrong, please try again later."
+                )
+            ).toBeInTheDocument();
+
+            expect(await screen.findByRole("alert")).toBeInTheDocument();
         });
     });
 });
