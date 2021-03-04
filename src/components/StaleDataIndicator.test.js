@@ -33,13 +33,13 @@ describe("staleness messaging", () => {
         function padMinutes(minutes) {
             return minutes < 10 ? `0${minutes}` : minutes;
         }
-        expect(
-            screen.getByText(
-                `Last updated ${timestampDate.getHours() % 12}:${padMinutes(
-                    timestampDate.getMinutes()
-                )} ${timestampDate.getHours() >= 12 ? "PM" : "AM"}`
-            )
-        ).toBeTruthy();
+        const expectedText = `Last updated ${
+            timestampDate.getHours() % 13
+        }:${padMinutes(timestampDate.getMinutes())} ${
+            timestampDate.getHours() >= 12 ? "PM" : "AM"
+        }`;
+
+        expect(screen.getByText(expectedText)).toBeTruthy();
     });
 
     it("shows 'yesterday' if it was yesterday", async () => {
