@@ -1,4 +1,5 @@
 import HelpDialog from "./HelpDialog";
+import Typography from "@material-ui/core/Typography";
 
 export default function Availability({ entry }) {
     if (!entry.hasAppointments) {
@@ -42,6 +43,11 @@ export default function Availability({ entry }) {
             );
             return (
                 <div>
+                    {totalAvailableSlots > 1 && availableSlots.length > 1 && (
+                        <Typography variant="h6">
+                            {`Total available: ${totalAvailableSlots} slots`}
+                        </Typography>
+                    )}
                     {availableSlots.map((slot) => (
                         <div key={slot.date}>
                             {`${slot.date}: ${
@@ -51,11 +57,6 @@ export default function Availability({ entry }) {
                             }`}
                         </div>
                     ))}
-                    {totalAvailableSlots > 1 && availableSlots.length > 1 && (
-                        <div>
-                            {`Total available: ${totalAvailableSlots} slots`}
-                        </div>
-                    )}
                 </div>
             );
         }
