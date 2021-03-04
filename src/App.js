@@ -8,18 +8,18 @@ import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import StateEligibility from "./components/StateEligibility";
 
-/* Alert to put under page title when necessary
-const alert = (
+// Alert to put under page title when necessary
+const alert = new Date() > new Date("2021-03-04T06:00:00-05:00") && (
     <>
         <Alert severity="warning">
-            <AlertTitle>8:08am Thursday, February 25</AlertTitle>
-            The high demand for appointments right now is causing delays in
-            collecting data. We will report up-to-the-minute availability when
-            wait times decrease. We apologize for the inconvenience.
+            <AlertTitle>Thursday, March 4</AlertTitle>
+            Due to high demand, the MA vaccination websites are experiencing
+            technical difficulties. Once the issues are resolved, their
+            locations will appear on this website.
         </Alert>
         <br />
     </>
-); */
+);
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -42,14 +42,7 @@ function App() {
                         <h1 className={classes.heading}>
                             MA Covid Vaccine Appointments
                         </h1>
-                        <Alert severity="warning">
-                            <AlertTitle>Thursday, March 4</AlertTitle>
-                            Due to high demand, the MA vaccination websites are
-                            experiencing technical difficulties. Once the issues
-                            are resolved, their locations will appear on this
-                            website.
-                        </Alert>
-                        <br />
+                        {alert}
                         <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography

@@ -257,7 +257,10 @@ function LocationCard({ entry, className, onlyShowAvailable }) {
                     }
                 />
                 <CardContent>
-                    <Availability entry={entry} onlyShowAvailable={onlyShowAvailable}/>
+                    <Availability
+                        entry={entry}
+                        onlyShowAvailable={onlyShowAvailable}
+                    />
                     <MoreInformation entry={entry} />
                     <SignUpLink entry={entry} />
                 </CardContent>
