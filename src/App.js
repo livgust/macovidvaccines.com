@@ -2,13 +2,13 @@ import CovidAppointmentTable from "./CovidAppointmentTable";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { Alert, AlertTitle } from "@material-ui/lab";
+//import { Alert, AlertTitle } from "@material-ui/lab";
 import Menu from "./components/Menu";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import StateEligibility from "./components/StateEligibility";
 
-// Alert to put under page title when necessary
+/* Alert to put under page title when necessary
 const alert = new Date() > new Date("2021-03-04T06:00:00-05:00") && (
     <>
         <Alert severity="warning">
@@ -20,6 +20,7 @@ const alert = new Date() > new Date("2021-03-04T06:00:00-05:00") && (
         <br />
     </>
 );
+*/
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -42,7 +43,7 @@ function App() {
                         <h1 className={classes.heading}>
                             MA Covid Vaccine Appointments
                         </h1>
-                        {alert}
+                        {/*alert*/}
                         <StateEligibility />
                         <CovidAppointmentTable />
                         <Typography
