@@ -1,3 +1,5 @@
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import ArrowBack from "@material-ui/icons/ArrowBack";
@@ -77,8 +79,11 @@ function App() {
     const [data, setData] = useState([]);
     const [ready, setReady] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-    const [filters, setFilters] = useState({});
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    // State variables for the two FilterPanels so that both update together
+    const [filters, setFilters] = useState({});
+    const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
 
     useEffect(() => {
         getAppointmentData()
@@ -129,6 +134,8 @@ function App() {
                                 <FilterPanel
                                     data={data}
                                     onChange={setFilters}
+                                    onlyShowAvailable={onlyShowAvailable}
+                                    setOnlyShowAvailable={setOnlyShowAvailable}
                                 />
                             </Drawer>
                         </Hidden>
@@ -144,6 +151,8 @@ function App() {
                                 <FilterPanel
                                     data={data}
                                     onChange={setFilters}
+                                    onlyShowAvailable={onlyShowAvailable}
+                                    setOnlyShowAvailable={setOnlyShowAvailable}
                                 />
                             </Drawer>
                         </Hidden>

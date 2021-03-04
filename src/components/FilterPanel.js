@@ -34,6 +34,7 @@ function AvailabilityFilter(props) {
     const classes = useStyles();
 
     const handleChange = (e) => {
+        props.setOnlyShowAvailable(e.target.checked);
         props.onChange({
             ...props,
             [e.target.name]: e.target.checked,
@@ -99,12 +100,20 @@ function VaxTypeFilter(props) {
 */
 
 export default function FilterPanel(props) {
+    const {
+        dataIgnored,
+        onChange,
+        onlyShowAvailable,
+        setOnlyShowAvailable,
+    } = props;
+
     const classes = useStyles();
     const theme = useTheme();
     const mdSize = useMediaQuery(theme.breakpoints.up("md"));
 
     const [appointmentFilter, setAppointmentFilter] = useState({
-        onlyShowAvailable: true,
+        onlyShowAvailable: onlyShowAvailable,
+        setOnlyShowAvailable: setOnlyShowAvailable,
     });
     /*
     const [vaxTypeFilter, setVaxTypeFilter] = useState({
@@ -112,8 +121,6 @@ export default function FilterPanel(props) {
         include: [],
     });
 */
-
-    const { dataIgnored, onChange } = props;
 
     /*   useEffect(() => {
         const vaxTypes = Array.from(
@@ -182,7 +189,8 @@ export default function FilterPanel(props) {
 
             <Grid item xs={12}>
                 <AvailabilityFilter
-                    onlyShowAvailable={appointmentFilter.onlyShowAvailable}
+                    onlyShowAvailable={onlyShowAvailable}
+                    setOnlyShowAvailable={setOnlyShowAvailable}
                     onChange={setAppointmentFilter}
                 />
             </Grid>
