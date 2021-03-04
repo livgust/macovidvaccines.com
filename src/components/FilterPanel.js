@@ -15,7 +15,9 @@ import Container from "@material-ui/core/Container";
 import { hasSignUpLink } from "./SignUpLink";
 import { getDistance } from "geolib";
 import { setSortBy } from "../services/appointmentData.service";
+import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
 const usZips = require("us-zips");
 
 // any location with data older than this will not be displayed at all
@@ -67,14 +69,24 @@ function AvailabilityFilter(props) {
     );
 }
 
+export function getZipCodeCookie() {
+    const z = cookies.get("ZIPCode");
+    return z ? z : "";
+}
+
 function ZipCodeFilter(props) {
     const classes = useStyles();
 
     const handleChange = (e) => {
-        props.setZipCode(e.target.value);
+        const targetZip = e.target.value;
+        props.setZipCode(targetZip);
+        const zipValid = targetZip === "" || targetZip.match(/\d{5}/);
+        if (zipValid) {
+            cookies.set("ZIPCode", targetZip, { path: "/" });
+        }
         props.onChange({
             ...props,
-            [e.target.name]: e.target.value,
+            [e.target.name]: targetZip,
         });
     };
 
@@ -207,7 +219,7 @@ export default function FilterPanel(props) {
             },
             zipcode: (d) => {
                 if (d) {
-                    const zipValid = zipCodeFilter.zipCode.match(/\d\d\d\d\d/);
+                    const zipValid = zipCodeFilter.zipCode.match(/\d{5}/);
                     if (zipValid) {
                         setSortBy("miles");
                         const myCoordinates = usZips[zipCodeFilter.zipCode];

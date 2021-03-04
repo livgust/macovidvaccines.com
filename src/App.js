@@ -6,7 +6,7 @@ import ArrowBack from "@material-ui/icons/ArrowBack";
 import { Button, makeStyles, MuiThemeProvider } from "@material-ui/core";
 import CovidAppointmentTable from "./CovidAppointmentTable";
 import Drawer from "@material-ui/core/Drawer";
-import FilterPanel from "./components/FilterPanel";
+import FilterPanel, { getZipCodeCookie } from "./components/FilterPanel";
 import {
     filterData,
     getAppointmentData,
@@ -85,7 +85,7 @@ function App() {
     // State variables for the two FilterPanels so that both update together
     const [filters, setFilters] = useState({});
     const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
-    const [zipCode, setZipCode] = useState("");
+    const [zipCode, setZipCode] = useState(getZipCodeCookie());
 
     useEffect(() => {
         getAppointmentData()
