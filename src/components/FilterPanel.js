@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import FormControl from "@material-ui/core/FormControl";
-//import FormLabel from "@material-ui/core/FormLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
 import Input from "@material-ui/core/Input";
@@ -43,6 +42,7 @@ function AvailabilityFilter(props) {
     const classes = useStyles();
 
     const handleChange = (e) => {
+        props.setOnlyShowAvailable(e.target.checked);
         props.onChange({
             ...props,
             [e.target.name]: e.target.checked,
@@ -67,10 +67,11 @@ function AvailabilityFilter(props) {
     );
 }
 
-function ZipcodeFilter(props) {
+function ZipCodeFilter(props) {
     const classes = useStyles();
 
     const handleChange = (e) => {
+        props.setZipCode(e.target.value);
         props.onChange({
             ...props,
             [e.target.name]: e.target.value,
@@ -82,10 +83,16 @@ function ZipcodeFilter(props) {
             {/*<FormLabel component="legend"></FormLabel>*/}
             <FormGroup>
                 <FormControlLabel
-                    control={<Input onChange={handleChange} name="zipcode" />}
-                    label="Zip CODE"
+                    control={
+                        <Input
+                            value={props.zipCode}
+                            onChange={handleChange}
+                            name="zipCode"
+                        />
+                    }
+                    label="ZIP Code"
                     labelPlacement="top"
-                    aria-label="Zip CODE"
+                    aria-label="ZIP Code"
                 />
             </FormGroup>
         </FormControl>
@@ -134,20 +141,26 @@ function VaxTypeFilter(props) {
 */
 
 export default function FilterPanel(props) {
+    const {
+        dataIgnored,
+        onChange,
+        onlyShowAvailable,
+        setOnlyShowAvailable,
+        zipCode,
+        setZipCode,
+    } = props;
+
     const classes = useStyles();
     const theme = useTheme();
     const mdSize = useMediaQuery(theme.breakpoints.up("md"));
 
-    const [staleFilter, setStaleFilterIgnored] = useState({
-        showStaleData: false,
-    });
-
     const [appointmentFilter, setAppointmentFilter] = useState({
-        onlyShowAvailable: true,
+        onlyShowAvailable: onlyShowAvailable,
+        setOnlyShowAvailable: setOnlyShowAvailable,
     });
-
-    const [zipcodeFilter, setZipcodeFilter] = useState({
-        zipcode: "",
+    const [zipCodeFilter, setZipcodeFilter] = useState({
+        zipCode: zipCode,
+        setZipCode: setZipCode,
         miles: 9999,
         valid: false,
     });
@@ -156,11 +169,8 @@ export default function FilterPanel(props) {
         types: [],
         include: [],
     });
-*/
 
-    const { dataIgnored, onChange } = props;
-
-    /*   useEffect(() => {
+    useEffect(() => {
         const vaxTypes = Array.from(
             new Set(
                 data.reduce((acc, cur) => {
@@ -189,16 +199,6 @@ export default function FilterPanel(props) {
 */
     useEffect(() => {
         onChange({
-            showStaleData: (d) => {
-                // Filter the locations that have "non-stale" data
-                const oldestGoodTimestamp =
-                    new Date() - tooStaleMinutes * 60 * 1000;
-                if (staleFilter.showStaleData) {
-                    return true; // show everything! (no ui for this though)
-                } else {
-                    return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
-                }
-            },
             hasAppointments: (d) => {
                 if (appointmentFilter.onlyShowAvailable) {
                     return hasSignUpLink(d);
@@ -207,10 +207,10 @@ export default function FilterPanel(props) {
             },
             zipcode: (d) => {
                 if (d) {
-                    const zipValid = zipcodeFilter.zipcode.match(/\d\d\d\d\d/);
+                    const zipValid = zipCodeFilter.zipCode.match(/\d\d\d\d\d/);
                     if (zipValid) {
                         setSortBy("miles");
-                        const myCoordinates = usZips[zipcodeFilter.zipcode];
+                        const myCoordinates = usZips[zipCodeFilter.zipCode];
                         if (myCoordinates) {
                             const metersPerMile = 1609.34;
                             d.miles = Math.round(
@@ -219,7 +219,7 @@ export default function FilterPanel(props) {
                             );
 
                             // Is the location within the range specified?
-                            // return d.miles < 50;
+                            return d.miles < zipCodeFilter.miles;
                         }
                     } else {
                         setSortBy("location");
@@ -247,7 +247,7 @@ export default function FilterPanel(props) {
             },
 */
         });
-    }, [onChange, appointmentFilter, staleFilter, zipcodeFilter]); //,vaxTypeFilter]);
+    }, [onChange, appointmentFilter, zipCodeFilter]); //,vaxTypeFilter]);
 
     return (
         <Grid container={true} className={mdSize ? classes.mdPanel : ""}>
@@ -259,15 +259,17 @@ export default function FilterPanel(props) {
 
             <Grid item xs={12}>
                 <AvailabilityFilter
-                    onlyShowAvailable={appointmentFilter.onlyShowAvailable}
+                    onlyShowAvailable={onlyShowAvailable}
+                    setOnlyShowAvailable={setOnlyShowAvailable}
                     onChange={setAppointmentFilter}
                 />
             </Grid>
 
             <Grid item xs={12}>
-                <ZipcodeFilter
-                    zipcode={zipcodeFilter.zipcode}
-                    miles={zipcodeFilter.miles}
+                <ZipCodeFilter
+                    zipCode={zipCode}
+                    setZipCode={setZipCode}
+                    miles={zipCodeFilter.miles}
                     onChange={setZipcodeFilter}
                 />
             </Grid>

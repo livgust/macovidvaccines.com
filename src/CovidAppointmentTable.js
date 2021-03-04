@@ -16,27 +16,6 @@ import { sortData, sortedByMiles } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
 
-// any location with data older than this will not be displayed at all
-export const tooStaleMinutes = 60; // unit in minutes
-
-export function transformData(data) {
-    return data.map((entry, index) => {
-        return {
-            key: index,
-            location: entry.name,
-            streetAddress: entry.street,
-            city: entry.city,
-            zip: entry.zip,
-            hasAppointments: entry.hasAvailability,
-            appointmentData: entry.availability || null,
-            signUpLink: entry.signUpLink || null,
-            extraData: entry.extraData || null,
-            restrictions: entry.restrictions || null,
-            timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
-        };
-    });
-}
-
 const useStyles = makeStyles((theme) => ({
     cardBox: {
         "padding-top": theme.spacing(2),

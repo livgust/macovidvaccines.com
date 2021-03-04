@@ -1,3 +1,5 @@
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import ArrowBack from "@material-ui/icons/ArrowBack";
@@ -60,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     drawerMobile: {},
+    mobileButton: { width: "50%" },
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
@@ -77,8 +80,12 @@ function App() {
     const [data, setData] = useState([]);
     const [ready, setReady] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-    const [filters, setFilters] = useState({});
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    // State variables for the two FilterPanels so that both update together
+    const [filters, setFilters] = useState({});
+    const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
+    const [zipCode, setZipCode] = useState("");
 
     useEffect(() => {
         getAppointmentData()
@@ -129,7 +136,19 @@ function App() {
                                 <FilterPanel
                                     data={data}
                                     onChange={setFilters}
-                                />
+                                    onlyShowAvailable={onlyShowAvailable}
+                                    setOnlyShowAvailable={setOnlyShowAvailable}
+                                    zipCode={zipCode}
+                                    setZipCode={setZipCode}
+                                ></FilterPanel>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.mobileButton}
+                                    onClick={handleDrawerToggle}
+                                >
+                                    Update List
+                                </Button>
                             </Drawer>
                         </Hidden>
 
@@ -144,6 +163,10 @@ function App() {
                                 <FilterPanel
                                     data={data}
                                     onChange={setFilters}
+                                    onlyShowAvailable={onlyShowAvailable}
+                                    setOnlyShowAvailable={setOnlyShowAvailable}
+                                    zipCode={zipCode}
+                                    setZipCode={setZipCode}
                                 />
                             </Drawer>
                         </Hidden>
