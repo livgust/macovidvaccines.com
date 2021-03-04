@@ -18,11 +18,24 @@ import StaleDataIndicator from "./components/StaleDataIndicator";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 
+const dayjs = require("dayjs");
+
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
 
 export function transformData(data) {
+    const ourDateFormat = "M/D/YY"; // 3/2
+    // future format?    "ddd, MMM D"; // Tue Mar 2
+
     return data.map((entry, index) => {
+        let availability = [];
+        if (entry.availability) {
+            for (const [key, value] of Object.entries(entry.availability)) {
+                let newKey = dayjs(key).format(ourDateFormat);
+                availability[newKey] = value;
+            }
+        }
+
         return {
             key: index,
             location: entry.name,
@@ -30,7 +43,7 @@ export function transformData(data) {
             city: entry.city,
             zip: entry.zip,
             hasAppointments: entry.hasAvailability,
-            appointmentData: entry.availability || null,
+            appointmentData: availability || null,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
             restrictions: entry.restrictions || null,
