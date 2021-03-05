@@ -96,6 +96,7 @@ function App() {
                 setReady(true);
             })
             .catch((ex) => {
+                console.log(ex); // full traceback for diagnostics
                 console.error(ex.message);
                 setErrorMessage(
                     "Something went wrong, please try again later."

@@ -69,6 +69,9 @@ describe("the App component", function () {
 
     describe("when the api endpoint can not be reached", function () {
         beforeEach(function () {
+            // Suppress noise from App.js's App().useEffect()'s .catch handler
+            console.error = jest.fn();
+            console.log = jest.fn();
             window.fetch.mockImplementationOnce(() =>
                 Promise.reject(new TypeError("network error"))
             );
