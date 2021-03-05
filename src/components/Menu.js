@@ -125,7 +125,10 @@ function AboutDialog(props) {
                 {"About This Website"}
             </DialogTitle>
             <DialogContent>
-                <DialogContentText id="about-dialog-description">
+                <DialogContentText
+                    id="about-dialog-description"
+                    component="div"
+                >
                     <p>
                         This website was created by{" "}
                         <a
@@ -212,34 +215,38 @@ function ResourcesDialog(props) {
         <Dialog {...props}>
             <DialogTitle id="about-dialog-title">{"Resources"}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="about-dialog-description">
+                <DialogContentText
+                    id="about-dialog-description"
+                    component="div"
+                >
                     <p>
                         There are two other websites for the state of
                         Massachusetts that compile information on vaccine
                         availability. They are:
-                        <ul>
-                            <li>
-                                <a
-                                    href="https://vaccinatema.com"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Vaccinate MA
-                                </a>{" "}
-                                (volunteer-run)
-                            </li>
-                            <li>
-                                <a
-                                    href="https://vaxfinder.mass.gov"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Vax Finder
-                                </a>{" "}
-                                (state-run)
-                            </li>
-                        </ul>
                     </p>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://vaccinatema.com"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Vaccinate MA
+                            </a>{" "}
+                            (volunteer-run)
+                        </li>
+                        <li>
+                            <a
+                                href="https://vaxfinder.mass.gov"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Vax Finder
+                            </a>{" "}
+                            (state-run)
+                        </li>
+                    </ul>
                     <p>
                         For more information on the vaccine rollout in
                         Massachusetts, visit{" "}
