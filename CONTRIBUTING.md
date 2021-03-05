@@ -8,7 +8,7 @@ If you find a bug or think of an improvement or fix, please open a [new issue](h
 
 ### Working on an issue
 
-**MA COVID Vaccines** uses the [GitHub flow](https://guides.github.com/introduction/flow/index.html). All project changes are made through pull requests. Please make a pull request to `develop`, not `master`.
+**MA COVID Vaccines** uses the [GitHub flow](https://guides.github.com/introduction/flow/index.html). All project changes are made through pull requests.
 
 If you see an issue that you would like to work on, be sure to leave a quick comment asking if the issue is free to be worked on.
 
