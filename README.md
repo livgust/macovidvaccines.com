@@ -38,7 +38,11 @@ This project use `prettier` and `eslint` to enforce good code formatting practic
 
 ### Prettier
 
-Prettier is installed as a dependency and will run a check automatically before every `git commit`. There are also extensions you can use to run Prettier on save within your IDE. To run prettier locally, run the following command or see the [Prettier Docs](https://prettier.io/docs/en/index.html):
+Prettier is "an opinionated code formatter." It is installed as a dependancy and will automatically check your code before every `git commit` (a pre-commit hook is installed via husky).
+
+You can run Prettier within your IDE, such as automatically when saving. See the [Prettier Docs](https://prettier.io/docs/en/index.html).
+
+To run Prettier manually, which will rewrite your code in its style:
 
 ```sh
 npx prettier --write ./src
@@ -50,7 +54,7 @@ Eslint is not currently installed as a dependency. You can install it yourself v
 
 ## Unit Testing
 
-There are unit tests (\*.test.js) that can be run at anytime. They will run automatically before every `git commit`. To run them interactively:
+There are unit tests (\*.test.js) that can be run at anytime. They will run automatically before every `git commit` (a pre-commit hook is installed via husky). To run them manually:
 
 ```sh
 npm run test
