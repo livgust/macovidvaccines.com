@@ -38,10 +38,10 @@ This project use `prettier` and `eslint` to enforce good code formatting practic
 
 ### Prettier
 
-Prettier is installed as a dependency and will run a check automatically before every `git commit`. There are also extensions you can use to run Prettier on save within your IDE. To run prettier manually:
+Prettier is installed as a dependency and will run a check automatically before every `git commit`. There are also extensions you can use to run Prettier on save within your IDE. To run prettier locally, run the following command or see the [Prettier Docs](https://prettier.io/docs/en/index.html):
 
 ```sh
-npm run check:prettier
+npx prettier --write ./src
 ```
 
 ### ESLint
