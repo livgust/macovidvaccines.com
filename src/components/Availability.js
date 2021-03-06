@@ -34,7 +34,7 @@ export default function Availability({ entry, onlyShowAvailable }) {
                 });
             }
         }
-        if (!availableSlots.length && entry.hasAppointments) {
+        if (!availableSlots.length) {
             return (
                 <div>
                     No date-specific data available.
