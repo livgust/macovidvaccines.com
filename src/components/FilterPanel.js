@@ -160,6 +160,7 @@ export default function FilterPanel(props) {
         setOnlyShowAvailable,
         zipCode,
         setZipCode,
+        closeButton,
     } = props;
 
     const classes = useStyles();
@@ -294,6 +295,9 @@ export default function FilterPanel(props) {
                 />
             </Grid>
 */}
+            <Grid item xs={12}>
+                {closeButton}
+            </Grid>
         </Grid>
     );
 }
