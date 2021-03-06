@@ -221,9 +221,9 @@ export default function FilterPanel(props) {
                 if (d) {
                     const zipValid = zipCodeFilter.zipCode.match(/\d{5}/);
                     if (zipValid) {
-                        setSortBy("miles");
                         const myCoordinates = usZips[zipCodeFilter.zipCode];
                         if (myCoordinates) {
+                            setSortBy("miles");
                             const metersPerMile = 1609.34;
                             d.miles = Math.round(
                                 getDistance(myCoordinates, d.coordinates, 1) /
@@ -233,11 +233,12 @@ export default function FilterPanel(props) {
                             // Is the location within the range specified?
                             return d.miles < zipCodeFilter.miles;
                         }
-                    } else {
-                        setSortBy("location");
                     }
                 }
-                return true; // include all for now.
+                // No zipcode was provided or
+                // was unable to find coordinates for the specified zipcode
+                setSortBy("location");
+                return true;
             },
             /*
             vaxType: (d) => {
