@@ -1,6 +1,5 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
-import { makeStyles } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import Availability from "./components/Availability";
@@ -8,14 +7,13 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import HelpDialog from "./components/HelpDialog";
-import Loader from "react-loader";
+import { makeStyles } from "@material-ui/core";
 import MoreInformation from "./components/MoreInformation";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
+import { sortData, sortedByMiles } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
-import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 
 const dayjs = require("dayjs");
@@ -104,83 +102,35 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CovidAppointmentTable() {
+export default function CovidAppointmentTable({ data }) {
     const classes = useStyles();
 
-    const [data, setData] = useState([]);
-    const [ready, setReady] = useState(false);
-    const [errorMessage, setErrorMessage] = useState();
-    const [sortInfo, setSortInfoIgnored] = useState({
-        sortKey: "location",
-        sortAsc: true,
-    });
+    const sortedData = sortData(data);
 
-    const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
-
-    useEffect(() => {
-        fetch("https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod")
-            .then(async (res) => {
-                const newData = await res.json();
-                setData(JSON.parse(newData.body).results);
-                setReady(true);
-            })
-            .catch((ex) => {
-                console.error(ex.message);
-                setErrorMessage(
-                    "Something went wrong, please try again later."
-                );
-                setReady(true);
-            });
-    }, []);
-
-    const formattedData = sortAndFilterData(
-        transformData(data),
-        sortInfo,
-        onlyShowAvailable
-    );
+    // generate unique key for each site
+    const getSiteId = (site) => {
+        return btoa(
+            JSON.stringify(site)
+                .split("")
+                .map((c) => c.charCodeAt(0).toString())
+                .join("")
+        );
+    };
 
     return (
         <>
-            <div
-                aria-label="loading data"
-                id="progress"
-                role="progressbar"
-                aria-valuetext={ready ? "loaded" : "waiting"}
-            >
-                <Loader loaded={ready} />
-            </div>
-
-            {errorMessage && <ErrorMessageAlert message={errorMessage} />}
-
-            {!errorMessage && (
-                <section aria-live="polite" aria-busy={!ready}>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                aria-checked={onlyShowAvailable}
-                                role="switch"
-                                checked={onlyShowAvailable}
-                                onChange={(event) =>
-                                    setOnlyShowAvailable(event.target.checked)
-                                }
-                            />
-                        }
-                        label="Only show locations with available appointments"
-                    />
-                    {ready && formattedData.length === 0 && (
-                        <NoAppointmentsAlert />
-                    )}
-                    <div role="list">
-                        {formattedData.map((entry) => (
-                            <LocationCard
-                                entry={entry}
-                                className={classes.cardBox}
-                                onlyShowAvailable={onlyShowAvailable}
-                                key={`${entry.location}-${entry.streetAddress}-${entry.city}`}
-                            />
-                        ))}
-                    </div>
-                </section>
+            {sortedData && sortedData.length ? (
+                sortedData.map((entry) => {
+                    return (
+                        <LocationCard
+                            entry={entry}
+                            className={classes.cardBox}
+                            key={getSiteId(entry)}
+                        />
+                    );
+                })
+            ) : (
+                <NoAppointmentsAlert />
             )}
         </>
     );
@@ -264,7 +214,12 @@ function LocationCard({ entry, className, onlyShowAvailable }) {
                     subheader={
                         <>
                             <RestrictionNotifier entry={entry} />
-                            <div>{entry.city}</div>
+                            <div>
+                                {entry.city}{" "}
+                                {sortedByMiles()
+                                    ? `(${entry.miles} miles)`
+                                    : ""}
+                            </div>
                             <StaleDataIndicator timestamp={entry.timestamp} />
                         </>
                     }
@@ -309,18 +264,5 @@ function NoAppointmentsAlert() {
             </Alert>
             <br />
         </div>
-    );
-}
-
-function ErrorMessageAlert({ message }) {
-    //const classes = useStyles();
-    return (
-        <>
-            <Alert severity={"error"}>
-                <AlertTitle>Unexpected Internal Error</AlertTitle>
-                <p>{message}</p>
-            </Alert>
-            <br />
-        </>
     );
 }

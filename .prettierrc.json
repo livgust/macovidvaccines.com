@@ -1,4 +1,12 @@
 {
-    "tabWidth": 4,
-    "endOfLine": "auto"
+  "tabWidth": 4,
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": "*.yaml",
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
 }

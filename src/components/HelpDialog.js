@@ -40,8 +40,11 @@ export default function HelpDialog({
                     <DialogTitle id="about-dialog-title">{title}</DialogTitle>
                 )}
                 <DialogContent>
-                    <DialogContentText id="about-dialog-description">
-                        <p>{text}</p>
+                    <DialogContentText
+                        id="about-dialog-description"
+                        component={typeof text === "string" ? "p" : "div"}
+                    >
+                        {text}
                     </DialogContentText>
                     <Button
                         variant="contained"
