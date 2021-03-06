@@ -56,7 +56,7 @@ const criteriaGroups = [
         list: [
             [
                 "https://www.mass.gov/news/baker-polito-administration-announces-k-12-educators-child-care-workers-and-k-12-school-staff",
-                "Pre-K to 12 teachers and staff, early educators, and child care workers",
+                "K-12 educators, child care workers and K-12 school staff",
             ],
         ],
     },
