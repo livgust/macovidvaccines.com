@@ -18,7 +18,7 @@ import { setSortBy } from "../services/appointmentData.service";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
-const usZips = require("us-zips");
+const zipcodeData = require("us-zips");
 
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
@@ -222,7 +222,7 @@ export default function FilterPanel(props) {
                     const zipValid = zipCodeFilter.zipCode.match(/\d{5}/);
                     if (zipValid) {
                         setSortBy("miles");
-                        const myCoordinates = usZips[zipCodeFilter.zipCode];
+                        const myCoordinates = zipcodeData[zipCodeFilter.zipCode];
                         if (myCoordinates) {
                             const metersPerMile = 1609.34;
                             d.miles = Math.round(
