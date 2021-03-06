@@ -6,5 +6,7 @@ public/
 .prettierignore
 package-lock.json
 
+src/generated/ma-zips.json
+
 *.png
 *.svg
