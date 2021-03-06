@@ -94,8 +94,23 @@ export default function StateEligibility() {
                                 rel="noreferrer"
                                 target="_blank"
                             >
-                                People in Phase 1 (Health care, nursing homes,
+                                People in Phase 1 (healthcare, nursing homes,
                                 etc.)
+                            </a>
+                        </EligibilityGroupItem>
+                        {/* TODO - remove the following div after March 11, and update link to be appropriate link from https://www.mass.gov/covid-19-vaccine*/}
+                        <br></br>
+                        <br></br>
+                        <div>Eligible to sign up starting March 11: </div>
+                        <br></br>
+                        <EligibilityGroupItem>
+                            <a
+                                href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases"
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                Pre-K to 12 teachers and staff, early educators,
+                                and child care workers
                             </a>
                         </EligibilityGroupItem>
                     </List>
