@@ -20,7 +20,6 @@
         "react-scripts": "4.0.1",
         "react-sortable-table": "^1.4.0",
         "universal-cookie": "^4.0.4",
-        "us-zips": "^4.0.2",
         "web-vitals": "^0.2.4"
     },
     "scripts": {
@@ -30,7 +29,8 @@
         "eject": "react-scripts eject",
         "check:prettier": "prettier --check ./src",
         "check:eslint": "eslint",
-        "postinstall": "is-ci || husky install"
+        "postinstall": "is-ci || husky install",
+        "zips": "node scripts/generate-ma-zips.js"
     },
     "eslintConfig": {
         "extends": [
@@ -52,6 +52,7 @@
     },
     "devDependencies": {
         "husky": "^5.0.9",
-        "prettier": "^2.2.1"
+        "prettier": "^2.2.1",
+        "zipcodes-perogi": "^1.4.201908"
     }
 }

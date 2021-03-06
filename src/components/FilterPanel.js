@@ -17,8 +17,11 @@ import { convertDistance, getDistance } from "geolib";
 import { setSortBy } from "../services/appointmentData.service";
 import Cookies from "universal-cookie";
 
+// For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
+// const zipcodeData = require("us-zips");
+import zipcodeData from "../generated/ma-zips.json";
+
 const cookies = new Cookies();
-const usZips = require("us-zips");
 
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
@@ -221,7 +224,7 @@ export default function FilterPanel(props) {
                 if (d) {
                     const zipValid = zipCodeFilter.zipCode.match(/\d{5}/);
                     if (zipValid) {
-                        const myCoordinates = usZips[zipCodeFilter.zipCode];
+                        const myCoordinates = zipcodeData[zipCodeFilter.zipCode];
                         if (myCoordinates) {
                             setSortBy("miles");
                             d.miles = Math.round(
