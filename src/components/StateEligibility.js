@@ -24,16 +24,43 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function EligibilityGroupItem(props) {
-    return (
-        <ListItem>
-            <ListItemIcon>
-                <CheckIcon />
-            </ListItemIcon>
-            {props.children}
-        </ListItem>
-    );
-}
+const criteriaGroups = [
+    {
+        title: null,
+        list: [
+            [
+                "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older",
+                "Individuals age 65 and older",
+            ],
+            [
+                "https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions",
+                "Individuals with two or more of certain medical conditions",
+            ],
+            [
+                "https://www.mass.gov/info-details/covid-19-vaccinations-for-senior-housing-settings",
+                "Residents and staff of low-income and affordable senior housing",
+            ],
+            [
+                "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-75-and-older",
+                "Individuals age 75 and older",
+            ],
+            [
+                "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-1-",
+                "People in Phase 1 (healthcare, nursing homes, etc.)",
+            ],
+        ],
+    },
+    /* TODO - remove the following div after March 11, and update link to be appropriate link from https://www.mass.gov/covid-19-vaccine */
+    {
+        title: "Eligible to sign up starting March 11: ",
+        list: [
+            [
+                "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases",
+                "Pre-K to 12 teachers and staff, early educators, and child care workers",
+            ],
+        ],
+    },
+];
 
 export default function StateEligibility() {
     const classes = useStyles();
@@ -48,71 +75,40 @@ export default function StateEligibility() {
                 </AccordionSummary>
                 <AccordionDetails className={classes.accordionDetails}>
                     <List>
-                        <EligibilityGroupItem>
-                            <a
-                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older"
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                Individuals age 65 and older
-                            </a>
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            <div>
-                                <a
-                                    href="https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions"
-                                    rel="noreferrer"
-                                    target="_blank"
-                                >
-                                    Individuals with two or more of certain
-                                    medical conditions
-                                </a>
-                            </div>
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            <a
-                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-senior-housing-settings"
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                Residents and staff of low-income and affordable
-                                senior housing
-                            </a>
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            <a
-                                href="https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-75-and-older"
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                Individuals age 75 and older
-                            </a>
-                        </EligibilityGroupItem>
-                        <EligibilityGroupItem>
-                            <a
-                                href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-1-"
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                People in Phase 1 (healthcare, nursing homes,
-                                etc.)
-                            </a>
-                        </EligibilityGroupItem>
-                        {/* TODO - remove the following div after March 11, and update link to be appropriate link from https://www.mass.gov/covid-19-vaccine*/}
-                        <br></br>
-                        <br></br>
-                        <div>Eligible to sign up starting March 11: </div>
-                        <br></br>
-                        <EligibilityGroupItem>
-                            <a
-                                href="https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases"
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                Pre-K to 12 teachers and staff, early educators,
-                                and child care workers
-                            </a>
-                        </EligibilityGroupItem>
+                        {criteriaGroups.map((group, index) => {
+                            return (
+                                // https://reactjs.org/docs/reconciliation.html#recursing-on-children
+                                // "The key only has to be unique among its siblings, not globally unique"
+                                // However the interaction with fragments is unclear, so ensure
+                                // title fragments and listitems are unique, as they are siblings.
+                                <React.Fragment key={"title" + index}>
+                                    {group.title ? (
+                                        // We don't display a title for the first
+                                        // group, for some reason...
+                                        <>
+                                            <br />
+                                            <br />
+                                            <div>{group.title}</div>
+                                            <br />
+                                        </>
+                                    ) : null}
+                                    {group.list.map((criterion, index) => (
+                                        <ListItem key={"item" + index}>
+                                            <ListItemIcon>
+                                                <CheckIcon />
+                                            </ListItemIcon>
+                                            <a
+                                                href={criterion[0]}
+                                                rel="noreferrer"
+                                                target="_blank"
+                                            >
+                                                {criterion[1]}
+                                            </a>
+                                        </ListItem>
+                                    ))}
+                                </React.Fragment>
+                            );
+                        })}
                     </List>
                 </AccordionDetails>
             </Accordion>
