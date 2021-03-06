@@ -12,6 +12,7 @@ import {
     getAppointmentData,
 } from "./services/appointmentData.service";
 import Grid from "@material-ui/core/Grid";
+//import { Alert, AlertTitle } from "@material-ui/lab";
 import Hidden from "@material-ui/core/Hidden";
 import Loader from "react-loader";
 import Menu from "./components/Menu";
