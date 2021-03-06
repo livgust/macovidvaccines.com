@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import CheckIcon from "@material-ui/icons/Check";
+import PeopleIcon from "@material-ui/icons/People";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 
@@ -95,7 +95,7 @@ export default function StateEligibility() {
                                     {group.list.map((criterion, index) => (
                                         <ListItem key={"item" + index}>
                                             <ListItemIcon>
-                                                <CheckIcon />
+                                                <PeopleIcon />
                                             </ListItemIcon>
                                             <a
                                                 href={criterion[0]}
