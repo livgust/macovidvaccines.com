@@ -20,8 +20,7 @@
         "react-scripts": "4.0.1",
         "react-sortable-table": "^1.4.0",
         "universal-cookie": "^4.0.4",
-        "web-vitals": "^0.2.4",
-        "zipcodes-perogi": "^1.4.201908"
+        "web-vitals": "^0.2.4"
     },
     "scripts": {
         "start": "react-scripts start",
