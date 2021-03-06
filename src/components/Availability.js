@@ -54,7 +54,9 @@ export default function Availability({ entry, onlyShowAvailable }) {
                 <div>
                     {availableSlots.map((slot) => (
                         <div key={slot.date}>
-                            {`${slot.date}: ${t("availability.slot", {count: slot.numberAvailableAppointments})}`}
+                            {`${slot.date}: ${t("availability.slot", {
+                                count: slot.numberAvailableAppointments,
+                            })}`}
                         </div>
                     ))}
                 </div>
