@@ -55,7 +55,7 @@ const criteriaGroups = [
         title: "Eligible to sign up starting March 11: ",
         list: [
             [
-                "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases",
+                "https://www.mass.gov/news/baker-polito-administration-announces-k-12-educators-child-care-workers-and-k-12-school-staff",
                 "Pre-K to 12 teachers and staff, early educators, and child care workers",
             ],
         ],
