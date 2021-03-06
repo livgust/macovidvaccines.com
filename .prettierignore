@@ -1,8 +1,10 @@
-node_modules
-public
-build
+build/
+node_modules/
+public/
+ 
 .eslintcache
 .prettierignore
 package-lock.json
+
 *.png
 *.svg
