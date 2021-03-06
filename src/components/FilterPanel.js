@@ -13,7 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { hasSignUpLink } from "./SignUpLink";
-import { getDistance } from "geolib";
+import { convertDistance, getDistance } from "geolib";
 import { setSortBy } from "../services/appointmentData.service";
 import Cookies from "universal-cookie";
 
@@ -224,14 +224,19 @@ export default function FilterPanel(props) {
                         const myCoordinates = usZips[zipCodeFilter.zipCode];
                         if (myCoordinates) {
                             setSortBy("miles");
-                            const metersPerMile = 1609.34;
                             d.miles = Math.round(
-                                getDistance(myCoordinates, d.coordinates, 1) /
-                                    metersPerMile
+                                convertDistance(
+                                    getDistance(
+                                        myCoordinates,
+                                        d.coordinates,
+                                        1
+                                    ),
+                                    "mi"
+                                )
                             );
 
                             // Is the location within the range specified?
-                            return d.miles < zipCodeFilter.miles;
+                            return d.miles <= zipCodeFilter.miles;
                         }
                     }
                 }
