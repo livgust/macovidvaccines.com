@@ -193,7 +193,7 @@ function RestrictionNotifier({ entry }) {
                 }
             >
                 <Typography className={classes.restrictionWarning}>
-                    Important Eligibility Notice
+                    Information about eligibility
                 </Typography>
             </HelpDialog>
         );
@@ -213,13 +213,13 @@ function LocationCard({ entry, className, onlyShowAvailable }) {
                     }
                     subheader={
                         <>
-                            <RestrictionNotifier entry={entry} />
                             <div>
                                 {entry.city}{" "}
                                 {sortedByMiles()
                                     ? `(${entry.miles} miles)`
                                     : ""}
                             </div>
+                            <RestrictionNotifier entry={entry} />
                             <StaleDataIndicator timestamp={entry.timestamp} />
                         </>
                     }
