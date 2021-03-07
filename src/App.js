@@ -2,10 +2,10 @@
 
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
-import ArrowBack from "@material-ui/icons/ArrowBack";
 import { Button, makeStyles, MuiThemeProvider } from "@material-ui/core";
 import CovidAppointmentTable from "./CovidAppointmentTable";
 import Drawer from "@material-ui/core/Drawer";
+import FilterListIcon from "@material-ui/icons/FilterList";
 import FilterPanel, { getZipCodeCookie } from "./components/FilterPanel";
 import {
     filterData,
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     drawerMobile: {},
-    mobileButton: { width: "50%" },
+    mobileButton: { width: "50%", marginLeft: theme.spacing(3) },
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
@@ -143,15 +143,17 @@ function App() {
                                     setOnlyShowAvailable={setOnlyShowAvailable}
                                     zipCode={zipCode}
                                     setZipCode={setZipCode}
-                                ></FilterPanel>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.mobileButton}
-                                    onClick={handleDrawerToggle}
-                                >
-                                    Update List
-                                </Button>
+                                    closeButton={
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.mobileButton}
+                                            onClick={handleDrawerToggle}
+                                        >
+                                            Update List
+                                        </Button>
+                                    }
+                                />
                             </Drawer>
                         </Hidden>
 
@@ -181,12 +183,11 @@ function App() {
                             <Hidden mdUp implementation="css">
                                 <Button
                                     variant="contained"
-                                    startIcon={<ArrowBack />}
+                                    startIcon={<FilterListIcon />}
                                     onClick={handleDrawerToggle}
                                 >
-                                    {/* TODO THIS IS UGLY */}
                                     Filter Locations
-                                </Button>
+                                </Button>{" "}
                             </Hidden>
                             <div
                                 aria-label="loading data"
