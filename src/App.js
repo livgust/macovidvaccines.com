@@ -2,11 +2,12 @@
 
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
-import { Button, makeStyles, MuiThemeProvider } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import CovidAppointmentTable from "./CovidAppointmentTable";
-import Drawer from "@material-ui/core/Drawer";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import FilterPanel, { getZipCodeCookie } from "./components/FilterPanel";
+import FilterPanel from "./components/FilterPanel";
+import { getZipCodeCookie } from "./components/FilterPanel/ZipCodeFilter";
 import {
     filterData,
     getAppointmentData,
@@ -50,21 +51,6 @@ const useStyles = makeStyles((theme) => ({
             flexShrink: 0,
         },
     },
-    drawerPaper: {
-        width: drawerWidth,
-        [theme.breakpoints.up("md")]: {
-            top: "70px",
-            height: "calc(100% - 70px)",
-            border: "none",
-        },
-        [theme.breakpoints.down("sm")]: {
-            top: 0,
-            height: "100% ",
-            borderRight: "1px solid rgba(0, 0, 0, 0.12)",
-        },
-    },
-    drawerMobile: {},
-    mobileButton: { width: "50%", marginLeft: theme.spacing(3) },
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
@@ -74,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
             borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
         },
     },
+    mobileButton: { width: "50%", marginLeft: theme.spacing(3) },
 }));
 
 function App() {
@@ -119,62 +106,30 @@ function App() {
             <main className={classes.main}>
                 <Grid container justify="center" spacing={3}>
                     <Grid container id="main-container">
-                        <Hidden mdUp implementation="css">
-                            <Drawer
-                                container={mainContainer}
-                                variant="temporary"
-                                anchor={
-                                    theme.direction === "rtl" ? "right" : "left"
-                                }
-                                open={mobileOpen}
-                                onClose={handleDrawerToggle}
-                                classes={{
-                                    paper: classes.drawerPaper,
-                                }}
-                                className={classes.drawerMobile}
-                                ModalProps={{
-                                    keepMounted: true, // Better open performance on mobile.
-                                }}
-                            >
-                                <FilterPanel
-                                    data={data}
-                                    onChange={setFilters}
-                                    onlyShowAvailable={onlyShowAvailable}
-                                    setOnlyShowAvailable={setOnlyShowAvailable}
-                                    zipCode={zipCode}
-                                    setZipCode={setZipCode}
-                                    closeButton={
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.mobileButton}
-                                            onClick={handleDrawerToggle}
-                                        >
-                                            Update List
-                                        </Button>
-                                    }
-                                />
-                            </Drawer>
-                        </Hidden>
-
-                        <Hidden smDown implementation="css">
-                            <Drawer
-                                classes={{
-                                    paper: classes.drawerPaper,
-                                }}
-                                variant="permanent"
-                                open
-                            >
-                                <FilterPanel
-                                    data={data}
-                                    onChange={setFilters}
-                                    onlyShowAvailable={onlyShowAvailable}
-                                    setOnlyShowAvailable={setOnlyShowAvailable}
-                                    zipCode={zipCode}
-                                    setZipCode={setZipCode}
-                                />
-                            </Drawer>
-                        </Hidden>
+                        <FilterPanel
+                            mainContainer={mainContainer}
+                            anchor={
+                                theme.direction === "rtl" ? "right" : "left"
+                            }
+                            mobileOpen={mobileOpen}
+                            handleDrawerToggle={handleDrawerToggle}
+                            data={data}
+                            setFilters={setFilters}
+                            onlyShowAvailable={onlyShowAvailable}
+                            setOnlyShowAvailable={setOnlyShowAvailable}
+                            zipCode={zipCode}
+                            setZipCode={setZipCode}
+                            closeButton={
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.mobileButton}
+                                    onClick={handleDrawerToggle}
+                                >
+                                    Update List
+                                </Button>
+                            }
+                        />
                         <Grid className={classes.content}>
                             <h1 className={classes.heading}>
                                 MA Covid Vaccine Appointments
