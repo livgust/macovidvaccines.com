@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
             borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
         },
     },
-    mobileButton: { width: "50%", marginLeft: theme.spacing(3) },
 }));
 
 function App() {
@@ -71,10 +70,10 @@ function App() {
     const [errorMessage, setErrorMessage] = useState();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    // State variables for the two FilterPanels so that both update together
-    const [filters, setFilters] = useState({});
-    const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
-    const [zipCode, setZipCode] = useState(getZipCodeCookie());
+    const [filters, setFilters] = useState({
+        filterByAvailable: true,
+        filterByZipCode: { zipCode: getZipCodeCookie(), miles: 9999 },
+    });
 
     useEffect(() => {
         getAppointmentData()
@@ -114,21 +113,8 @@ function App() {
                             mobileOpen={mobileOpen}
                             handleDrawerToggle={handleDrawerToggle}
                             data={data}
+                            filters={filters}
                             setFilters={setFilters}
-                            onlyShowAvailable={onlyShowAvailable}
-                            setOnlyShowAvailable={setOnlyShowAvailable}
-                            zipCode={zipCode}
-                            setZipCode={setZipCode}
-                            closeButton={
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.mobileButton}
-                                    onClick={handleDrawerToggle}
-                                >
-                                    Update List
-                                </Button>
-                            }
                         />
                         <Grid className={classes.content}>
                             <h1 className={classes.heading}>

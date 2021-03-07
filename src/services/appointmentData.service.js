@@ -1,3 +1,6 @@
+import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
+import { isWithinRadius } from "../components/FilterPanel/ZipCodeFilter";
+
 let sortKey = "location";
 let sortAsc = true;
 
@@ -67,14 +70,16 @@ export function sortData(data) {
     return newData;
 }
 
-export function filterData(data, filters) {
-    const filterNames = Object.keys(filters);
-
+export function filterData(data, { filterByAvailable, filterByZipCode }) {
     return data.filter((d) => {
-        for (let i = 0; i < filterNames.length; i++) {
-            if (!filters[filterNames[i]](d)) {
-                return false;
-            }
+        if (filterByAvailable && !isAvailable(d)) {
+            return false;
+        }
+        if (
+            filterByZipCode.zipCode &&
+            !isWithinRadius(d, filterByZipCode.zipCode, filterByZipCode.miles)
+        ) {
+            return false;
         }
         return true;
     });

@@ -1,24 +1,17 @@
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { convertDistance, getDistance } from "geolib";
-import { setSortBy } from "../../services/appointmentData.service";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
-import AvailabilityFilter, {
-    filterData as filterAvailability,
-} from "./AvailabilityFilter";
+import AvailabilityFilter from "./AvailabilityFilter";
 import ZipCodeFilter from "./ZipCodeFilter";
-
-// For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
-// const zipcodeData = require("us-zips");
-import zipcodeData from "../../generated/ma-zips.json";
+import Button from "@material-ui/core/Button";
 
 const drawerWidth = 300;
 
@@ -48,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     drawerMobile: {},
+    mobileButton: { width: "50%", marginLeft: theme.spacing(3) },
 }));
 
 export default function FilterPanelParent({
@@ -56,14 +50,12 @@ export default function FilterPanelParent({
     mobileOpen,
     handleDrawerToggle,
     data,
+    filters,
     setFilters,
-    onlyShowAvailable,
-    setOnlyShowAvailable,
-    zipCode,
-    setZipCode,
-    closeButton,
 }) {
     const classes = useStyles();
+
+    const [inProgressFilters, setInProgressFilters] = useState({ ...filters });
     return (
         <>
             <Hidden mdUp implementation="css">
@@ -83,12 +75,21 @@ export default function FilterPanelParent({
                 >
                     <FilterPanel
                         data={data}
-                        onChange={setFilters}
-                        onlyShowAvailable={onlyShowAvailable}
-                        setOnlyShowAvailable={setOnlyShowAvailable}
-                        zipCode={zipCode}
-                        setZipCode={setZipCode}
-                        closeButton={closeButton}
+                        filters={inProgressFilters}
+                        setFilters={setInProgressFilters}
+                        closeButton={
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className={classes.mobileButton}
+                                onClick={(e) => {
+                                    handleDrawerToggle(e);
+                                    setFilters(inProgressFilters);
+                                }}
+                            >
+                                Update List
+                            </Button>
+                        }
                     />
                 </Drawer>
             </Hidden>
@@ -103,11 +104,18 @@ export default function FilterPanelParent({
                 >
                     <FilterPanel
                         data={data}
-                        onChange={setFilters}
-                        onlyShowAvailable={onlyShowAvailable}
-                        setOnlyShowAvailable={setOnlyShowAvailable}
-                        zipCode={zipCode}
-                        setZipCode={setZipCode}
+                        filters={inProgressFilters}
+                        setFilters={setInProgressFilters}
+                        closeButton={
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className={classes.mobileButton}
+                                onClick={() => setFilters(inProgressFilters)}
+                            >
+                                Update List
+                            </Button>
+                        }
                     />
                 </Drawer>
             </Hidden>
@@ -116,58 +124,11 @@ export default function FilterPanelParent({
 }
 
 function FilterPanel(props) {
-    const {
-        dataIgnored,
-        onChange,
-        onlyShowAvailable,
-        setOnlyShowAvailable,
-        zipCode,
-        setZipCode,
-        closeButton,
-    } = props;
+    const { dataIgnored, filters, setFilters, closeButton } = props;
 
     const classes = useStyles();
     const theme = useTheme();
     const mdSize = useMediaQuery(theme.breakpoints.up("md"));
-
-    const [zipCodeFilter, setZipcodeFilter] = useState({
-        zipCode: zipCode,
-        miles: 9999,
-    });
-    useEffect(() => {
-        onChange({
-            hasAppointments: (d) => !onlyShowAvailable || filterAvailability(d),
-            zipcode: (d) => {
-                if (d) {
-                    const zipValid = zipCodeFilter.zipCode.match(/\d{5}/);
-                    if (zipValid) {
-                        const myCoordinates =
-                            zipcodeData[zipCodeFilter.zipCode];
-                        if (myCoordinates) {
-                            setSortBy("miles");
-                            d.miles = Math.round(
-                                convertDistance(
-                                    getDistance(
-                                        myCoordinates,
-                                        d.coordinates,
-                                        1
-                                    ),
-                                    "mi"
-                                )
-                            );
-
-                            // Is the location within the range specified?
-                            return d.miles <= zipCodeFilter.miles;
-                        }
-                    }
-                }
-                // No zipcode was provided or
-                // was unable to find coordinates for the specified zipcode
-                setSortBy("location");
-                return true;
-            },
-        });
-    }, [onChange, onlyShowAvailable, zipCodeFilter]);
 
     return (
         <Grid container={true} className={mdSize ? classes.mdPanel : ""}>
@@ -179,21 +140,28 @@ function FilterPanel(props) {
 
             <Grid item xs={12}>
                 <AvailabilityFilter
-                    onlyShowAvailable={onlyShowAvailable}
-                    setOnlyShowAvailable={setOnlyShowAvailable}
-                    onChange={(isChecked) => {
-                        setOnlyShowAvailable(isChecked);
-                    }}
+                    onlyShowAvailable={filters.filterByAvailable}
+                    onChange={(value) =>
+                        setFilters({
+                            ...filters,
+                            filterByAvailable: value,
+                        })
+                    }
                 />
             </Grid>
 
             <Grid item xs={12}>
                 <ZipCodeFilter
-                    zipCode={zipCode}
-                    onChange={(zip) => {
-                        setZipCode(zip);
-                        setZipcodeFilter({ ...zipCode, zipCode: zip });
-                    }}
+                    zipCode={filters.filterByZipCode.zipCode}
+                    onChange={(zip) =>
+                        setFilters({
+                            ...filters,
+                            filterByZipCode: {
+                                ...filters.filterByZipCode,
+                                zipCode: zip,
+                            },
+                        })
+                    }
                     className={classes.formControl}
                 />
             </Grid>

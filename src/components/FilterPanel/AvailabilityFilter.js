@@ -29,6 +29,6 @@ export default function AvailabilityFilter(props) {
     );
 }
 
-export function filterData(item) {
+export function isAvailable(item) {
     return hasSignUpLink(item);
 }
