@@ -1,19 +1,15 @@
-/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
-
-import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-import Hidden from "@material-ui/core/Hidden";
-import Drawer from "@material-ui/core/Drawer";
 import AvailabilityFilter from "./AvailabilityFilter";
-import ZipCodeFilter from "./ZipCodeFilter";
 import Button from "@material-ui/core/Button";
-
-const drawerWidth = 300;
+import Container from "@material-ui/core/Container";
+import Drawer from "@material-ui/core/Drawer";
+import Grid from "@material-ui/core/Grid";
+import Hidden from "@material-ui/core/Hidden";
+import React, { useState } from "react";
+import Typography from "@material-ui/core/Typography";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ZipCodeFilter from "./ZipCodeFilter";
 
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
@@ -28,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         height: "200px",
     },
     drawerPaper: {
-        width: drawerWidth,
+        width: theme.drawerWidth,
         [theme.breakpoints.up("md")]: {
             top: "70px",
             height: "calc(100% - 70px)",
@@ -124,7 +120,7 @@ export default function FilterPanelParent({
 }
 
 function FilterPanel(props) {
-    const { dataIgnored, filters, setFilters, closeButton } = props;
+    const { filters, setFilters, closeButton } = props;
 
     const classes = useStyles();
     const theme = useTheme();

@@ -48,24 +48,22 @@ export default function ZipCodeFilter(props) {
     );
 }
 
-export function isWithinRadius(item, zipCode, miles) {
-    const zipValid = zipCode.match(/\d{5}/);
-    if (zipValid) {
-        const myCoordinates = zipcodeData[zipCode];
-        if (myCoordinates) {
-            //setSortBy("miles");
-            item.miles = Math.round(
-                convertDistance(
-                    getDistance(myCoordinates, item.coordinates, 1),
-                    "mi"
-                )
-            );
+export function isZipValid(zipCode) {
+    return zipCode.match(/\d{5}/) && zipcodeData[zipCode];
+}
 
-            // Is the location within the range specified?
-            return item.miles <= miles;
-        } else {
-            return true;
-        }
+export function isWithinRadius(item, zipCode, miles) {
+    if (isZipValid(zipCode)) {
+        const myCoordinates = zipcodeData[zipCode];
+        item.miles = Math.round(
+            convertDistance(
+                getDistance(myCoordinates, item.coordinates, 1),
+                "mi"
+            )
+        );
+
+        // Is the location within the range specified?
+        return item.miles <= miles;
     } else {
         return true; //default to returning everything when zip is invalid
     }

@@ -10,6 +10,7 @@ const theme = createMuiTheme({
             main: "#AD003B",
         },
     },
+    drawerWidth: 300,
 });
 
 export default theme;
