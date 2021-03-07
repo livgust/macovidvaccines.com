@@ -98,15 +98,15 @@ export default function StateEligibility() {
                                             <ListItemIcon>
                                                 <PeopleIcon />
                                             </ListItemIcon>
-<ListItemText>
-                                            <a
-                                                href={criterion[0]}
-                                                rel="noreferrer"
-                                                target="_blank"
-                                            >
-                                                {criterion[1]}
-                                            </a>
-</ListItemText> 
+                                            <ListItemText>
+                                                <a
+                                                    href={criterion[0]}
+                                                    rel="noreferrer"
+                                                    target="_blank"
+                                                >
+                                                    {criterion[1]}
+                                                </a>
+                                            </ListItemText>
                                         </ListItem>
                                     ))}
                                 </React.Fragment>
