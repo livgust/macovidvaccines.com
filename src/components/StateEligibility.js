@@ -6,6 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 import PeopleIcon from "@material-ui/icons/People";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -97,6 +98,7 @@ export default function StateEligibility() {
                                             <ListItemIcon>
                                                 <PeopleIcon />
                                             </ListItemIcon>
+<ListItemText>
                                             <a
                                                 href={criterion[0]}
                                                 rel="noreferrer"
@@ -104,6 +106,7 @@ export default function StateEligibility() {
                                             >
                                                 {criterion[1]}
                                             </a>
+</ListItemText> 
                                         </ListItem>
                                     ))}
                                 </React.Fragment>
