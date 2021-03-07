@@ -33,12 +33,12 @@ describe("staleness messaging", () => {
         function padMinutes(minutes) {
             return minutes < 10 ? `0${minutes}` : minutes;
         }
+        // We need 1 PM - 12 PM, not 0 PM - 11 PM, so plus-11-mod-12-plus-1:
+        const hours = ((timestampDate.getHours() + 11) % 12) + 1;
+        const minutes = padMinutes(timestampDate.getMinutes());
+        const AMPM = timestampDate.getHours() >= 12 ? "PM" : "AM";
         expect(
-            screen.getByText(
-                `Last updated ${timestampDate.getHours() % 12}:${padMinutes(
-                    timestampDate.getMinutes()
-                )} ${timestampDate.getHours() >= 12 ? "PM" : "AM"}`
-            )
+            screen.getByText(`Last updated ${hours}:${minutes} ${AMPM}`)
         ).toBeTruthy();
     });
 

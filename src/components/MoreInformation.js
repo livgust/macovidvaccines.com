@@ -29,6 +29,10 @@ export default function MoreInformation({ entry }) {
     if (!(entry.streetAddress || entry.restrictions || entry.extraData)) {
         return null;
     } else {
+        const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+            `${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`
+        )}`;
+
         return (
             <Accordion className={classes.accordion}>
                 <AccordionSummary
@@ -40,8 +44,14 @@ export default function MoreInformation({ entry }) {
                 <AccordionDetails className={classes.extraDataContainer}>
                     {entry.streetAddress && (
                         <div className={classes.extraData}>
-                            <b>Address:</b> {entry.streetAddress}, {entry.city},
-                            MA {entry.zip}
+                            <b>Address: </b>
+                            <a
+                                target="_blank"
+                                rel="noreferrer"
+                                href={googleMapsLink}
+                            >
+                                {`${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`}
+                            </a>
                         </div>
                     )}
                     {entry.restrictions && (
@@ -58,6 +68,7 @@ export default function MoreInformation({ entry }) {
 
 function ExtraData({ data }) {
     const classes = useStyles();
+
     if (!data) {
         return null;
     } else if (typeof data === "string") {
