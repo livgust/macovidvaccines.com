@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 const alerts = [
     /*    {
         startDate: "2021-03-04T06:00:00-05:00",
-        endDate: "2021-03-24T09:00:00-05:00",
+        endDate: "2021-03-04T09:00:00-05:00",
         severity: "warning",
         title: "Thursday, March 4",
         contents:
