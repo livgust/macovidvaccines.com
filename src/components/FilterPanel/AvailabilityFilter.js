@@ -22,7 +22,7 @@ export default function AvailabilityFilter(props) {
                             }}
                         />
                     }
-                    label="Has Available Appointments"
+                    label="Only show locations with available appointments"
                 />
             </FormGroup>
         </FormControl>

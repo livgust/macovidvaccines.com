@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
+import RadiusFilter from "./RadiusFilter";
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -159,6 +160,21 @@ function FilterPanel(props) {
                         })
                     }
                     className={classes.formControl}
+                />
+            </Grid>
+
+            <Grid item xs={12}>
+                <RadiusFilter
+                    value={filters.filterByZipCode.miles}
+                    onChange={(miles) =>
+                        setFilters({
+                            ...filters,
+                            filterByZipCode: {
+                                ...filters.filterByZipCode,
+                                miles,
+                            },
+                        })
+                    }
                 />
             </Grid>
 

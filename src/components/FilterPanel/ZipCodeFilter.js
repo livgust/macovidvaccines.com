@@ -3,7 +3,6 @@ import FormGroup from "@material-ui/core/FormGroup";
 import Input from "@material-ui/core/Input";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Cookies from "universal-cookie";
-import { convertDistance, getDistance } from "geolib";
 
 // For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
 // const zipcodeData = require("us-zips");
@@ -28,7 +27,6 @@ export default function ZipCodeFilter(props) {
 
     return (
         <FormControl component="fieldset" className={props.className}>
-            {/*<FormLabel component="legend"></FormLabel>*/}
             <FormGroup>
                 <FormControlLabel
                     control={
@@ -50,21 +48,4 @@ export default function ZipCodeFilter(props) {
 
 export function isZipValid(zipCode) {
     return zipCode.match(/\d{5}/) && zipcodeData[zipCode];
-}
-
-export function isWithinRadius(item, zipCode, miles) {
-    if (isZipValid(zipCode)) {
-        const myCoordinates = zipcodeData[zipCode];
-        item.miles = Math.round(
-            convertDistance(
-                getDistance(myCoordinates, item.coordinates, 1),
-                "mi"
-            )
-        );
-
-        // Is the location within the range specified?
-        return item.miles <= miles;
-    } else {
-        return true; //default to returning everything when zip is invalid
-    }
 }

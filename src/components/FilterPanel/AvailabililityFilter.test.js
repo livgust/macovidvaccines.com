@@ -6,7 +6,9 @@ it("shows label", async () => {
     await act(async () => {
         render(<AvailabilityFilter />);
     });
-    expect(screen.getByText("Has Available Appointments")).toBeTruthy();
+    expect(
+        screen.getByText("Only show locations with available appointments")
+    ).toBeTruthy();
 });
 
 it("is checked", async () => {
