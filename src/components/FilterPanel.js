@@ -225,7 +225,8 @@ export default function FilterPanel(props) {
                 if (d) {
                     const zipValid = zipCodeFilter.zipCode.match(/\d{5}/);
                     if (zipValid) {
-                        const myCoordinates = zipcodeData[zipCodeFilter.zipCode];
+                        const myCoordinates =
+                            zipcodeData[zipCodeFilter.zipCode];
                         if (myCoordinates) {
                             setSortBy("miles");
                             d.miles = Math.round(
