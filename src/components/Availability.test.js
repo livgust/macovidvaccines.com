@@ -84,5 +84,7 @@ it("does not show total slots across all available days if there aren't any", as
             />
         );
     });
-    expect(() => { screen.getByText("Total available") }).toThrow();
+    expect(() => {
+        screen.getByText("Total available");
+    }).toThrow();
 });
