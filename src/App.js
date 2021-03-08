@@ -120,9 +120,9 @@ function MainComponent() {
     }, []);
 
     useEffect(() => {
-        if (isZipValid(filters.filterByZipCode.zipCode)) {
-            setSortBy("miles");
-        }
+        isZipValid(filters.filterByZipCode.zipCode)
+            ? setSortBy("miles")
+            : setSortBy("name");
     }, [filters]);
 
     const filteredData = filterData(data, filters);
