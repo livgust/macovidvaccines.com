@@ -70,7 +70,7 @@ it("shows total slots across all available days", async () => {
             />
         );
     });
-    expect(screen.queryByText("Total available: 70 slots")).toBeTruthy();
+    expect(screen.getByText("Total available: 70 slots")).toBeVisible();
 });
 
 it("does not show total slots across all available days if there aren't any", async () => {
@@ -84,5 +84,5 @@ it("does not show total slots across all available days if there aren't any", as
             />
         );
     });
-    expect(screen.queryByText("Total available")).toBeFalsy();
+    expect(() => { screen.getByText("Total available") }).toThrow();
 });

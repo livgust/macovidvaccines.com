@@ -1,7 +1,16 @@
 import HelpDialog from "./HelpDialog";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    totalSlotsSummary: {
+        fontWeight: "bold",
+    },
+}));
 
 export default function Availability({ entry }) {
+    const classes = useStyles();
+
     if (!entry.hasAppointments) {
         return <div>No availability.</div>;
     } else if (
@@ -44,9 +53,9 @@ export default function Availability({ entry }) {
             return (
                 <div>
                     {totalAvailableSlots > 1 && availableSlots.length > 1 && (
-                        <Typography variant="h6">
+                        <div className={classes.totalSlotsSummary}>
                             {`Total available: ${totalAvailableSlots} slots`}
-                        </Typography>
+                        </div>
                     )}
                     {availableSlots.map((slot) => (
                         <div key={slot.date}>
