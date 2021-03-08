@@ -10,6 +10,14 @@ const theme = createMuiTheme({
             main: "#AD003B",
         },
     },
+    props: {
+        MuiPaper: {
+            elevation: 3,
+        },
+        MuiCard: {
+            elevation: 3,
+        },
+    },
 });
 
 export default theme;
