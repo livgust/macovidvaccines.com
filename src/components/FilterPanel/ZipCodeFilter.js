@@ -1,7 +1,6 @@
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
-import Input from "@material-ui/core/Input";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import TextField from "@material-ui/core/TextField";
 import Cookies from "universal-cookie";
 
 // For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
@@ -26,20 +25,17 @@ export default function ZipCodeFilter(props) {
     };
 
     return (
-        <FormControl component="fieldset" className={props.className}>
+        <FormControl component="fieldset">
             <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Input
-                            value={props.zipCode}
-                            onChange={handleChange}
-                            name="zipCode"
-                            inputProps={{ "data-testid": "zip-input" }}
-                        />
-                    }
+                <TextField
+                    value={props.zipCode}
+                    onChange={handleChange}
+                    name="zipCode"
+                    inputProps={{ "data-testid": "zip-input" }}
                     label="ZIP Code"
-                    labelPlacement="top"
-                    aria-label="ZIP Code"
+                    variant="outlined"
+                    size="small"
+                    type="number"
                 />
             </FormGroup>
         </FormControl>

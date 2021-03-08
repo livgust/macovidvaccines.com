@@ -1,5 +1,6 @@
 import { convertDistance, getDistance } from "geolib";
 import { isZipValid } from "./ZipCodeFilter";
+import { makeStyles } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -11,6 +12,34 @@ import React from "react";
 // const zipcodeData = require("us-zips");
 import zipcodeData from "../../generated/ma-zips.json";
 
+const useStyles = makeStyles((theme) => ({
+    narrowRadio: {
+        "padding-right": theme.spacing(0.5),
+    },
+    padBetweenChoices: {
+        "&:not(:first-of-type)": {
+            "padding-left": theme.spacing(0.5),
+        },
+    },
+}));
+
+function RadiusRadio({ radius, label }) {
+    const classes = useStyles();
+
+    let labelToUse = radius;
+    if (label) {
+        labelToUse = label;
+    }
+    return (
+        <FormControlLabel
+            value={radius}
+            control={<Radio classes={{ root: classes.narrowRadio }} />}
+            label={labelToUse}
+            classes={{ root: classes.padBetweenChoices }}
+        />
+    );
+}
+
 export default function RadiusFilter({ value, onChange }) {
     return (
         <FormControl component="fieldset">
@@ -20,15 +49,12 @@ export default function RadiusFilter({ value, onChange }) {
                 name="distance-filter"
                 value={value.toString()}
                 onChange={(e) => onChange(parseInt(e.target.value))}
+                row
             >
-                <FormControlLabel value="5" control={<Radio />} label="5" />
-                <FormControlLabel value="10" control={<Radio />} label="10" />
-                <FormControlLabel value="25" control={<Radio />} label="25" />
-                <FormControlLabel
-                    value="9999"
-                    control={<Radio />}
-                    label="50+"
-                />
+                <RadiusRadio radius="9999" label="any" />
+                <RadiusRadio radius="5" />
+                <RadiusRadio radius="10" />
+                <RadiusRadio radius="25" />
             </RadioGroup>
         </FormControl>
     );

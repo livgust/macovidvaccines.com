@@ -47,8 +47,6 @@ const alert = new Date() > new Date("2021-03-04T06:00:00-05:00") && (
 const theme = createMuiTheme(themeTemplate);
 
 const useStyles = makeStyles((theme) => {
-    console.log("DRAWERWIDTH USESTYLES");
-    console.log(theme.drawerWidth);
     return {
         main: {
             padding: theme.spacing(2),
