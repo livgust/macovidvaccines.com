@@ -1,37 +1,41 @@
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
+import Alert from "@material-ui/lab/Alert";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 import { Button, makeStyles, MuiThemeProvider } from "@material-ui/core";
 import CovidAppointmentTable from "./CovidAppointmentTable";
 import Drawer from "@material-ui/core/Drawer";
-import FilterPanel from "./components/FilterPanel";
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import Loader from "react-loader";
-import Menu from "./components/Menu";
-import React, { useEffect, useState } from "react";
-import StateEligibility from "./components/StateEligibility";
-import theme from "./theme";
-import Typography from "@material-ui/core/Typography";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import FilterPanel, { getZipCodeCookie } from "./components/FilterPanel";
 import {
     filterData,
     getAppointmentData,
 } from "./services/appointmentData.service";
-import Alert from "@material-ui/lab/Alert";
-import AlertTitle from "@material-ui/lab/AlertTitle";
-import ArrowBack from "@material-ui/icons/ArrowBack";
+import Grid from "@material-ui/core/Grid";
+//import { Alert, AlertTitle } from "@material-ui/lab";
+import Hidden from "@material-ui/core/Hidden";
+import Loader from "react-loader";
+import Menu from "./components/Menu";
+import React, { useEffect, useState } from "react";
+import Typography from "@material-ui/core/Typography";
+import theme from "./theme";
+import StateEligibility from "./components/StateEligibility";
 
 const drawerWidth = 300;
 
 /* Alert to put under page title when necessary
-const alert = (
+const alert = new Date() > new Date("2021-03-04T06:00:00-05:00") && (
     <>
         <Alert severity="warning">
-            <AlertTitle>8:08am Thursday, February 25</AlertTitle>
-            The high demand for appointments right now is causing delays in
-            collecting data. We will report up-to-the-minute availability when
-            wait times decrease. We apologize for the inconvenience.
+            <AlertTitle>Thursday, March 4</AlertTitle>
+            Due to high demand, the MA vaccination websites are experiencing
+            technical difficulties. Once the issues are resolved, their
+            locations will appear on this website.
         </Alert>
         <br />
     </>
-); */
+);
+*/
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -60,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     drawerMobile: {},
+    mobileButton: { width: "50%", marginLeft: theme.spacing(3) },
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
@@ -77,8 +82,12 @@ function App() {
     const [data, setData] = useState([]);
     const [ready, setReady] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-    const [filters, setFilters] = useState({});
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    // State variables for the two FilterPanels so that both update together
+    const [filters, setFilters] = useState({});
+    const [onlyShowAvailable, setOnlyShowAvailable] = useState(true);
+    const [zipCode, setZipCode] = useState(getZipCodeCookie());
 
     useEffect(() => {
         getAppointmentData()
@@ -87,6 +96,7 @@ function App() {
                 setReady(true);
             })
             .catch((ex) => {
+                console.log(ex); // full traceback for diagnostics
                 console.error(ex.message);
                 setErrorMessage(
                     "Something went wrong, please try again later."
@@ -129,6 +139,20 @@ function App() {
                                 <FilterPanel
                                     data={data}
                                     onChange={setFilters}
+                                    onlyShowAvailable={onlyShowAvailable}
+                                    setOnlyShowAvailable={setOnlyShowAvailable}
+                                    zipCode={zipCode}
+                                    setZipCode={setZipCode}
+                                    closeButton={
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.mobileButton}
+                                            onClick={handleDrawerToggle}
+                                        >
+                                            Update List
+                                        </Button>
+                                    }
                                 />
                             </Drawer>
                         </Hidden>
@@ -144,6 +168,10 @@ function App() {
                                 <FilterPanel
                                     data={data}
                                     onChange={setFilters}
+                                    onlyShowAvailable={onlyShowAvailable}
+                                    setOnlyShowAvailable={setOnlyShowAvailable}
+                                    zipCode={zipCode}
+                                    setZipCode={setZipCode}
                                 />
                             </Drawer>
                         </Hidden>
@@ -151,17 +179,15 @@ function App() {
                             <h1 className={classes.heading}>
                                 MA Covid Vaccine Appointments
                             </h1>
-                            <br />
                             <StateEligibility />
                             <Hidden mdUp implementation="css">
                                 <Button
                                     variant="contained"
-                                    startIcon={<ArrowBack />}
+                                    startIcon={<FilterListIcon />}
                                     onClick={handleDrawerToggle}
                                 >
-                                    {/* TODO THIS IS UGLY */}
                                     Filter Locations
-                                </Button>
+                                </Button>{" "}
                             </Hidden>
                             <div
                                 aria-label="loading data"
@@ -199,7 +225,6 @@ function App() {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid item xs={1} sm={2}></Grid>
                 </Grid>
             </main>
         </MuiThemeProvider>

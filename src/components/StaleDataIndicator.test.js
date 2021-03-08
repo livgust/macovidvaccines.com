@@ -2,13 +2,13 @@ import { act, render, screen } from "@testing-library/react";
 
 import StaleDataIndicator from "./StaleDataIndicator";
 
-it("shows no indicator if the data is less than 10 minutes old", async () => {
-    const recentTimestamp = new Date() - 9 * 60 * 1000; //9 mins old
+it("shows no indicator if the data is less than 60 minutes old", async () => {
+    const recentTimestamp = new Date() - 60 * 1000; // 1 min old
     await act(async () => {
         render(
             <StaleDataIndicator
                 timestamp={recentTimestamp}
-                staleMinutesOverride={10}
+                staleMinutesOverride={60}
             />
         );
     });
@@ -16,18 +16,30 @@ it("shows no indicator if the data is less than 10 minutes old", async () => {
 });
 
 describe("staleness messaging", () => {
-    it.skip("shows time if it's today", async () => {
-        const minutesStaleTimestamp = new Date().setHours(12, 0, 0, 0); // 35 mins stale
+    it("shows time if it's today", async () => {
+        // Use the smallest possible difference in time, to avoid failing tests
+        // when run near the boundary of two days in real time.
+        const minutesStaleTimestamp = new Date() - 1; // 1 millisecond old
         await act(async () => {
             render(
                 <StaleDataIndicator
                     timestamp={minutesStaleTimestamp}
-                    staleMinutesOverride={10}
+                    staleMinutesOverride={0}
                 />
             );
         });
 
-        expect(screen.getByText("Last updated 12:00 PM")).toBeTruthy();
+        const timestampDate = new Date(minutesStaleTimestamp);
+        function padMinutes(minutes) {
+            return minutes < 10 ? `0${minutes}` : minutes;
+        }
+        // We need 1 PM - 12 PM, not 0 PM - 11 PM, so plus-11-mod-12-plus-1:
+        const hours = ((timestampDate.getHours() + 11) % 12) + 1;
+        const minutes = padMinutes(timestampDate.getMinutes());
+        const AMPM = timestampDate.getHours() >= 12 ? "PM" : "AM";
+        expect(
+            screen.getByText(`Last updated ${hours}:${minutes} ${AMPM}`)
+        ).toBeTruthy();
     });
 
     it("shows 'yesterday' if it was yesterday", async () => {

@@ -122,7 +122,7 @@ function AboutDialog(props) {
     return (
         <Dialog {...props}>
             <DialogTitle id="about-dialog-title">
-                {"About this Website"}
+                {"About This Website"}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText
