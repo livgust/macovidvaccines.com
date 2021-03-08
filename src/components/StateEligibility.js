@@ -3,6 +3,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -10,10 +11,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import PeopleIcon from "@material-ui/icons/People";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
+import grey from "@material-ui/core/colors/grey";
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(1),
         display: "flex",
         justifyContent: "center",
     },
@@ -22,6 +24,28 @@ const useStyles = makeStyles((theme) => ({
     },
     accordionDetails: {
         display: "block",
+        paddingTop: 0,
+        paddingBottom: theme.spacing(1),
+    },
+    accordionSummary: {
+        backgroundColor: grey[100],
+        content: {
+            margin: 0,
+        },
+    },
+    accordionExpanded: {
+        backgroundColor: grey[300],
+    },
+    listGroup: {
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(1),
+    },
+    listItem: {
+        padding: 0, // theme.spacing(0),
+    },
+    externalLink: {
+        fontSize: "small",
+        marginLeft: theme.spacing(1),
     },
 }));
 
@@ -69,7 +93,13 @@ export default function StateEligibility() {
     return (
         <div className={classes.container}>
             <Accordion className={classes.accordion}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    classes={{
+                        root: classes.accordionSummary,
+                        expanded: classes.accordionExpanded,
+                    }}
+                >
                     <Typography variant="subtitle1">
                         Am I eligible to be vaccinated?
                     </Typography>
@@ -87,25 +117,36 @@ export default function StateEligibility() {
                                         // We don't display a title for the first
                                         // group, for some reason...
                                         <>
-                                            <br />
-                                            <br />
-                                            <div>{group.title}</div>
-                                            <br />
+                                            <div className={classes.listGroup}>
+                                                <Typography variant="subtitle2">
+                                                    {group.title}
+                                                </Typography>
+                                            </div>
                                         </>
                                     ) : null}
                                     {group.list.map((criterion, index) => (
-                                        <ListItem key={"item" + index}>
+                                        <ListItem
+                                            key={"item" + index}
+                                            className={classes.listItem}
+                                        >
                                             <ListItemIcon>
                                                 <PeopleIcon />
                                             </ListItemIcon>
                                             <ListItemText>
-                                                <a
-                                                    href={criterion[0]}
-                                                    rel="noreferrer"
-                                                    target="_blank"
-                                                >
+                                                <Typography>
                                                     {criterion[1]}
-                                                </a>
+                                                    <Link
+                                                        href={criterion[0]}
+                                                        rel="noreferrer"
+                                                        target="_blank"
+                                                        variant="body2"
+                                                        className={
+                                                            classes.externalLink
+                                                        }
+                                                    >
+                                                        (learn more{"\u2026"})
+                                                    </Link>
+                                                </Typography>
                                             </ListItemText>
                                         </ListItem>
                                     ))}
