@@ -43,53 +43,68 @@ const useStyles = makeStyles((theme) => ({
     listItem: {
         padding: 0, // theme.spacing(0),
     },
-    externalLink: {
-        fontSize: "small",
-        marginLeft: theme.spacing(1),
-    },
 }));
 
 const criteriaGroups = [
     {
-        title: null,
+        title:
+            "You may click the links below for official criteria from Massachusetts:",
         list: [
-            [
-                "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older",
-                "Individuals age 65 and older",
-            ],
-            [
-                "https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions",
-                "Individuals with two or more of certain medical conditions",
-            ],
-            [
-                "https://www.mass.gov/info-details/covid-19-vaccinations-for-senior-housing-settings",
-                "Residents and staff of low-income and affordable senior housing",
-            ],
-            [
-                "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-75-and-older",
-                "Individuals age 75 and older",
-            ],
-            [
-                "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-1-",
-                "People in Phase 1 (healthcare, nursing homes, etc.)",
-            ],
+            // NOTE: the link is applied to the section of text in the [square brackets]
+            {
+                link:
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older",
+                text: "Individuals [age 65 and older]",
+                color: "primary",
+            },
+            {
+                link:
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions",
+                text:
+                    "Individuals with [two or more of certain medical conditions]",
+                color: "primary",
+            },
+
+            {
+                link:
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-senior-housing-settings",
+                text:
+                    "Residents and staff of [low-income and affordable senior housing]",
+                color: "primary",
+            },
+
+            {
+                link:
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-75-and-older",
+                text: "Individuals [age 75 and older]",
+                color: "primary",
+            },
+
+            {
+                link:
+                    "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-1-",
+                text: "People in [Phase 1] (healthcare, nursing homes, etc.)",
+                color: "primary",
+            },
         ],
     },
     /* TODO - remove the following div after March 11, and update link to be appropriate link from https://www.mass.gov/covid-19-vaccine */
     {
         title: "Eligible to sign up starting March 11: ",
         list: [
-            [
-                "https://www.mass.gov/news/baker-polito-administration-announces-k-12-educators-child-care-workers-and-k-12-school-staff",
-                "K-12 educators, child care workers and K-12 school staff",
-            ],
+            {
+                link:
+                    "https://www.mass.gov/news/baker-polito-administration-announces-k-12-educators-child-care-workers-and-k-12-school-staff",
+                text:
+                    "[K-12 educators, child care workers and K-12 school staff]",
+                color: "disabled",
+            },
         ],
     },
 ];
 
 export default function StateEligibility() {
     const classes = useStyles();
-
     return (
         <div className={classes.container}>
             <Accordion className={classes.accordion}>
@@ -125,30 +140,11 @@ export default function StateEligibility() {
                                         </>
                                     ) : null}
                                     {group.list.map((criterion, index) => (
-                                        <ListItem
-                                            key={"item" + index}
-                                            className={classes.listItem}
-                                        >
-                                            <ListItemIcon>
-                                                <PeopleIcon />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                <Typography>
-                                                    {criterion[1]}
-                                                    <Link
-                                                        href={criterion[0]}
-                                                        rel="noreferrer"
-                                                        target="_blank"
-                                                        variant="body2"
-                                                        className={
-                                                            classes.externalLink
-                                                        }
-                                                    >
-                                                        (learn more{"\u2026"})
-                                                    </Link>
-                                                </Typography>
-                                            </ListItemText>
-                                        </ListItem>
+                                        <CriterionItem
+                                            criterion={criterion}
+                                            index={index}
+                                            classes={classes}
+                                        />
                                     ))}
                                 </React.Fragment>
                             );
@@ -157,5 +153,40 @@ export default function StateEligibility() {
                 </AccordionDetails>
             </Accordion>
         </div>
+    );
+}
+
+function CriterionItem({ index, criterion, classes }) {
+    // parse criterion text into 3 parts, where the section
+    // between square brackets is the linkable text
+    // "Part-1 [Part-2] Part-3
+    const regex = /([^[]*)\[([^\]]*)](.*)/;
+    const parts = criterion.text.match(regex);
+
+    return (
+        <ListItem key={"item" + index} className={classes.listItem}>
+            <ListItemIcon>
+                <PeopleIcon color={criterion.color} />
+            </ListItemIcon>
+            <ListItemText>
+                <Typography>
+                    {!parts ? (
+                        criterion.text
+                    ) : (
+                        <>
+                            {parts[1]}
+                            <Link
+                                href={criterion.link}
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                {parts[2]}
+                            </Link>
+                            {parts[3]}
+                        </>
+                    )}
+                </Typography>
+            </ListItemText>
+        </ListItem>
     );
 }
