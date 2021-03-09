@@ -32,7 +32,7 @@ const MAZipcodes = zipcodes.lookupByState("MA");
 const MAZipcodesSmaller = Object.fromEntries(
     MAZipcodes.map((z) => [
         z.zip,
-        { city: z.city, latitude: z.latitude, longitude: z.longitude },
+        { latitude: z.latitude, longitude: z.longitude },
     ])
 );
 

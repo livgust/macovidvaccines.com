@@ -3,10 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import axe from "@axe-core/react";
 
 //Use Axe for accessibility profiling when not in production mode
 if (process.env.NODE_ENV !== "production") {
+    const axe = require("@axe-core/react");
     axe(React, ReactDOM, 1000);
 }
 

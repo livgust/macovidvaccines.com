@@ -55,7 +55,6 @@ export default function FilterPanelParent({
     anchor,
     mobileOpen,
     handleDrawerToggle,
-    data,
     filters,
     setFilters,
 }) {
@@ -79,7 +78,6 @@ export default function FilterPanelParent({
                     }}
                 >
                     <FilterPanel
-                        data={data}
                         filters={inProgressFilters}
                         setFilters={setInProgressFilters}
                         closeButton={
@@ -108,7 +106,6 @@ export default function FilterPanelParent({
                     open
                 >
                     <FilterPanel
-                        data={data}
                         filters={inProgressFilters}
                         setFilters={setInProgressFilters}
                         closeButton={

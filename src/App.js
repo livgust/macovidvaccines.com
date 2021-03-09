@@ -15,13 +15,13 @@ import {
 } from "./components/FilterPanel/ZipCodeFilter";
 import { setSortBy } from "./services/appointmentData.service";
 import Alert from "@material-ui/lab/Alert";
+import AlertBanner from "./components/AlertBanner";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import Button from "@material-ui/core/Button";
 import CovidAppointmentTable from "./CovidAppointmentTable";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import FilterPanel from "./components/FilterPanel";
 import Grid from "@material-ui/core/Grid";
-//import { Alert, AlertTitle } from "@material-ui/lab";
 import Hidden from "@material-ui/core/Hidden";
 import Loader from "react-loader";
 import Menu from "./components/Menu";
@@ -30,41 +30,25 @@ import StateEligibility from "./components/StateEligibility";
 import Typography from "@material-ui/core/Typography";
 import themeTemplate from "./theme";
 
-/* Alert to put under page title when necessary
-const alert = new Date() > new Date("2021-03-04T06:00:00-05:00") && (
-    <>
-        <Alert severity="warning">
-            <AlertTitle>Thursday, March 4</AlertTitle>
-            Due to high demand, the MA vaccination websites are experiencing
-            technical difficulties. Once the issues are resolved, their
-            locations will appear on this website.
-        </Alert>
-        <br />
-    </>
-);
-*/
-
 const theme = createMuiTheme(themeTemplate);
 
-const useStyles = makeStyles((theme) => {
-    return {
-        main: {
-            padding: theme.spacing(2),
+const useStyles = makeStyles((theme) => ({
+    main: {
+        padding: theme.spacing(2),
+    },
+    heading: {
+        "text-align": "center",
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        [theme.breakpoints.up("md")]: {
+            width: `calc(100% - ${theme.drawerWidth}px)`,
+            marginLeft: theme.drawerWidth,
+            borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
         },
-        heading: {
-            "text-align": "center",
-        },
-        content: {
-            flexGrow: 1,
-            padding: theme.spacing(3),
-            [theme.breakpoints.up("md")]: {
-                width: `calc(100% - ${theme.drawerWidth}px)`,
-                marginLeft: theme.drawerWidth,
-                borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
-            },
-        },
-    };
-});
+    },
+}));
 
 function App() {
     return (
@@ -118,9 +102,9 @@ function MainComponent() {
     }, []);
 
     useEffect(() => {
-        if (isZipValid(filters.filterByZipCode.zipCode)) {
-            setSortBy("miles");
-        }
+        isZipValid(filters.filterByZipCode.zipCode)
+            ? setSortBy("miles")
+            : setSortBy("name");
     }, [filters]);
 
     const filteredData = filterData(data, filters);
@@ -138,7 +122,6 @@ function MainComponent() {
                         anchor={theme.direction === "rtl" ? "right" : "left"}
                         mobileOpen={mobileOpen}
                         handleDrawerToggle={handleDrawerToggle}
-                        data={data}
                         filters={filters}
                         setFilters={setFilters}
                     />
@@ -146,6 +129,7 @@ function MainComponent() {
                         <h1 className={classes.heading}>
                             MA Covid Vaccine Appointments
                         </h1>
+                        <AlertBanner />
                         <StateEligibility />
                         <Hidden mdUp implementation="css">
                             <Button
