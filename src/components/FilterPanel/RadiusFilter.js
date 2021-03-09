@@ -43,7 +43,7 @@ function RadiusRadio({ radius, label }) {
 export default function RadiusFilter({ value, onChange }) {
     return (
         <FormControl component="fieldset">
-            <FormLabel component="legend">Distance (miles):</FormLabel>
+            <FormLabel component="label">Distance (miles):</FormLabel>
             <RadioGroup
                 aria-label="distance (miles)"
                 name="distance-filter"
@@ -51,7 +51,7 @@ export default function RadiusFilter({ value, onChange }) {
                 onChange={(e) => onChange(parseInt(e.target.value))}
                 row
             >
-                <RadiusRadio radius="9999" label="any" />
+                <RadiusRadio radius="9999" label="Any" />
                 <RadiusRadio radius="5" />
                 <RadiusRadio radius="10" />
                 <RadiusRadio radius="25" />

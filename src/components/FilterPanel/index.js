@@ -9,7 +9,7 @@ import RadiusFilter from "./RadiusFilter";
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import ZipCodeFilter from "./ZipCodeFilter";
+import ZipCodeFilter, { isZipValid } from "./ZipCodeFilter";
 
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
@@ -117,6 +117,13 @@ export default function FilterPanelParent({
                                 color="primary"
                                 className={classes.mobileButton}
                                 onClick={() => setFilters(inProgressFilters)}
+                                disabled={
+                                    inProgressFilters.filterByZipCode.zipCode &&
+                                    !isZipValid(
+                                        inProgressFilters.filterByZipCode
+                                            .zipCode
+                                    )
+                                }
                             >
                                 Update List
                             </Button>

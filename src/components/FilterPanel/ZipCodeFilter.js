@@ -1,5 +1,6 @@
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
+import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
 import Cookies from "universal-cookie";
 
@@ -24,18 +25,25 @@ export default function ZipCodeFilter(props) {
         props.onChange(targetZip);
     };
 
+    const error = showZipError(props.zipCode);
+
     return (
         <FormControl component="fieldset">
             <FormGroup>
+                <FormLabel htmlFor="zip-code" component="label">
+                    ZIP Code:
+                </FormLabel>
                 <TextField
                     value={props.zipCode}
                     onChange={handleChange}
-                    name="zipCode"
+                    name="zip-code"
+                    id="zip-code"
                     inputProps={{ "data-testid": "zip-input" }}
-                    label="ZIP Code"
                     variant="outlined"
                     size="small"
                     type="number"
+                    error={error}
+                    helperText={error && "Enter a ZIP Code in Massachusetts."}
                 />
             </FormGroup>
         </FormControl>
@@ -44,4 +52,8 @@ export default function ZipCodeFilter(props) {
 
 export function isZipValid(zipCode) {
     return zipCode.match(/\d{5}/) && zipcodeData[zipCode];
+}
+
+function showZipError(zipCode) {
+    return !!zipCode && zipCode.length >= 5 && !isZipValid(zipCode);
 }
