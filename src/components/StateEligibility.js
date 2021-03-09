@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     listItem: {
         padding: 0, // theme.spacing(0),
     },
+    listItemIcon: {
+        "min-width": theme.spacing(5),
+    },
 }));
 
 const criteriaGroups = [
@@ -51,6 +54,14 @@ const criteriaGroups = [
             "You may click the links below for official criteria from Massachusetts:",
         list: [
             // NOTE: the link is applied to the section of text in the [square brackets]
+            {
+                startDate: "2021-03-11T00:00:00-05:00", // current timezone offset is at the end
+                link:
+                    "https://www.mass.gov/news/baker-polito-administration-announces-k-12-educators-child-care-workers-and-k-12-school-staff",
+                text:
+                    "[K-12 educators, child care workers and K-12 school staff]",
+                color: "primary",
+            },
             {
                 link:
                     "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older",
@@ -90,6 +101,7 @@ const criteriaGroups = [
     },
     /* TODO - remove the following div after March 11, and update link to be appropriate link from https://www.mass.gov/covid-19-vaccine */
     {
+        endDate: "2021-03-11T00:00:00-05:00", // current timezone offset is at the end
         title: "Eligible to sign up starting March 11: ",
         list: [
             {
@@ -105,6 +117,13 @@ const criteriaGroups = [
 
 export default function StateEligibility() {
     const classes = useStyles();
+
+    // filter out entire groups that have ended
+    const now = new Date();
+    const filteredGroups = criteriaGroups.filter((group) => {
+        return !(group.endDate && now > new Date(group.endDate));
+    });
+
     return (
         <div className={classes.container}>
             <Accordion className={classes.accordion}>
@@ -121,7 +140,7 @@ export default function StateEligibility() {
                 </AccordionSummary>
                 <AccordionDetails className={classes.accordionDetails}>
                     <List>
-                        {criteriaGroups.map((group, index) => {
+                        {filteredGroups.map((group, index) => {
                             return (
                                 // https://reactjs.org/docs/reconciliation.html#recursing-on-children
                                 // "The key only has to be unique among its siblings, not globally unique"
@@ -157,6 +176,13 @@ export default function StateEligibility() {
 }
 
 function CriterionItem({ index, criterion, classes }) {
+    const now = new Date();
+
+    // skip any criteria that haven't started yet.
+    if (criterion.startDate && now < new Date(criterion.startDate)) {
+        return false;
+    }
+
     // parse criterion text into 3 parts, where the section
     // between square brackets is the linkable text
     // "Part-1 [Part-2] Part-3
@@ -165,7 +191,7 @@ function CriterionItem({ index, criterion, classes }) {
 
     return (
         <ListItem key={"item" + index} className={classes.listItem}>
-            <ListItemIcon>
+            <ListItemIcon className={classes.listItemIcon}>
                 <PeopleIcon color={criterion.color} />
             </ListItemIcon>
             <ListItemText>
