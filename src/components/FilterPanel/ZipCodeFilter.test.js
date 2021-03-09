@@ -3,6 +3,13 @@ import userEvent from "@testing-library/user-event";
 
 import ZipCodeFilter from "./ZipCodeFilter";
 
+it("shows label", async () => {
+    await act(async () => {
+        render(<ZipCodeFilter />);
+    });
+    expect(screen.getByLabelText("ZIP Code:")).toBeTruthy();
+});
+
 it("has passed-in non-empty value", async () => {
     await act(async () => {
         render(<ZipCodeFilter zipCode="123" />);

@@ -1,5 +1,5 @@
 import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
-import { isWithinRadius } from "../components/FilterPanel/RadiusFilter";
+import { isWithinRadius } from "../components/FilterPanel/ZipCodeFilter";
 
 let sortKey = "location";
 let sortAsc = true;
