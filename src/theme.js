@@ -21,6 +21,7 @@ const theme = createMuiTheme({
             underline: "always", // default was "hover"
         },
     },
+    drawerWidth: 300,
 });
 
 export default theme;
