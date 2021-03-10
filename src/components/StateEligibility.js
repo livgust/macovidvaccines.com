@@ -51,13 +51,14 @@ const useStyles = makeStyles((theme) => ({
 const criteriaGroups = [
     {
         title:
-            "You may click the links below for official criteria from Massachusetts:",
+            "You may click the links below for [official criteria from Massachusetts]:",
+        link: "https://www.mass.gov/covid-19-vaccine",
         list: [
             // NOTE: the link is applied to the section of text in the [square brackets]
             {
                 startDate: "2021-03-11T00:00:00-05:00", // current timezone offset is at the end
                 link:
-                    "https://www.mass.gov/news/baker-polito-administration-announces-k-12-educators-child-care-workers-and-k-12-school-staff",
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-k-12-educators-child-care-workers-and-school-staff",
                 text:
                     "[K-12 educators, child care workers and K-12 school staff]",
                 color: "primary",
@@ -106,7 +107,7 @@ const criteriaGroups = [
         list: [
             {
                 link:
-                    "https://www.mass.gov/news/baker-polito-administration-announces-k-12-educators-child-care-workers-and-k-12-school-staff",
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-k-12-educators-child-care-workers-and-school-staff",
                 text:
                     "[K-12 educators, child care workers and K-12 school staff]",
                 color: "disabled",
@@ -150,13 +151,10 @@ export default function StateEligibility() {
                                     {group.title ? (
                                         // We don't display a title for the first
                                         // group, for some reason...
-                                        <>
-                                            <div className={classes.listGroup}>
-                                                <Typography variant="subtitle2">
-                                                    {group.title}
-                                                </Typography>
-                                            </div>
-                                        </>
+                                        <CriterionGroup
+                                            className={classes.listGroup}
+                                            group={group}
+                                        />
                                     ) : null}
                                     {group.list.map((criterion, index) => (
                                         <CriterionItem
@@ -175,6 +173,18 @@ export default function StateEligibility() {
     );
 }
 
+function CriterionGroup({ className, group }) {
+    return (
+        <div className={className}>
+            <MarkupLink
+                text={group.title}
+                link={group.link}
+                variant="subtitle2"
+            />
+        </div>
+    );
+}
+
 function CriterionItem({ index, criterion, classes }) {
     const now = new Date();
 
@@ -183,36 +193,46 @@ function CriterionItem({ index, criterion, classes }) {
         return false;
     }
 
-    // parse criterion text into 3 parts, where the section
-    // between square brackets is the linkable text
-    // "Part-1 [Part-2] Part-3
-    const regex = /([^[]*)\[([^\]]*)](.*)/;
-    const parts = criterion.text.match(regex);
-
     return (
         <ListItem key={"item" + index} className={classes.listItem}>
             <ListItemIcon className={classes.listItemIcon}>
                 <PeopleIcon color={criterion.color} />
             </ListItemIcon>
             <ListItemText>
-                <Typography>
-                    {!parts ? (
-                        criterion.text
-                    ) : (
-                        <>
-                            {parts[1]}
-                            <Link
-                                href={criterion.link}
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                {parts[2]}
-                            </Link>
-                            {parts[3]}
-                        </>
-                    )}
-                </Typography>
+                <MarkupLink link={criterion.link} text={criterion.text} />
             </ListItemText>
         </ListItem>
+    );
+}
+
+/*
+ * @param {string} text
+ * @param {string} link
+ * @param {string} variant
+ */
+function MarkupLink({ text, link, variant }) {
+    /* 
+    Parse criterion text into 3 parts, where the section
+    between square brackets is the linkable text
+    "Part-1 [Part-2] Part-3
+     */
+    const regex = /([^[]*)\[([^\]]*)](.*)/;
+    console.log("MarkupLink: " + text);
+    const parts = text.match(regex);
+
+    return (
+        <Typography variant={variant}>
+            {!parts ? (
+                text
+            ) : (
+                <>
+                    {parts[1]}
+                    <Link href={link} rel="noreferrer" target="_blank">
+                        {parts[2]}
+                    </Link>
+                    {parts[3]}
+                </>
+            )}
+        </Typography>
     );
 }
