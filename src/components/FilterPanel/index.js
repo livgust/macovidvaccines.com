@@ -88,6 +88,7 @@ export default function FilterPanelParent({
                                     handleDrawerToggle(e);
                                     setFilters(inProgressFilters);
                                 }}
+                                type="submit"
                             >
                                 Update List
                             </Button>
@@ -121,6 +122,7 @@ export default function FilterPanelParent({
                                             .zipCode
                                     )
                                 }
+                                type="submit"
                             >
                                 Update List
                             </Button>
@@ -170,51 +172,53 @@ function FilterPanel(props) {
                     Filter
                 </Typography>
             )}
-            <FilterSegment>
-                <AvailabilityFilter
-                    onlyShowAvailable={filters.filterByAvailable}
-                    onChange={(value) =>
-                        setFilters({
-                            ...filters,
-                            filterByAvailable: value,
-                        })
-                    }
-                />
-            </FilterSegment>
-
-            <FilterGroup name="Find Locations">
+            <form onSubmit={(e) => e.preventDefault()}>
                 <FilterSegment>
-                    <ZipCodeFilter
-                        zipCode={filters.filterByZipCode.zipCode}
-                        onChange={(zip) =>
+                    <AvailabilityFilter
+                        onlyShowAvailable={filters.filterByAvailable}
+                        onChange={(value) =>
                             setFilters({
                                 ...filters,
-                                filterByZipCode: {
-                                    ...filters.filterByZipCode,
-                                    zipCode: zip,
-                                },
+                                filterByAvailable: value,
                             })
                         }
                     />
                 </FilterSegment>
 
-                <FilterSegment>
-                    <RadiusFilter
-                        value={filters.filterByZipCode.miles}
-                        onChange={(miles) =>
-                            setFilters({
-                                ...filters,
-                                filterByZipCode: {
-                                    ...filters.filterByZipCode,
-                                    miles,
-                                },
-                            })
-                        }
-                    />
-                </FilterSegment>
-            </FilterGroup>
+                <FilterGroup name="Find Locations">
+                    <FilterSegment>
+                        <ZipCodeFilter
+                            zipCode={filters.filterByZipCode.zipCode}
+                            onChange={(zip) =>
+                                setFilters({
+                                    ...filters,
+                                    filterByZipCode: {
+                                        ...filters.filterByZipCode,
+                                        zipCode: zip,
+                                    },
+                                })
+                            }
+                        />
+                    </FilterSegment>
 
-            <FilterSegment>{closeButton}</FilterSegment>
+                    <FilterSegment>
+                        <RadiusFilter
+                            value={filters.filterByZipCode.miles}
+                            onChange={(miles) =>
+                                setFilters({
+                                    ...filters,
+                                    filterByZipCode: {
+                                        ...filters.filterByZipCode,
+                                        miles,
+                                    },
+                                })
+                            }
+                        />
+                    </FilterSegment>
+                </FilterGroup>
+
+                <FilterSegment>{closeButton}</FilterSegment>
+            </form>
         </Grid>
     );
 }
