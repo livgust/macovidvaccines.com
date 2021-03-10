@@ -102,7 +102,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CovidAppointmentTable({ data, sortBy }) {
+export default function CovidAppointmentTable({
+    data,
+    sortBy,
+    onlyShowAvailable,
+}) {
     const classes = useStyles();
 
     const sortedData = sortData(data, sortBy);
@@ -127,6 +131,7 @@ export default function CovidAppointmentTable({ data, sortBy }) {
                             className={classes.cardBox}
                             key={getSiteId(entry)}
                             showMiles={sortBy === "miles"}
+                            onlyShowAvailable={onlyShowAvailable}
                         />
                     );
                 })

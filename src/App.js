@@ -148,6 +148,9 @@ function MainComponent() {
                                 ) : (
                                     <CovidAppointmentTable
                                         data={filteredData}
+                                        onlyShowAvailable={
+                                            filters.filterByAvailable
+                                        }
                                         sortBy={sortBy}
                                     />
                                 )}
