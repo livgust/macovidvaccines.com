@@ -217,7 +217,6 @@ function MarkupLink({ text, link, variant }) {
     "Part-1 [Part-2] Part-3
      */
     const regex = /([^[]*)\[([^\]]*)](.*)/;
-    console.log("MarkupLink: " + text);
     const parts = text.match(regex);
 
     return (
