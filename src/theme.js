@@ -10,6 +10,17 @@ const theme = createMuiTheme({
             main: "#AD003B",
         },
     },
+    props: {
+        MuiPaper: {
+            elevation: 3, // default was 1
+        },
+        MuiCard: {
+            elevation: 3, // default was 1
+        },
+        MuiLink: {
+            underline: "always", // default was "hover"
+        },
+    },
     drawerWidth: 300,
 });
 
