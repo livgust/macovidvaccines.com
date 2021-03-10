@@ -9,6 +9,9 @@ const theme = createMuiTheme({
         secondary: {
             main: "#AD003B",
         },
+        text: {
+            secondary: "rgba(0, 0, 0, 0.66)",
+        },
     },
     props: {
         MuiPaper: {

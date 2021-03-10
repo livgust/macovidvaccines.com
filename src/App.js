@@ -13,7 +13,6 @@ import {
     getZipCodeCookie,
     isZipValid,
 } from "./components/FilterPanel/ZipCodeFilter";
-import { setSortBy } from "./services/appointmentData.service";
 import Alert from "@material-ui/lab/Alert";
 import AlertBanner from "./components/AlertBanner";
 import AlertTitle from "@material-ui/lab/AlertTitle";
@@ -85,6 +84,9 @@ function MainComponent() {
         filterByZipCode: { zipCode: getZipCodeCookie(), miles: 9999 },
     });
 
+    const zip = filters.filterByZipCode.zipCode;
+    const sortBy = zip && isZipValid(zip) ? "miles" : "name";
+
     useEffect(() => {
         getAppointmentData()
             .then(async (res) => {
@@ -100,12 +102,6 @@ function MainComponent() {
                 setReady(true);
             });
     }, []);
-
-    useEffect(() => {
-        isZipValid(filters.filterByZipCode.zipCode)
-            ? setSortBy("miles")
-            : setSortBy("name");
-    }, [filters]);
 
     const filteredData = filterData(data, filters);
 
@@ -152,6 +148,10 @@ function MainComponent() {
                                 ) : (
                                     <CovidAppointmentTable
                                         data={filteredData}
+                                        onlyShowAvailable={
+                                            filters.filterByAvailable
+                                        }
+                                        sortBy={sortBy}
                                     />
                                 )}
                             </Loader>

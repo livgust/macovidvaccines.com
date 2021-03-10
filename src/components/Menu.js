@@ -52,7 +52,7 @@ export default function ButtonAppBar() {
 
     return (
         <nav className={classes.root}>
-            <AppBar position="static" component="div">
+            <AppBar position="fixed" component="div">
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -75,6 +75,8 @@ export default function ButtonAppBar() {
                     </Button>
                 </Toolbar>
             </AppBar>
+            {/* workaround for spacing - see https://material-ui.com/components/app-bar/#fixed-placement */}
+            <Toolbar />
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}

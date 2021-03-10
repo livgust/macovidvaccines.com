@@ -2,22 +2,21 @@ import { makeStyles } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import AvailabilityFilter from "./AvailabilityFilter";
 import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
+import RadiusFilter from "./RadiusFilter";
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import ZipCodeFilter from "./ZipCodeFilter";
+import ZipCodeFilter, { isZipValid } from "./ZipCodeFilter";
 
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
 
+const leftPaddingSpacingCoefficient = 1.0;
+
 const useStyles = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(3),
-    },
     mdPanel: {
         position: "sticky",
         top: 0,
@@ -36,8 +35,19 @@ const useStyles = makeStyles((theme) => ({
             borderRight: "1px solid rgba(0, 0, 0, 0.12)",
         },
     },
-    drawerMobile: {},
-    mobileButton: { width: "50%", marginLeft: theme.spacing(3) },
+    filterGroup: {
+        "border-style": "solid",
+        "border-color": theme.palette.divider,
+        "margin-left": theme.spacing(-leftPaddingSpacingCoefficient / 2),
+        "padding-left": theme.spacing(leftPaddingSpacingCoefficient / 2),
+    },
+    filterSegment: {
+        "padding-top": theme.spacing(1),
+        "padding-bottom": theme.spacing(1),
+    },
+    panel: {
+        "padding-left": theme.spacing(leftPaddingSpacingCoefficient),
+    },
 }));
 
 export default function FilterPanelParent({
@@ -63,7 +73,6 @@ export default function FilterPanelParent({
                     classes={{
                         paper: classes.drawerPaper,
                     }}
-                    className={classes.drawerMobile}
                     ModalProps={{
                         keepMounted: true, // Better open performance on mobile.
                     }}
@@ -75,15 +84,16 @@ export default function FilterPanelParent({
                             <Button
                                 variant="contained"
                                 color="primary"
-                                className={classes.mobileButton}
                                 onClick={(e) => {
                                     handleDrawerToggle(e);
                                     setFilters(inProgressFilters);
                                 }}
+                                type="submit"
                             >
                                 Update List
                             </Button>
                         }
+                        isMobile
                     />
                 </Drawer>
             </Hidden>
@@ -105,6 +115,14 @@ export default function FilterPanelParent({
                                 color="primary"
                                 className={classes.mobileButton}
                                 onClick={() => setFilters(inProgressFilters)}
+                                disabled={
+                                    inProgressFilters.filterByZipCode.zipCode &&
+                                    !isZipValid(
+                                        inProgressFilters.filterByZipCode
+                                            .zipCode
+                                    )
+                                }
+                                type="submit"
                             >
                                 Update List
                             </Button>
@@ -116,52 +134,91 @@ export default function FilterPanelParent({
     );
 }
 
+function FilterSegment({ children }) {
+    const classes = useStyles();
+    return (
+        <Grid item xs={12} className={classes.filterSegment}>
+            {children}
+        </Grid>
+    );
+}
+
+function FilterGroup({ name, children }) {
+    const classes = useStyles();
+    return (
+        <div className={classes.filterGroup}>
+            <div className={classes.filterSegment}>
+                <strong>{name}</strong>
+            </div>
+            {children}
+        </div>
+    );
+}
+
 function FilterPanel(props) {
-    const { filters, setFilters, closeButton } = props;
+    const { filters, setFilters, closeButton, isMobile } = props;
 
     const classes = useStyles();
     const theme = useTheme();
     const mdSize = useMediaQuery(theme.breakpoints.up("md"));
 
     return (
-        <Grid container={true} className={mdSize ? classes.mdPanel : ""}>
-            <Container>
-                <Typography component="span">
-                    <h3>Filter by:</h3>
+        <Grid
+            container={true}
+            className={`${classes.panel} ${mdSize ? classes.mdPanel : ""}`}
+        >
+            {isMobile && (
+                <Typography variant="h6" component="span">
+                    Filter
                 </Typography>
-            </Container>
+            )}
+            <form onSubmit={(e) => e.preventDefault()}>
+                <FilterSegment>
+                    <AvailabilityFilter
+                        onlyShowAvailable={filters.filterByAvailable}
+                        onChange={(value) =>
+                            setFilters({
+                                ...filters,
+                                filterByAvailable: value,
+                            })
+                        }
+                    />
+                </FilterSegment>
 
-            <Grid item xs={12}>
-                <AvailabilityFilter
-                    onlyShowAvailable={filters.filterByAvailable}
-                    onChange={(value) =>
-                        setFilters({
-                            ...filters,
-                            filterByAvailable: value,
-                        })
-                    }
-                />
-            </Grid>
+                <FilterGroup name="Find Locations">
+                    <FilterSegment>
+                        <ZipCodeFilter
+                            zipCode={filters.filterByZipCode.zipCode}
+                            onChange={(zip) =>
+                                setFilters({
+                                    ...filters,
+                                    filterByZipCode: {
+                                        ...filters.filterByZipCode,
+                                        zipCode: zip,
+                                    },
+                                })
+                            }
+                        />
+                    </FilterSegment>
 
-            <Grid item xs={12}>
-                <ZipCodeFilter
-                    zipCode={filters.filterByZipCode.zipCode}
-                    onChange={(zip) =>
-                        setFilters({
-                            ...filters,
-                            filterByZipCode: {
-                                ...filters.filterByZipCode,
-                                zipCode: zip,
-                            },
-                        })
-                    }
-                    className={classes.formControl}
-                />
-            </Grid>
+                    <FilterSegment>
+                        <RadiusFilter
+                            value={filters.filterByZipCode.miles}
+                            onChange={(miles) =>
+                                setFilters({
+                                    ...filters,
+                                    filterByZipCode: {
+                                        ...filters.filterByZipCode,
+                                        miles,
+                                    },
+                                })
+                            }
+                        />
+                    </FilterSegment>
+                </FilterGroup>
 
-            <Grid item xs={12}>
-                {closeButton}
-            </Grid>
+                <FilterSegment>{closeButton}</FilterSegment>
+            </form>
         </Grid>
     );
 }
