@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core";
 import MoreInformation from "./components/MoreInformation";
 import React from "react";
 import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
-import { sortData, sortedByMiles } from "./services/appointmentData.service";
+import { sortData } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
 
@@ -102,10 +102,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CovidAppointmentTable({ data }) {
+export default function CovidAppointmentTable({ data, sortBy }) {
     const classes = useStyles();
 
-    const sortedData = sortData(data);
+    const sortedData = sortData(data, sortBy);
 
     // generate unique key for each site
     const getSiteId = (site) => {
@@ -126,6 +126,7 @@ export default function CovidAppointmentTable({ data }) {
                             entry={entry}
                             className={classes.cardBox}
                             key={getSiteId(entry)}
+                            showMiles={sortBy === "miles"}
                         />
                     );
                 })
@@ -200,7 +201,7 @@ function RestrictionNotifier({ entry }) {
     }
 }
 
-function LocationCard({ entry, className, onlyShowAvailable }) {
+function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
     const classes = useStyles();
     return (
         <div role="listitem" className={className}>
@@ -215,9 +216,7 @@ function LocationCard({ entry, className, onlyShowAvailable }) {
                         <>
                             <div>
                                 {entry.city}{" "}
-                                {sortedByMiles()
-                                    ? `(${entry.miles} miles)`
-                                    : ""}
+                                {showMiles && `(${entry.miles} miles)`}
                             </div>
                             <RestrictionNotifier entry={entry} />
                             <StaleDataIndicator timestamp={entry.timestamp} />

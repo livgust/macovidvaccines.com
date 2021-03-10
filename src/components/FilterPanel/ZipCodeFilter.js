@@ -15,14 +15,13 @@ export function getZipCodeCookie() {
 }
 export default function ZipCodeFilter(props) {
     const handleChange = (e) => {
-        const targetZip = e.target.value;
-        const zipValid = targetZip === "" || targetZip.match(/\d{5}/);
         /* TODO: we have a mix of cookie stuff in and out of this component.
          * It should all be in one place. */
+        const { formattedZip, zipValid } = zipInputFilter(e.target.value);
         if (zipValid) {
-            cookies.set("ZIPCode", targetZip, { path: "/" });
+            cookies.set("ZIPCode", formattedZip, { path: "/" });
         }
-        props.onChange(targetZip);
+        props.onChange(formattedZip);
     };
 
     const error = showZipError(props.zipCode);
@@ -41,13 +40,22 @@ export default function ZipCodeFilter(props) {
                     inputProps={{ "data-testid": "zip-input" }}
                     variant="outlined"
                     size="small"
-                    type="number"
+                    type="text"
                     error={error}
                     helperText={error && "Enter a ZIP Code in Massachusetts."}
                 />
             </FormGroup>
         </FormControl>
     );
+}
+
+export function zipInputFilter(value) {
+    const targetZip = value.replace(/[^\d]/g, "");
+    const zipValid = targetZip === "" || targetZip.match(/\d{5}/);
+    return {
+        formattedZip: targetZip,
+        zipValid,
+    };
 }
 
 export function isZipValid(zipCode) {

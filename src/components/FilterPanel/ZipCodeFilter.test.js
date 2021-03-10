@@ -1,13 +1,17 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import ZipCodeFilter from "./ZipCodeFilter";
+import ZipCodeFilter, { zipInputFilter } from "./ZipCodeFilter";
 
 it("shows label", async () => {
     await act(async () => {
         render(<ZipCodeFilter />);
     });
     expect(screen.getByLabelText("ZIP Code:")).toBeTruthy();
+});
+
+it("only allows numbers", () => {
+    expect(zipInputFilter("testing 1 $ 2 _ 3").formattedZip).toBe("123");
 });
 
 it("has passed-in non-empty value", async () => {
