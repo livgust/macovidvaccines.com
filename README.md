@@ -16,7 +16,7 @@ If you do not have NodeJS installed, please go to the [NodeJS Downloads Page](ht
 
 If you use [nvm](https://github.com/nvm-sh/nvm) to manage installed versions of `node` and `npm`, switch to the node version defined in `.nvmrc` via `nvm use`. Run `nvm install` if you get a "not yet installed" error.
 
-_**NOTE:** If you use a different major version of `node`, you may experience errors when running commands from this repo with `node` or `npm`. Additionally, please avoid running `npm install` if `npm --version` returns version `7.0.0` or greater._
+_**NOTE:** If you use a different major version of `node`, you may experience errors when running commands from this repo with `node` or `npm`. Additionally, please ensure you're using version `7.0.0` or greater by running `npm --version`._
 
 Once you have `node` set up, install the modules declared in `package-lock.json`:
 

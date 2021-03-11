@@ -6,3 +6,6 @@ CI=true npm run test --env=jsdom
 
 printf "\nRunning prettier. If this step fails, run 'npx prettier --write ./src' to fix.\n"
 npm run check:prettier
+
+printf "\nVerifying lockfile v2. If this step fails, upgrade to npm 7+ `npm install -g npm` and run `npm install` again.\n"
+npm run check:lockfile
