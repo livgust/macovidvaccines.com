@@ -64,9 +64,13 @@ export default function AlertBanner() {
     });
 
     // Output an Alert for each of the remaining timely alerts
-    return timelyAlerts.map((alert) => {
+    return timelyAlerts.map((alert, index) => {
         return (
-            <Alert severity={alert.severity} className={classes.alertBanner}>
+            <Alert
+                severity={alert.severity}
+                key={index}
+                className={classes.alertBanner}
+            >
                 <AlertTitle>{alert.title}</AlertTitle>
                 <div dangerouslySetInnerHTML={{ __html: alert.contents }} />
                 {alert.button ? (

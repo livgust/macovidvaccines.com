@@ -159,7 +159,7 @@ export default function StateEligibility() {
                                     {group.list.map((criterion, index) => (
                                         <CriterionItem
                                             criterion={criterion}
-                                            index={index}
+                                            key={"criterion" + index}
                                             classes={classes}
                                         />
                                     ))}
@@ -185,16 +185,15 @@ function CriterionGroup({ className, group }) {
     );
 }
 
-function CriterionItem({ index, criterion, classes }) {
+function CriterionItem({ criterion, classes }) {
     const now = new Date();
 
     // skip any criteria that haven't started yet.
     if (criterion.startDate && now < new Date(criterion.startDate)) {
         return false;
     }
-
     return (
-        <ListItem key={"item" + index} className={classes.listItem}>
+        <ListItem className={classes.listItem}>
             <ListItemIcon className={classes.listItemIcon}>
                 <PeopleIcon color={criterion.color} />
             </ListItemIcon>
