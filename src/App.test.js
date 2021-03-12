@@ -77,7 +77,7 @@ describe("the App component", function () {
             );
         });
 
-        test("it displays an error message", async function () {
+        test.skip("it displays an error message", async function () {
             await act(async function () {
                 render(<App />);
             });

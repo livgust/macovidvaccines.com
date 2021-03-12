@@ -116,10 +116,13 @@ export default function FilterPanelParent({
                                 className={classes.mobileButton}
                                 onClick={() => setFilters(inProgressFilters)}
                                 disabled={
-                                    inProgressFilters.filterByZipCode.zipCode &&
-                                    !isZipValid(
+                                    !!(
                                         inProgressFilters.filterByZipCode
-                                            .zipCode
+                                            .zipCode &&
+                                        !isZipValid(
+                                            inProgressFilters.filterByZipCode
+                                                .zipCode
+                                        )
                                     )
                                 }
                                 type="submit"
