@@ -77,12 +77,12 @@ describe("the App component", function () {
             );
         });
 
-        test.skip("it displays an error message", async function () {
+        test("it displays an error message", async function () {
             await act(async function () {
                 render(<App />);
             });
 
-            expect(screen.getByRole("alert")).toBeInTheDocument();
+            expect(screen.getByText("Unexpected Internal Error"));
         });
     });
 });
