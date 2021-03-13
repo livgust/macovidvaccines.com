@@ -1,0 +1,140 @@
+{
+    "statusCode": 200,
+    "body": {
+        "results": [
+            {
+                "name": "Marshfield Fairgrounds",
+                "street": "140 Main St",
+                "city": "Marshfield",
+                "zip": "02050",
+                "availability": {
+                    "02/11/2021": {
+                        "hasAvailability": false,
+                        "numberAvailableAppointments": 0,
+                        "signUpLink": null
+                    },
+                    "02/12/2021": {
+                        "hasAvailability": false,
+                        "numberAvailableAppointments": 0,
+                        "signUpLink": null
+                    },
+                    "02/13/2021": {
+                        "hasAvailability": false,
+                        "numberAvailableAppointments": 0,
+                        "signUpLink": null
+                    }
+                },
+                "hasAvailability": false,
+                "extraData": {
+                    "Vaccinations offered": "Pfizer-BioNTech COVID-19 Vaccine",
+                    "Age groups served": "Adults, Seniors",
+                    "Services offered": "Vaccination",
+                    "Clinic Hours": "09:45 am - 04:15 pm"
+                },
+                "latitude": 42.0987421,
+                "longitude": -70.7172638
+            },
+            {
+                "name": "Berkshire Community College Field House",
+                "street": "1350 West Street",
+                "city": "Pittsfield",
+                "zip": "01201",
+                "availability": {
+                    "02/11/2021": {
+                        "hasAvailability": true,
+                        "numberAvailableAppointments": 10,
+                        "signUpLink": null
+                    },
+                    "02/13/2021": {
+                        "hasAvailability": true,
+                        "numberAvailableAppointments": 677,
+                        "signUpLink": "https://www.maimmunizations.org/client/registration?clinic_id=1455"
+                    }
+                },
+                "hasAvailability": true,
+                "extraData": {
+                    "Vaccinations offered": "Pfizer-BioNTech COVID-19 Vaccine",
+                    "Age groups served": "Seniors",
+                    "Services offered": "Vaccination",
+                    "Additional Information": "FOR THOSE IN PHASE 2 WHO ARE 75 YEARS OLD OR OLDER. Please bring id, wear a short sleeve shirt and mask, and social distance.",
+                    "Clinic Hours": "02:00 pm - 07:00 pm"
+                },
+                "latitude": "42.4565446",
+                "longitude": "-73.3170033"
+            },
+            {
+                "name": "Fenway Park",
+                "street": "4 Jersey St",
+                "city": "Boston",
+                "zip": "02215",
+                "availability": {
+                    "02/11/2021": {
+                        "hasAvailability": false,
+                        "numberAvailableAppointments": 0,
+                        "signUpLink": null
+                    },
+                    "02/12/2021": {
+                        "hasAvailability": false,
+                        "numberAvailableAppointments": 0,
+                        "signUpLink": null
+                    },
+                    "02/13/2021": {
+                        "hasAvailability": false,
+                        "numberAvailableAppointments": 0,
+                        "signUpLink": null
+                    },
+                    "02/14/2021": {
+                        "hasAvailability": false,
+                        "numberAvailableAppointments": 0,
+                        "signUpLink": null
+                    },
+                    "02/15/2021": {
+                        "hasAvailability": false,
+                        "numberAvailableAppointments": 0,
+                        "signUpLink": null
+                    },
+                    "02/16/2021": {
+                        "hasAvailability": true,
+                        "numberAvailableAppointments": 457,
+                        "signUpLink": "https://www.maimmunizations.org/client/registration?clinic_id=1902"
+                    },
+                    "02/17/2021": {
+                        "hasAvailability": true,
+                        "numberAvailableAppointments": 624,
+                        "signUpLink": "https://www.maimmunizations.org/client/registration?clinic_id=1903"
+                    },
+                    "02/18/2021": {
+                        "hasAvailability": true,
+                        "numberAvailableAppointments": 661,
+                        "signUpLink": "https://www.maimmunizations.org/client/registration?clinic_id=989"
+                    },
+                    "02/19/2021": {
+                        "hasAvailability": true,
+                        "numberAvailableAppointments": 671,
+                        "signUpLink": "https://www.maimmunizations.org/client/registration?clinic_id=1092"
+                    },
+                    "02/20/2021": {
+                        "hasAvailability": true,
+                        "numberAvailableAppointments": 534,
+                        "signUpLink": "https://www.maimmunizations.org/client/registration?clinic_id=1906"
+                    },
+                    "02/21/2021": {
+                        "hasAvailability": true,
+                        "numberAvailableAppointments": 443,
+                        "signUpLink": "https://www.maimmunizations.org/client/registration?clinic_id=1907"
+                    }
+                },
+                "hasAvailability": true,
+                "extraData": {
+                    "Vaccinations offered": "Pfizer-BioNTech COVID-19 Vaccine",
+                    "Age groups served": "Adults, Seniors",
+                    "Services offered": "Vaccination",
+                    "Additional Information": "***Per the Commonwealth of Massachusetts' vaccine distribution timeline, this clinic is for all Phase 1 priority groups, plus the first priority group in Phase 2: individuals ages 75 and older.*** Please arrive only 5 minutes prior to your appointment (not sooner or later) and bring proof of eligibility. Please remember to wear a mask and practice social distancing at all times. You should expect to be at the vaccination site for about 60-75 minutes, all told — from the time you check in until your post-shot observation period ends. There is a 15-minute variance depending on the duration required for your post-shot observation.",
+                    "Clinic Hours": "08:00 am - 06:00 pm"
+                },
+                "latitude": "42.3466764",
+                "longitude": "-71.0972178"
+            }
+        ]
+    }
+}
