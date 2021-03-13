@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(1),
     },
     listItem: {
-        padding: 0, // theme.spacing(0),
+        padding: 0,
     },
     listItemIcon: {
         "min-width": theme.spacing(5),
