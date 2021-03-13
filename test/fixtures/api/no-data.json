@@ -1,1 +1,6 @@
-{ "statusCode": 404, "body": { "results": [] } }
+{
+    "statusCode": 404,
+    "body": {
+        "results": []
+    }
+}
