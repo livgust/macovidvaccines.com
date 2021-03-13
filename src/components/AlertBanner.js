@@ -30,17 +30,25 @@ const alerts = [
         endDate: "2021-03-19T09:00:00-05:00",
         severity: "success", // one of "error", "info", "success", "warning"
         title: "Preregister for Mass Vaccination Site",
-        contents: `
-                <p>The Commonwealth’s
-                <a href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment">
-                preregistration system</a> helps you get an appointment at one of
-                the seven mass vaccination locations. You’ll receive weekly status updates,
-                and you may opt out at any time if you find an appointment elsewhere.
+        contents: (
+            <>
+                <p>
+                    The Commonwealth’s{" "}
+                    <a href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment">
+                        preregistration system
+                    </a>{" "}
+                    helps you get an appointment at one of the seven mass
+                    vaccination locations. You’ll receive weekly status updates,
+                    and you may opt out at any time if you find an appointment
+                    elsewhere.
                 </p>
                 <p>
-                We recommend preregistering <i>and</i> using this site &mdash; you may
-                find an appointment at locations not covered by preregistration.
-                </p>`,
+                    We recommend preregistering <i>and</i> using this site
+                    &mdash; you may find an appointment at locations not covered
+                    by preregistration.
+                </p>
+            </>
+        ),
         button: "Preregister now",
         buttonLink:
             "https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment",
@@ -68,7 +76,7 @@ export default function AlertBanner() {
         return (
             <Alert severity={alert.severity} className={classes.alertBanner}>
                 <AlertTitle>{alert.title}</AlertTitle>
-                <div dangerouslySetInnerHTML={{ __html: alert.contents }} />
+                {alert.contents}
                 {alert.button ? (
                     <p>
                         <Button
