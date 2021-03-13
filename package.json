@@ -13,11 +13,13 @@
         "dayjs": "^1.10.4",
         "dompurify": "^2.2.6",
         "geolib": "^3.3.1",
+        "i18next": "^19.9.1",
         "is-ci": "^3.0.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
+        "react-i18next": "^11.8.8",
         "react-loader": "^2.4.7",
-        "react-scripts": "4.0.1",
+        "react-scripts": "^4.0.3",
         "react-sortable-table": "^1.4.0",
         "universal-cookie": "^4.0.4",
         "web-vitals": "^0.2.4"
@@ -29,6 +31,7 @@
         "eject": "react-scripts eject",
         "check:prettier": "prettier --check ./src",
         "check:eslint": "eslint",
+        "check:lockfile": "node -e \"if(require('./package-lock.json').lockfileVersion !== 2) {process.exit(1);};\"",
         "postinstall": "is-ci || husky install",
         "zips": "node scripts/generate-ma-zips.js"
     },
@@ -54,5 +57,9 @@
         "husky": "^5.0.9",
         "prettier": "^2.2.1",
         "zipcodes-perogi": "^1.4.201908"
+    },
+    "engines": {
+        "node": ">= 14.0.0",
+        "npm": ">= 7.0.0"
     }
 }

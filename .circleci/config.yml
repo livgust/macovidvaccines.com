@@ -17,6 +17,9 @@ jobs:
             - run:
                   name: npm test
                   command: npm test
+            - run:
+                  name: npm run check:lockfile
+                  command: npm run check:lockfile
             - save_cache:
                   paths:
                       - ~/.npm

@@ -1,0 +1,7 @@
+{
+    "page_title": "MA Covid Vaccine Appointments",
+    "availability": {
+        "slot": "{{count}} slot",
+        "slot_plural": "{{count}} slots"
+    }
+}

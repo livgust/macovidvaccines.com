@@ -1,5 +1,5 @@
-let sortKey = "location";
-let sortAsc = true;
+import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
+import { isWithinRadius } from "../components/FilterPanel/RadiusFilter";
 
 const dayjs = require("dayjs");
 
@@ -44,20 +44,10 @@ export function transformData(data) {
         return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
     });
 }
-
-export function setSortBy(sortBy) {
-    sortKey = sortBy;
-    sortAsc = true;
-}
-
-export function sortedByMiles() {
-    return sortKey === "miles";
-}
-
-export function sortData(data) {
+export function sortData(data, sortKey) {
     const newData = data.sort((a, b) => {
-        const first = sortAsc ? a[sortKey] : b[sortKey];
-        const second = sortAsc ? b[sortKey] : a[sortKey];
+        const first = a[sortKey];
+        const second = b[sortKey];
         if (typeof first == "string") {
             return first.localeCompare(second);
         } else {
@@ -67,14 +57,16 @@ export function sortData(data) {
     return newData;
 }
 
-export function filterData(data, filters) {
-    const filterNames = Object.keys(filters);
-
+export function filterData(data, { filterByAvailable, filterByZipCode }) {
     return data.filter((d) => {
-        for (let i = 0; i < filterNames.length; i++) {
-            if (!filters[filterNames[i]](d)) {
-                return false;
-            }
+        if (filterByAvailable && !isAvailable(d)) {
+            return false;
+        }
+        if (
+            filterByZipCode.zipCode &&
+            !isWithinRadius(d, filterByZipCode.zipCode, filterByZipCode.miles)
+        ) {
+            return false;
         }
         return true;
     });
