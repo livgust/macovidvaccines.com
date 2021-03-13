@@ -38,13 +38,18 @@ describe("the App component", function () {
             expect(await screen.findAllByRole("listitem")).toHaveLength(2);
         });
 
-        //TODO: UPDATE
-        test.skip("disabling the filter shows all appointment cards", async function () {
+        test("disabling the filter shows all appointment cards", async function () {
             await act(async function () {
                 render(<App />);
             });
 
-            (await screen.findByLabelText("switch")).click();
+            // FYI: There two buttons (one for mobile, one for desktop)
+            await screen
+                .getAllByText(
+                    "Only show locations with available appointments"
+                )[0]
+                .click();
+            await screen.getAllByText("Update List")[0].click();
 
             expect(await screen.findAllByRole("listitem")).toHaveLength(3);
         });

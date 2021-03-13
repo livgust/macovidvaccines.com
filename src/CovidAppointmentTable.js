@@ -221,7 +221,9 @@ function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
                         <>
                             <div>
                                 {entry.city}{" "}
-                                {showMiles && `(${entry.miles} miles)`}
+                                {showMiles &&
+                                    entry.miles &&
+                                    `(${entry.miles} miles)`}
                             </div>
                             <RestrictionNotifier entry={entry} />
                             <StaleDataIndicator timestamp={entry.timestamp} />
