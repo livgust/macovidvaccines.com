@@ -50,6 +50,31 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function ClearSelections({ classes, inProgressFilters, setInProgressFilters }) {
+    return (
+        <Button
+            variant="outlined"
+            color="default"
+            className={classes.mobileButton}
+            onClick={(e) => {
+                e.preventDefault();
+                setInProgressFilters({
+                    ...inProgressFilters,
+                    filterByAvailable: true,
+                    filterByZipCode: {
+                        ...inProgressFilters.filterByZipCode,
+                        zipCode: "",
+                        miles: 9999,
+                    },
+                });
+            }}
+            type="submit"
+        >
+            Clear Selections
+        </Button>
+    );
+}
+
 export default function FilterPanelParent({
     mainContainer,
     anchor,
@@ -93,6 +118,13 @@ export default function FilterPanelParent({
                                 Update List
                             </Button>
                         }
+                        clearButton={
+                            <ClearSelections
+                                inProgressFilters={inProgressFilters}
+                                setInProgressFilters={setInProgressFilters}
+                                classes={classes}
+                            />
+                        }
                         isMobile
                     />
                 </Drawer>
@@ -130,6 +162,13 @@ export default function FilterPanelParent({
                                 Update List
                             </Button>
                         }
+                        clearButton={
+                            <ClearSelections
+                                inProgressFilters={inProgressFilters}
+                                setInProgressFilters={setInProgressFilters}
+                                classes={classes}
+                            />
+                        }
                     />
                 </Drawer>
             </Hidden>
@@ -159,7 +198,7 @@ function FilterGroup({ name, children }) {
 }
 
 function FilterPanel(props) {
-    const { filters, setFilters, closeButton, isMobile } = props;
+    const { filters, setFilters, closeButton, clearButton, isMobile } = props;
 
     const classes = useStyles();
     const theme = useTheme();
@@ -187,7 +226,6 @@ function FilterPanel(props) {
                         }
                     />
                 </FilterSegment>
-
                 <FilterGroup name="Find Locations">
                     <FilterSegment>
                         <ZipCodeFilter
@@ -203,7 +241,6 @@ function FilterPanel(props) {
                             }
                         />
                     </FilterSegment>
-
                     <FilterSegment>
                         <RadiusFilter
                             value={filters.filterByZipCode.miles}
@@ -219,8 +256,9 @@ function FilterPanel(props) {
                         />
                     </FilterSegment>
                 </FilterGroup>
-
-                <FilterSegment>{closeButton}</FilterSegment>
+                <FilterSegment>
+                    {closeButton} {clearButton}
+                </FilterSegment>
             </form>
         </Grid>
     );
