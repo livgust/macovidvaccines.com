@@ -44,12 +44,8 @@ describe("the App component", function () {
             });
 
             // FYI: There two buttons (one for mobile, one for desktop)
-            await screen
-                .getAllByText(
-                    "Only show locations with available appointments"
-                )[0]
-                .click();
-            await screen.getAllByText("Update List")[0].click();
+            await screen.getAllByTestId("onlyShowAvailable")[0].click();
+            await screen.getByTestId("UpdateListDesktop").click();
 
             expect(await screen.findAllByRole("listitem")).toHaveLength(3);
         });

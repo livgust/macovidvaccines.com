@@ -82,6 +82,7 @@ export default function FilterPanelParent({
                         setFilters={setInProgressFilters}
                         closeButton={
                             <Button
+                                data-testid="UpdateListMobile"
                                 variant="contained"
                                 color="primary"
                                 onClick={(e) => {
@@ -111,6 +112,7 @@ export default function FilterPanelParent({
                         setFilters={setInProgressFilters}
                         closeButton={
                             <Button
+                                data-testid="UpdateListDesktop"
                                 variant="contained"
                                 color="primary"
                                 className={classes.mobileButton}
