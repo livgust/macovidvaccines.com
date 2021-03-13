@@ -9,7 +9,22 @@ const theme = createMuiTheme({
         secondary: {
             main: "#AD003B",
         },
+        text: {
+            secondary: "rgba(0, 0, 0, 0.66)",
+        },
     },
+    props: {
+        MuiPaper: {
+            elevation: 3, // default was 1
+        },
+        MuiCard: {
+            elevation: 3, // default was 1
+        },
+        MuiLink: {
+            underline: "always", // default was "hover"
+        },
+    },
+    drawerWidth: 300,
 });
 
 export default theme;

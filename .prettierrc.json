@@ -1,4 +1,13 @@
 {
+    "endOfLine": "auto",
+    "printWidth": 80,
     "tabWidth": 4,
-    "endOfLine": "auto"
+    "overrides": [
+        {
+            "files": "*.yaml",
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
 }

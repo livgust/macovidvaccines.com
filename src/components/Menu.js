@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     title: {
         flexGrow: 1,
     },
+    resourceButton: {
+        color: theme.palette.primary,
+    },
     unstyledLink: {
         textDecoration: "auto",
         color: "inherit",
@@ -52,7 +55,7 @@ export default function ButtonAppBar() {
 
     return (
         <nav className={classes.root}>
-            <AppBar position="static" component="div">
+            <AppBar position="fixed" component="div">
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -75,6 +78,8 @@ export default function ButtonAppBar() {
                     </Button>
                 </Toolbar>
             </AppBar>
+            {/* workaround for spacing - see https://material-ui.com/components/app-bar/#fixed-placement */}
+            <Toolbar />
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -125,7 +130,10 @@ function AboutDialog(props) {
                 {"About This Website"}
             </DialogTitle>
             <DialogContent>
-                <DialogContentText id="about-dialog-description">
+                <DialogContentText
+                    id="about-dialog-description"
+                    component="div"
+                >
                     <p>
                         This website was created by{" "}
                         <a
@@ -208,38 +216,68 @@ function AboutDialog(props) {
 }
 
 function ResourcesDialog(props) {
+    const classes = useStyles();
     return (
         <Dialog {...props}>
             <DialogTitle id="about-dialog-title">{"Resources"}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="about-dialog-description">
+                <DialogContentText
+                    id="about-dialog-description"
+                    component="div"
+                >
+                    <p>
+                        The Commonwealth’s{" "}
+                        <a href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment">
+                            preregistration system
+                        </a>{" "}
+                        helps you get an appointment at one of the seven mass
+                        vaccination locations. You’ll receive weekly status
+                        updates, and you may opt out at any time if you find an
+                        appointment elsewhere.
+                    </p>
+                    <p>
+                        We recommend preregistering <i>and</i> using this site
+                        &mdash; you may find an appointment at locations not
+                        covered by preregistration.
+                    </p>
+
+                    <Button
+                        variant="contained"
+                        className={classes.resourceButton}
+                        href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        Preregister now
+                    </Button>
                     <p>
                         There are two other websites for the state of
                         Massachusetts that compile information on vaccine
                         availability. They are:
-                        <ul>
-                            <li>
-                                <a
-                                    href="https://vaccinatema.com"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Vaccinate MA
-                                </a>{" "}
-                                (volunteer-run)
-                            </li>
-                            <li>
-                                <a
-                                    href="https://vaxfinder.mass.gov"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Vax Finder
-                                </a>{" "}
-                                (state-run)
-                            </li>
-                        </ul>
                     </p>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://vaccinatema.com"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Vaccinate MA
+                            </a>{" "}
+                            (volunteer-run)
+                        </li>
+                        <li>
+                            <a
+                                href="https://vaxfinder.mass.gov"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Vax Finder
+                            </a>{" "}
+                            (state-run)
+                        </li>
+                    </ul>
                     <p>
                         For more information on the vaccine rollout in
                         Massachusetts, visit{" "}

@@ -1,8 +1,12 @@
-node_modules
-public
-build
+build/
+node_modules/
+public/
+ 
 .eslintcache
 .prettierignore
 package-lock.json
+
+src/generated/ma-zips.json
+
 *.png
 *.svg

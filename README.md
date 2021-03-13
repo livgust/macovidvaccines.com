@@ -16,7 +16,7 @@ If you do not have NodeJS installed, please go to the [NodeJS Downloads Page](ht
 
 If you use [nvm](https://github.com/nvm-sh/nvm) to manage installed versions of `node` and `npm`, switch to the node version defined in `.nvmrc` via `nvm use`. Run `nvm install` if you get a "not yet installed" error.
 
-_**NOTE:** If you use a different major version of `node`, you may experience errors when running commands from this repo with `node` or `npm`. Additionally, please avoid running `npm install` if `npm --version` returns version `7.0.0` or greater._
+_**NOTE:** If you use a different major version of `node`, you may experience errors when running commands from this repo with `node` or `npm`. Additionally, please ensure you're using `npm` version `7.0.0` or greater by running `npm --version`._
 
 Once you have `node` set up, install the modules declared in `package-lock.json`:
 
@@ -38,10 +38,14 @@ This project use `prettier` and `eslint` to enforce good code formatting practic
 
 ### Prettier
 
-Prettier is installed as a dependency and will run a check automatically before every `git commit`. There are also extensions you can use to run Prettier on save within your IDE. To run prettier manually:
+Prettier is "an opinionated code formatter." It is installed as a dependancy and will automatically check your code before every `git commit` (a pre-commit hook is installed via husky).
+
+You can run Prettier within your IDE, such as automatically when saving. See the [Prettier Docs](https://prettier.io/docs/en/index.html).
+
+To run Prettier manually, which will rewrite your code in its style:
 
 ```sh
-npm run check:prettier
+npx prettier --write ./src
 ```
 
 ### ESLint
@@ -50,7 +54,7 @@ Eslint is not currently installed as a dependency. You can install it yourself v
 
 ## Unit Testing
 
-There are unit tests (\*.test.js) that can be run at anytime. They will run automatically before every `git commit`. To run them interactively:
+There are unit tests (\*.test.js) that can be run at anytime. They will run automatically before every `git commit` (a pre-commit hook is installed via husky). To run them manually:
 
 ```sh
 npm run test

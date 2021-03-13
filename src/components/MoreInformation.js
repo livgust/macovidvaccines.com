@@ -2,14 +2,19 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core";
 import { sanitize } from "dompurify";
+import grey from "@material-ui/core/colors/grey";
 
 const useStyles = makeStyles((theme) => ({
     accordion: {
         "margin-top": theme.spacing(2),
         "margin-bottom": theme.spacing(2),
         ":last-child": { "margin-bottom": theme.spacing(2) },
+    },
+    accordionExpanded: {
+        backgroundColor: grey[300],
     },
     buttonText: {
         ...theme.typography.button,
@@ -19,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     extraData: {
         display: "block",
-        "padding-bottom": theme.spacing(1),
+        "padding-top": theme.spacing(1),
     },
 }));
 
@@ -29,19 +34,32 @@ export default function MoreInformation({ entry }) {
     if (!(entry.streetAddress || entry.restrictions || entry.extraData)) {
         return null;
     } else {
+        const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+            `${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`
+        )}`;
+
         return (
             <Accordion className={classes.accordion}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
-                    className={classes.buttonText}
+                    classes={{
+                        root: classes.buttonText,
+                        expanded: classes.accordionExpanded,
+                    }}
                 >
                     More Information
                 </AccordionSummary>
                 <AccordionDetails className={classes.extraDataContainer}>
                     {entry.streetAddress && (
                         <div className={classes.extraData}>
-                            <b>Address:</b> {entry.streetAddress}, {entry.city},
-                            MA {entry.zip}
+                            <b>Address: </b>
+                            <Link
+                                target="_blank"
+                                rel="noreferrer"
+                                href={googleMapsLink}
+                            >
+                                {`${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`}
+                            </Link>
                         </div>
                     )}
                     {entry.restrictions && (
@@ -58,6 +76,7 @@ export default function MoreInformation({ entry }) {
 
 function ExtraData({ data }) {
     const classes = useStyles();
+
     if (!data) {
         return null;
     } else if (typeof data === "string") {
