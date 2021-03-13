@@ -13,6 +13,7 @@ import {
     getZipCodeCookie,
     isZipValid,
 } from "./components/FilterPanel/ZipCodeFilter";
+import { useTranslation } from "react-i18next";
 import Alert from "@material-ui/lab/Alert";
 import AlertBanner from "./components/AlertBanner";
 import AlertTitle from "@material-ui/lab/AlertTitle";
@@ -26,8 +27,8 @@ import Loader from "react-loader";
 import Menu from "./components/Menu";
 import React, { useEffect, useState } from "react";
 import StateEligibility from "./components/StateEligibility";
-import Typography from "@material-ui/core/Typography";
 import themeTemplate from "./theme";
+import Typography from "@material-ui/core/Typography";
 
 const theme = createMuiTheme(themeTemplate);
 
@@ -72,6 +73,7 @@ function ErrorMessageAlert({ message }) {
 }
 
 function MainComponent() {
+    const { t } = useTranslation("main");
     const classes = useStyles();
     const mainContainer = document.getElementById("main-container");
     const [data, setData] = useState([]);
@@ -122,9 +124,7 @@ function MainComponent() {
                         setFilters={setFilters}
                     />
                     <Grid className={classes.content}>
-                        <h1 className={classes.heading}>
-                            MA Covid Vaccine Appointments
-                        </h1>
+                        <h1 className={classes.heading}>{t("page_title")}</h1>
                         <AlertBanner />
                         <StateEligibility />
                         <Hidden mdUp implementation="css">

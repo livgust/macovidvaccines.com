@@ -1,6 +1,9 @@
 import HelpDialog from "./HelpDialog";
+import { useTranslation } from "react-i18next";
 
 export default function Availability({ entry, onlyShowAvailable }) {
+    const { t } = useTranslation("main");
+
     if (!entry.hasAppointments) {
         return <div>No availability.</div>;
     } else if (
@@ -51,11 +54,9 @@ export default function Availability({ entry, onlyShowAvailable }) {
                 <div>
                     {availableSlots.map((slot) => (
                         <div key={slot.date}>
-                            {`${slot.date}: ${
-                                slot.numberAvailableAppointments
-                            } slot${
-                                slot.numberAvailableAppointments > 1 ? "s" : ""
-                            }`}
+                            {`${slot.date}: ${t("availability.slot", {
+                                count: slot.numberAvailableAppointments,
+                            })}`}
                         </div>
                     ))}
                 </div>
