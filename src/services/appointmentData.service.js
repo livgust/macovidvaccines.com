@@ -2,11 +2,22 @@ import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
 import { isWithinRadius } from "../components/FilterPanel/RadiusFilter";
 
 const dayjs = require("dayjs");
+const customParseFormat = require("dayjs/plugin/customParseFormat");
+dayjs.extend(customParseFormat);
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
+
+// This is the timestamp of our data. It should be used instead of "new Date()"
+export let dataNow = dayjs();
 
 // any location with data older than this will not be displayed at all
 const tooStaleMinutes = 60; // unit in minutes
 
-function transformData(data, staleMinutes = tooStaleMinutes) {
+function transformData(data, testDataNow) {
+    if (testDataNow) {
+        dataNow = testDataNow; // this is used for archived data sets
+    }
+
     const ourDateFormat = "M/D/YY"; // 3/2
     // future format?    "ddd, MMM D"; // Tue Mar 2
 
@@ -39,7 +50,7 @@ function transformData(data, staleMinutes = tooStaleMinutes) {
     });
 
     // Pre-Filter the locations that have "non-stale" data
-    const oldestGoodTimestamp = new Date() - staleMinutes * 60 * 1000;
+    const oldestGoodTimestamp = dataNow - tooStaleMinutes * 60 * 1000;
     return mappedData.filter((d) => {
         return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
     });
@@ -70,7 +81,7 @@ export function filterData(data, { filterByAvailable, filterByZipCode }) {
 }
 
 export function getAppointmentData() {
-    let cachedTransform = null;
+    let testDataTransformed = null;
 
     if (process.env.NODE_ENV === "development") {
         // This is a testing branch to get data from a local file instead of the production file.
@@ -80,36 +91,46 @@ export function getAppointmentData() {
         // aws s3 cp s3://ma-covid-vaccine/data-2021-02-23T2253Z.json src/test/devtest.json
 
         try {
-            const testData = require("../test/devtest.json");
-            const testStaleMinutes = 60 * 24 * 365 * 25; // 25 years! otherwise, you might not see anything
+            let testData = require("../test/devtest.json");
 
-            // If it has 'results' then this looks like a timestamp cached json file from S3
-            if (testData.hasOwnProperty("results")) {
-                console.log("archived data");
-                cachedTransform = transformData(
-                    testData.results,
-                    testStaleMinutes
-                );
-            }
             // If it has 'body', then this looks like something pasted from a browser (View Source)
-            else if (testData.hasOwnProperty("body")) {
-                console.log("Data: View Source");
-                cachedTransform = transformData(
-                    testData.body.results,
-                    testStaleMinutes
-                );
+            if (testData.hasOwnProperty("body")) {
+                if (typeof testData.body == "object") {
+                    testData = testData.body;
+                } else {
+                    testData = JSON.parse(testData.body);
+                }
+            }
+
+            if (testData.results) {
+                if (testData.timestamp) {
+                    dataNow = dayjs.utc(
+                        testData.timestamp,
+                        "YYYY-MM-DDTHHmmss[Z]"
+                    );
+                } else {
+                    // If there is no timestamp in the test data
+                    // then just use a date in the past so that nothing is filtered
+                    dataNow = dayjs("03/11/2020");
+                }
+                testDataTransformed = transformData(testData.results);
             }
         } catch (err) {
             // if the file doesn't exist, just get the prod file
-            console.log("using production file: err= " + err);
+            testDataTransformed = null;
         }
+    }
+
+    // If there is not any test d
+    if (!testDataTransformed) {
+        dataNow = dayjs();
     }
 
     return fetch(
         "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
     ).then(async (res) => {
-        return cachedTransform
-            ? cachedTransform
+        return testDataTransformed
+            ? testDataTransformed
             : transformData(JSON.parse((await res.json()).body).results);
     });
 }

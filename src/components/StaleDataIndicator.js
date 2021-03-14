@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
 import React from "react";
+import { dataNow } from "../services/appointmentData.service";
 
 // any location with data older than this will be labeled as "stale"
 export const staleMinutesDefault = 8; // unit is Minutes
@@ -23,7 +24,7 @@ export default function StaleDataIndicator({
     staleMinutesOverride,
 }) {
     const classes = useStyles();
-    const now = new Date();
+    const now = new Date(dataNow); // use the data's date
 
     let staleMinutes = staleMinutesDefault;
     if (staleMinutesOverride || staleMinutesOverride === 0) {
