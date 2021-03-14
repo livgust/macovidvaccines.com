@@ -26,12 +26,13 @@ export default function AvailabilityFilter(props) {
                     control={
                         <div style={{ display: "table-cell" }}>
                             <Checkbox
-                                data-testid="onlyShowAvailable"
                                 checked={props.onlyShowAvailable}
                                 onChange={handleChange}
                                 name="onlyShowAvailable"
                                 inputProps={{
-                                    "data-testid": "availability-checkbox",
+                                    "data-testid": props.isMobile
+                                        ? "availability-checkbox-mobile"
+                                        : "availability-checkbox",
                                 }}
                                 classes={{
                                     root: classes.tightCheckbox,

@@ -44,8 +44,8 @@ describe("the App component", function () {
             });
 
             // FYI: There two buttons (one for mobile, one for desktop)
-            await screen.getAllByTestId("onlyShowAvailable")[0].click();
-            await screen.getByTestId("UpdateListDesktop").click();
+            await screen.getByTestId("availability-checkbox").click();
+            await screen.getByTestId("update-list-button").click();
 
             expect(await screen.findAllByRole("listitem")).toHaveLength(3);
         });
