@@ -237,3 +237,42 @@ it("shows 'no date-specific' message is there is no appointment dates", async ()
     });
     expect(screen.queryByText("No date-specific data available.")).toBeTruthy();
 });
+
+it("shows total slots across all available days", async () => {
+    await act(async () => {
+        render(
+            <Availability
+                entry={{
+                    hasAppointments: true,
+                    appointmentData: {
+                        "10/11/2021": {
+                            hasAvailability: true,
+                            numberAvailableAppointments: 35,
+                        },
+                        "10/12/2021": {
+                            hasAvailability: true,
+                            numberAvailableAppointments: 35,
+                        },
+                    },
+                }}
+            />
+        );
+    });
+    expect(screen.getByText("Total available: 70 slots")).toBeVisible();
+});
+
+it("does not show total slots across all available days if there aren't any", async () => {
+    await act(async () => {
+        render(
+            <Availability
+                entry={{
+                    hasAppointments: false,
+                    totalAvailability: 0,
+                }}
+            />
+        );
+    });
+    expect(() => {
+        screen.getByText("Total available");
+    }).toThrow();
+});
