@@ -73,7 +73,6 @@ export default function CovidAppointmentTable({
                         />
                     );
                 })}
-                )
             </div>
         );
     } else {

@@ -4,7 +4,6 @@ import AvailabilityFilter from "./AvailabilityFilter";
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
 import RadiusFilter from "./RadiusFilter";
 import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
@@ -81,96 +80,95 @@ export default function FilterPanelParent({
     setFilters,
 }) {
     const classes = useStyles();
+    const theme = useTheme();
+    const mdSize = useMediaQuery(theme.breakpoints.up("md"));
 
     const [inProgressFilters, setInProgressFilters] = useState({ ...filters });
-    return (
+    return !mdSize ? (
         <>
-            <Hidden mdUp implementation="css">
-                <Drawer
-                    container={mainContainer}
-                    variant="temporary"
-                    anchor={anchor}
-                    open={mobileOpen}
-                    onClose={handleDrawerToggle}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                    ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
-                    }}
-                >
-                    <FilterPanel
-                        filters={inProgressFilters}
-                        setFilters={setInProgressFilters}
-                        closeButton={
-                            <Button
-                                data-testid="update-list-button-mobile"
-                                variant="contained"
-                                color="primary"
-                                onClick={(e) => {
-                                    handleDrawerToggle(e);
-                                    setFilters(inProgressFilters);
-                                }}
-                                type="submit"
-                            >
-                                Update List
-                            </Button>
-                        }
-                        clearButton={
-                            <ClearSelections
-                                inProgressFilters={inProgressFilters}
-                                setInProgressFilters={setInProgressFilters}
-                                classes={classes}
-                            />
-                        }
-                        isMobile
-                    />
-                </Drawer>
-            </Hidden>
-
-            <Hidden smDown implementation="css">
-                <Drawer
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                    variant="permanent"
-                    open
-                >
-                    <FilterPanel
-                        filters={inProgressFilters}
-                        setFilters={setInProgressFilters}
-                        closeButton={
-                            <Button
-                                data-testid="update-list-button"
-                                variant="contained"
-                                color="primary"
-                                className={classes.mobileButton}
-                                onClick={() => setFilters(inProgressFilters)}
-                                disabled={
-                                    !!(
+            <Drawer
+                container={mainContainer}
+                variant="temporary"
+                anchor={anchor}
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+                ModalProps={{
+                    keepMounted: true, // Better open performance on mobile.
+                }}
+            >
+                <FilterPanel
+                    filters={inProgressFilters}
+                    setFilters={setInProgressFilters}
+                    closeButton={
+                        <Button
+                            data-testid="update-list-button"
+                            variant="contained"
+                            color="primary"
+                            onClick={(e) => {
+                                handleDrawerToggle(e);
+                                setFilters(inProgressFilters);
+                            }}
+                            type="submit"
+                        >
+                            Update List
+                        </Button>
+                    }
+                    clearButton={
+                        <ClearSelections
+                            inProgressFilters={inProgressFilters}
+                            setInProgressFilters={setInProgressFilters}
+                            classes={classes}
+                        />
+                    }
+                    isMobile
+                />
+            </Drawer>
+        </>
+    ) : (
+        <>
+            <Drawer
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+                variant="permanent"
+                open
+            >
+                <FilterPanel
+                    filters={inProgressFilters}
+                    setFilters={setInProgressFilters}
+                    closeButton={
+                        <Button
+                            data-testid="update-list-button"
+                            variant="contained"
+                            color="primary"
+                            className={classes.mobileButton}
+                            onClick={() => setFilters(inProgressFilters)}
+                            disabled={
+                                !!(
+                                    inProgressFilters.filterByZipCode.zipCode &&
+                                    !isZipValid(
                                         inProgressFilters.filterByZipCode
-                                            .zipCode &&
-                                        !isZipValid(
-                                            inProgressFilters.filterByZipCode
-                                                .zipCode
-                                        )
+                                            .zipCode
                                     )
-                                }
-                                type="submit"
-                            >
-                                Update List
-                            </Button>
-                        }
-                        clearButton={
-                            <ClearSelections
-                                inProgressFilters={inProgressFilters}
-                                setInProgressFilters={setInProgressFilters}
-                                classes={classes}
-                            />
-                        }
-                    />
-                </Drawer>
-            </Hidden>
+                                )
+                            }
+                            type="submit"
+                        >
+                            Update List
+                        </Button>
+                    }
+                    clearButton={
+                        <ClearSelections
+                            inProgressFilters={inProgressFilters}
+                            setInProgressFilters={setInProgressFilters}
+                            classes={classes}
+                        />
+                    }
+                />
+            </Drawer>
         </>
     );
 }
@@ -223,7 +221,6 @@ function FilterPanel(props) {
                                 filterByAvailable: value,
                             })
                         }
-                        isMobile={isMobile}
                     />
                 </FilterSegment>
                 <FilterGroup name="Find Locations">
