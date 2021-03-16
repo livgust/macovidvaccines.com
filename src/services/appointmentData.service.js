@@ -83,7 +83,10 @@ export function filterData(data, { filterByAvailable, filterByZipCode }) {
 export function getAppointmentData() {
     let testDataTransformed = null;
 
-    if (process.env.NODE_ENV === "development") {
+    if (
+        process.env.NODE_ENV !== "production" &&
+        !process.env.REACT_APP_IGNORE_DEVTEST_JSON
+    ) {
         // This is a testing branch to get data from a local file instead of the production file.
         // It will read a file called "test/devtest.json" in the src directory.
         // You can obtain a cached file using a cmd line:
@@ -121,16 +124,14 @@ export function getAppointmentData() {
         }
     }
 
-    // If there is not any test d
-    if (!testDataTransformed) {
+    if (testDataTransformed) {
+        return Promise.resolve(testDataTransformed);
+    } else {
         dataNow = dayjs();
+        return fetch(
+            "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
+        ).then(async (res) => {
+            return transformData(JSON.parse((await res.json()).body).results);
+        });
     }
-
-    return fetch(
-        "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
-    ).then(async (res) => {
-        return testDataTransformed
-            ? testDataTransformed
-            : transformData(JSON.parse((await res.json()).body).results);
-    });
 }
