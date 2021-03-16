@@ -59,10 +59,10 @@ export default function CovidAppointmentTable({
         );
     };
 
-    return (
-        <>
-            {sortedData && sortedData.length ? (
-                sortedData.map((entry) => {
+    if (sortedData && sortedData.length) {
+        return (
+            <div role="list">
+                {sortedData.map((entry) => {
                     return (
                         <LocationCard
                             entry={entry}
@@ -72,12 +72,13 @@ export default function CovidAppointmentTable({
                             onlyShowAvailable={onlyShowAvailable}
                         />
                     );
-                })
-            ) : (
-                <NoAppointmentsAlert />
-            )}
-        </>
-    );
+                })}
+                )
+            </div>
+        );
+    } else {
+        return <NoAppointmentsAlert />;
+    }
 }
 
 function RestrictionNotifier({ entry }) {
