@@ -7,7 +7,7 @@ public/
 package-lock.json
 
 src/generated/ma-zips.json
-src/test/
+src/test/*.json
 
 *.png
 *.svg

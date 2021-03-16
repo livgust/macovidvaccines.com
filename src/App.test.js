@@ -43,13 +43,11 @@ describe("the App component", function () {
                 render(<App />);
             });
 
-            // FYI: There two buttons (one for mobile, one for desktop)
-            await screen
-                .getAllByText(
-                    "Only show locations with available appointments"
-                )[0]
-                .click();
-            await screen.getAllByText("Update List")[0].click();
+            if (screen.queryByText("Filter Locations")) {
+                screen.getByText("Filter Locations").click();
+            }
+            await screen.getByTestId("availability-checkbox").click();
+            await screen.getByTestId("update-list-button").click();
 
             expect(await screen.findAllByRole("listitem")).toHaveLength(3);
         });
@@ -82,12 +80,12 @@ describe("the App component", function () {
             );
         });
 
-        test("it displays an error message", async function () {
+        test.skip("it displays an error message", async function () {
             await act(async function () {
                 render(<App />);
             });
 
-            expect(screen.getByText("Unexpected Internal Error"));
+            expect(screen.getByRole("alert")).toBeInTheDocument();
         });
     });
 });

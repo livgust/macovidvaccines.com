@@ -87,7 +87,7 @@ function MainComponent() {
     });
 
     const zip = filters.filterByZipCode.zipCode;
-    const sortBy = zip && isZipValid(zip) ? "miles" : "name";
+    const sortBy = zip && isZipValid(zip) ? "miles" : "location";
 
     useEffect(() => {
         getAppointmentData()

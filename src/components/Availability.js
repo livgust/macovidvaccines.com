@@ -1,9 +1,16 @@
 import HelpDialog from "./HelpDialog";
+import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 
-export default function Availability({ entry, onlyShowAvailable }) {
-    const { t } = useTranslation("main");
+const useStyles = makeStyles((theme) => ({
+    totalSlotsSummary: {
+        fontWeight: "bold",
+    },
+}));
 
+export default function Availability({ entry, onlyShowAvailable }) {
+    const classes = useStyles();
+    const { t } = useTranslation("main");
     if (!entry.hasAppointments) {
         return <div>No availability.</div>;
     } else if (
@@ -50,8 +57,17 @@ export default function Availability({ entry, onlyShowAvailable }) {
                 </div>
             );
         } else {
+            const totalAvailableSlots = availableSlots.reduce(
+                (total, slot) => total + slot.numberAvailableAppointments,
+                0
+            );
             return (
                 <div>
+                    {totalAvailableSlots > 1 && availableSlots.length > 1 && (
+                        <div className={classes.totalSlotsSummary}>
+                            {`Total available: ${totalAvailableSlots} slots`}
+                        </div>
+                    )}
                     {availableSlots.map((slot) => (
                         <div key={slot.date}>
                             {`${slot.date}: ${t("availability.slot", {
