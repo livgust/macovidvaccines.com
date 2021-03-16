@@ -19,6 +19,13 @@ export function transformData(data) {
             }
         }
 
+        // FAST FIX - Danvers is requiring a invitation code.
+        // TODO : remove this code for a better solution.
+        if (entry.name === "DoubleTree Hotel - Danvers") {
+            entry.hasAvailability = false;
+            availability = [];
+        }
+
         return {
             key: index,
             location: entry.name,
