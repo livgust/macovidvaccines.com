@@ -11,16 +11,29 @@ import HelpDialog from "./components/HelpDialog";
 import { makeStyles } from "@material-ui/core";
 import MoreInformation from "./components/MoreInformation";
 import React from "react";
-import SignUpLink from "./components/SignUpLink";
+import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
 import { sortData } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
+
+const dayjs = require("dayjs");
 
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
 
 export function transformData(data) {
+    const ourDateFormat = "M/D/YY"; // 3/2
+    // future format?    "ddd, MMM D"; // Tue Mar 2
+
     return data.map((entry, index) => {
+        let availability = [];
+        if (entry.availability) {
+            for (const [key, value] of Object.entries(entry.availability)) {
+                let newKey = dayjs(key).format(ourDateFormat);
+                availability[newKey] = value;
+            }
+        }
+
         return {
             key: index,
             location: entry.name,
@@ -28,12 +41,40 @@ export function transformData(data) {
             city: entry.city,
             zip: entry.zip,
             hasAppointments: entry.hasAvailability,
-            appointmentData: entry.availability || null,
+            appointmentData: availability || null,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
             restrictions: entry.restrictions || null,
             timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
         };
+    });
+}
+
+export function sortAndFilterData(
+    data,
+    { sortKey, sortAsc },
+    onlyShowAvailable
+) {
+    // Filter the locations that have "non-stale" data
+    const oldestGoodTimestamp = new Date() - tooStaleMinutes * 60 * 1000;
+    let filteredData = data.filter(
+        ({ timestamp }) => !timestamp || timestamp >= oldestGoodTimestamp
+    );
+
+    // Filter only the locations that have a sign up link, if desired
+    if (onlyShowAvailable) {
+        filteredData = filteredData.filter((entry) => hasSignUpLink(entry));
+    }
+
+    // Sort the data
+    return filteredData.sort((a, b) => {
+        const first = sortAsc ? a[sortKey] : b[sortKey];
+        const second = sortAsc ? b[sortKey] : a[sortKey];
+        if (typeof first == "string") {
+            return first.localeCompare(second);
+        } else {
+            return first - second;
+        }
     });
 }
 
@@ -61,13 +102,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CovidAppointmentTable({ data }) {
+export default function CovidAppointmentTable({
+    data,
+    sortBy,
+    onlyShowAvailable,
+}) {
     const classes = useStyles();
 
-    const sortedData = sortData(data, {
-        sortKey: "location",
-        sortAsc: true,
-    });
+    const sortedData = sortData(data, sortBy);
 
     // generate unique key for each site
     const getSiteId = (site) => {
@@ -88,6 +130,8 @@ export default function CovidAppointmentTable({ data }) {
                             entry={entry}
                             className={classes.cardBox}
                             key={getSiteId(entry)}
+                            showMiles={sortBy === "miles"}
+                            onlyShowAvailable={onlyShowAvailable}
                         />
                     );
                 })}
@@ -156,14 +200,14 @@ function RestrictionNotifier({ entry }) {
                 }
             >
                 <Typography className={classes.restrictionWarning}>
-                    Important Eligibility Notice
+                    Information about eligibility
                 </Typography>
             </HelpDialog>
         );
     }
 }
 
-function LocationCard({ entry, className, onlyShowAvailable }) {
+function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
     const classes = useStyles();
     return (
         <div role="listitem" className={className}>
@@ -176,8 +220,13 @@ function LocationCard({ entry, className, onlyShowAvailable }) {
                     }
                     subheader={
                         <>
+                            <div>
+                                {entry.city}{" "}
+                                {showMiles &&
+                                    entry.miles &&
+                                    `(${entry.miles} miles)`}
+                            </div>
                             <RestrictionNotifier entry={entry} />
-                            <div>{entry.city}</div>
                             <StaleDataIndicator timestamp={entry.timestamp} />
                         </>
                     }

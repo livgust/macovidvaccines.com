@@ -38,13 +38,14 @@ describe("the App component", function () {
             expect(await screen.findAllByRole("listitem")).toHaveLength(2);
         });
 
-        //TODO: UPDATE
-        test.skip("disabling the filter shows all appointment cards", async function () {
+        test("disabling the filter shows all appointment cards", async function () {
             await act(async function () {
                 render(<App />);
             });
 
-            (await screen.findByLabelText("switch")).click();
+            // FYI: There two buttons (one for mobile, one for desktop)
+            await screen.getByTestId("availability-checkbox").click();
+            await screen.getByTestId("update-list-button").click();
 
             expect(await screen.findAllByRole("listitem")).toHaveLength(3);
         });
@@ -69,6 +70,9 @@ describe("the App component", function () {
 
     describe("when the api endpoint can not be reached", function () {
         beforeEach(function () {
+            // Suppress noise from App.js's App().useEffect()'s .catch handler
+            console.error = jest.fn();
+            console.log = jest.fn();
             window.fetch.mockImplementationOnce(() =>
                 Promise.reject(new TypeError("network error"))
             );
@@ -79,7 +83,7 @@ describe("the App component", function () {
                 render(<App />);
             });
 
-            expect(screen.getByRole("alert")).toBeInTheDocument();
+            expect(screen.getByText("Unexpected Internal Error"));
         });
     });
 });

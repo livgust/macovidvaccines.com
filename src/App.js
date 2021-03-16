@@ -1,37 +1,36 @@
-import Alert from "@material-ui/lab/Alert";
-import AlertTitle from "@material-ui/lab/AlertTitle";
-import ArrowBack from "@material-ui/icons/ArrowBack";
-import { Button, makeStyles, MuiThemeProvider } from "@material-ui/core";
-import CovidAppointmentTable from "./CovidAppointmentTable";
-import Drawer from "@material-ui/core/Drawer";
-import FilterPanel from "./components/FilterPanel";
+/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
+
+import {
+    createMuiTheme,
+    makeStyles,
+    MuiThemeProvider,
+} from "@material-ui/core";
 import {
     filterData,
     getAppointmentData,
 } from "./services/appointmentData.service";
+import {
+    getZipCodeCookie,
+    isZipValid,
+} from "./components/FilterPanel/ZipCodeFilter";
+import { useTranslation } from "react-i18next";
+import Alert from "@material-ui/lab/Alert";
+import AlertBanner from "./components/AlertBanner";
+import AlertTitle from "@material-ui/lab/AlertTitle";
+import Button from "@material-ui/core/Button";
+import CovidAppointmentTable from "./CovidAppointmentTable";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import FilterPanel from "./components/FilterPanel";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import Loader from "react-loader";
 import Menu from "./components/Menu";
 import React, { useEffect, useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import theme from "./theme";
 import StateEligibility from "./components/StateEligibility";
+import themeTemplate from "./theme";
+import Typography from "@material-ui/core/Typography";
 
-const drawerWidth = 300;
-
-/* Alert to put under page title when necessary
-const alert = (
-    <>
-        <Alert severity="warning">
-            <AlertTitle>8:08am Thursday, February 25</AlertTitle>
-            The high demand for appointments right now is causing delays in
-            collecting data. We will report up-to-the-minute availability when
-            wait times decrease. We apologize for the inconvenience.
-        </Alert>
-        <br />
-    </>
-); */
+const theme = createMuiTheme(themeTemplate);
 
 const useStyles = makeStyles((theme) => ({
     main: {
@@ -40,166 +39,22 @@ const useStyles = makeStyles((theme) => ({
     heading: {
         "text-align": "center",
     },
-    drawer: {
-        [theme.breakpoints.up("md")]: {
-            width: drawerWidth,
-            flexShrink: 0,
-        },
-    },
-    drawerPaper: {
-        width: drawerWidth,
-        [theme.breakpoints.up("md")]: {
-            top: "70px",
-            height: "calc(100% - 70px)",
-            border: "none",
-        },
-        [theme.breakpoints.down("sm")]: {
-            top: 0,
-            height: "100% ",
-            borderRight: "1px solid rgba(0, 0, 0, 0.12)",
-        },
-    },
-    drawerMobile: {},
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
         [theme.breakpoints.up("md")]: {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
+            width: `calc(100% - ${theme.drawerWidth}px)`,
+            marginLeft: theme.drawerWidth,
             borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
         },
     },
 }));
 
 function App() {
-    const classes = useStyles();
-
-    const [data, setData] = useState([]);
-    const [ready, setReady] = useState(false);
-    const [errorMessage, setErrorMessage] = useState();
-    const [filters, setFilters] = useState({});
-    const [mobileOpen, setMobileOpen] = React.useState(false);
-
-    useEffect(() => {
-        getAppointmentData()
-            .then(async (res) => {
-                setData(res);
-                setReady(true);
-            })
-            .catch((ex) => {
-                console.error(ex.message);
-                setErrorMessage(
-                    "Something went wrong, please try again later."
-                );
-                setReady(true);
-            });
-    }, []);
-
-    const filteredData = filterData(data, filters);
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
-
-    const mainContainer = document.getElementById("main-container");
-
     return (
         <MuiThemeProvider theme={theme}>
             <Menu />
-            <main className={classes.main}>
-                <Grid container justify="center" spacing={3}>
-                    <Grid container id="main-container">
-                        <Hidden mdUp implementation="css">
-                            <Drawer
-                                container={mainContainer}
-                                variant="temporary"
-                                anchor={
-                                    theme.direction === "rtl" ? "right" : "left"
-                                }
-                                open={mobileOpen}
-                                onClose={handleDrawerToggle}
-                                classes={{
-                                    paper: classes.drawerPaper,
-                                }}
-                                className={classes.drawerMobile}
-                                ModalProps={{
-                                    keepMounted: true, // Better open performance on mobile.
-                                }}
-                            >
-                                <FilterPanel
-                                    data={data}
-                                    onChange={setFilters}
-                                />
-                            </Drawer>
-                        </Hidden>
-
-                        <Hidden smDown implementation="css">
-                            <Drawer
-                                classes={{
-                                    paper: classes.drawerPaper,
-                                }}
-                                variant="permanent"
-                                open
-                            >
-                                <FilterPanel
-                                    data={data}
-                                    onChange={setFilters}
-                                />
-                            </Drawer>
-                        </Hidden>
-                        <Grid className={classes.content}>
-                            <h1 className={classes.heading}>
-                                MA Covid Vaccine Appointments
-                            </h1>
-                            <StateEligibility />
-                            <Hidden mdUp implementation="css">
-                                <Button
-                                    variant="contained"
-                                    startIcon={<ArrowBack />}
-                                    onClick={handleDrawerToggle}
-                                >
-                                    {/* TODO THIS IS UGLY */}
-                                    Filter Locations
-                                </Button>
-                            </Hidden>
-                            <div
-                                aria-label="loading data"
-                                id="progress"
-                                role="progressbar"
-                                aria-valuetext={ready ? "loaded" : "waiting"}
-                            >
-                                <Loader loaded={ready}>
-                                    {errorMessage ? (
-                                        <ErrorMessageAlert
-                                            message={errorMessage}
-                                        />
-                                    ) : (
-                                        <CovidAppointmentTable
-                                            data={filteredData}
-                                        />
-                                    )}
-                                </Loader>
-                            </div>
-                            <Typography
-                                variant="caption"
-                                display="block"
-                                gutterBottom
-                            >
-                                This site is not affiliated with or endorsed by
-                                the Commonwealth of Massachusetts.
-                                <br />
-                                This site is for informational purposes only.
-                                Not all vaccination locations are tracked and
-                                the information may not be complete or accurate.
-                                <br />
-                                Copyright &#169; {new Date().getFullYear()}{" "}
-                                Olivia Adams/Ora Innovations LLC. All rights
-                                reserved.
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </main>
+            <MainComponent />
         </MuiThemeProvider>
     );
 }
@@ -214,6 +69,112 @@ function ErrorMessageAlert({ message }) {
             </Alert>
             <br />
         </>
+    );
+}
+
+function MainComponent() {
+    const { t } = useTranslation("main");
+    const classes = useStyles();
+    const mainContainer = document.getElementById("main-container");
+    const [data, setData] = useState([]);
+    const [ready, setReady] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const [filters, setFilters] = useState({
+        filterByAvailable: true,
+        filterByZipCode: { zipCode: getZipCodeCookie(), miles: 9999 },
+    });
+
+    const zip = filters.filterByZipCode.zipCode;
+    const sortBy = zip && isZipValid(zip) ? "miles" : "location";
+
+    useEffect(() => {
+        getAppointmentData()
+            .then(async (res) => {
+                setData(res);
+                setReady(true);
+            })
+            .catch((ex) => {
+                console.log(ex); // full traceback for diagnostics
+                console.error(ex.message);
+                setErrorMessage(
+                    "Something went wrong, please try again later."
+                );
+                setReady(true);
+            });
+    }, []);
+
+    const filteredData = filterData(data, filters);
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
+    return (
+        <main className={classes.main}>
+            <Grid container justify="center" spacing={3}>
+                <Grid container id="main-container">
+                    <FilterPanel
+                        mainContainer={mainContainer}
+                        anchor={theme.direction === "rtl" ? "right" : "left"}
+                        mobileOpen={mobileOpen}
+                        handleDrawerToggle={handleDrawerToggle}
+                        filters={filters}
+                        setFilters={setFilters}
+                    />
+                    <Grid className={classes.content}>
+                        <h1 className={classes.heading}>{t("page_title")}</h1>
+                        <AlertBanner />
+                        <StateEligibility />
+                        <Hidden mdUp implementation="css">
+                            <Button
+                                variant="contained"
+                                startIcon={<FilterListIcon />}
+                                onClick={handleDrawerToggle}
+                            >
+                                Filter Locations
+                            </Button>{" "}
+                        </Hidden>
+                        <div
+                            aria-label="loading data"
+                            id="progress"
+                            role="progressbar"
+                            aria-valuetext={ready ? "loaded" : "waiting"}
+                        >
+                            <Loader loaded={ready}>
+                                {errorMessage ? (
+                                    <ErrorMessageAlert message={errorMessage} />
+                                ) : (
+                                    <CovidAppointmentTable
+                                        data={filteredData}
+                                        onlyShowAvailable={
+                                            filters.filterByAvailable
+                                        }
+                                        sortBy={sortBy}
+                                    />
+                                )}
+                            </Loader>
+                        </div>
+                        <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                        >
+                            This site is not affiliated with or endorsed by the
+                            Commonwealth of Massachusetts.
+                            <br />
+                            This site is for informational purposes only. Not
+                            all vaccination locations are tracked and the
+                            information may not be complete or accurate.
+                            <br />
+                            Copyright &#169; {new Date().getFullYear()} Olivia
+                            Adams/Ora Innovations LLC. All rights reserved.
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </main>
     );
 }
 
