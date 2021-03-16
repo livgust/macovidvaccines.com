@@ -30,7 +30,9 @@
                     "Age groups served": "Adults, Seniors",
                     "Services offered": "Vaccination",
                     "Clinic Hours": "09:45 am - 04:15 pm"
-                }
+                },
+                "latitude": 42.0987421,
+                "longitude": -70.7172638
             },
             {
                 "name": "Berkshire Community College Field House",
@@ -56,7 +58,9 @@
                     "Services offered": "Vaccination",
                     "Additional Information": "FOR THOSE IN PHASE 2 WHO ARE 75 YEARS OLD OR OLDER. Please bring id, wear a short sleeve shirt and mask, and social distance.",
                     "Clinic Hours": "02:00 pm - 07:00 pm"
-                }
+                },
+                "latitude": "42.4565446",
+                "longitude": "-73.3170033"
             },
             {
                 "name": "Fenway Park",
@@ -127,7 +131,9 @@
                     "Services offered": "Vaccination",
                     "Additional Information": "***Per the Commonwealth of Massachusetts' vaccine distribution timeline, this clinic is for all Phase 1 priority groups, plus the first priority group in Phase 2: individuals ages 75 and older.*** Please arrive only 5 minutes prior to your appointment (not sooner or later) and bring proof of eligibility. Please remember to wear a mask and practice social distancing at all times. You should expect to be at the vaccination site for about 60-75 minutes, all told — from the time you check in until your post-shot observation period ends. There is a 15-minute variance depending on the duration required for your post-shot observation.",
                     "Clinic Hours": "08:00 am - 06:00 pm"
-                }
+                },
+                "latitude": "42.3466764",
+                "longitude": "-71.0972178"
             }
         ]
     }
