@@ -135,7 +135,7 @@ export default function StateEligibility() {
                         expanded: classes.accordionExpanded,
                     }}
                 >
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" component="span">
                         Am I eligible to be vaccinated?
                     </Typography>
                 </AccordionSummary>

@@ -43,7 +43,9 @@ describe("the App component", function () {
                 render(<App />);
             });
 
-            // FYI: There two buttons (one for mobile, one for desktop)
+            if (screen.queryByText("Filter Locations")) {
+                screen.getByText("Filter Locations").click();
+            }
             await screen.getByTestId("availability-checkbox").click();
             await screen.getByTestId("update-list-button").click();
 
