@@ -61,7 +61,11 @@ export default function RadiusFilter({ value, onChange }) {
 }
 
 export function isWithinRadius(item, zipCode, miles) {
-    if (isZipValid(zipCode)) {
+    if (
+        isZipValid(zipCode) &&
+        item.coordinates.latitude &&
+        item.coordinates.longitude
+    ) {
         const myCoordinates = zipcodeData[zipCode];
         item.miles = Math.round(
             convertDistance(

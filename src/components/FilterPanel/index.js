@@ -107,6 +107,7 @@ export default function FilterPanelParent({
                         setFilters={setInProgressFilters}
                         closeButton={
                             <Button
+                                data-testid="update-list-button-mobile"
                                 variant="contained"
                                 color="primary"
                                 onClick={(e) => {
@@ -143,6 +144,7 @@ export default function FilterPanelParent({
                         setFilters={setInProgressFilters}
                         closeButton={
                             <Button
+                                data-testid="update-list-button"
                                 variant="contained"
                                 color="primary"
                                 className={classes.mobileButton}
@@ -224,6 +226,7 @@ function FilterPanel(props) {
                                 filterByAvailable: value,
                             })
                         }
+                        isMobile={isMobile}
                     />
                 </FilterSegment>
                 <FilterGroup name="Find Locations">
