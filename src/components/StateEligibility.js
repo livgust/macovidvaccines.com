@@ -94,7 +94,7 @@ const criteriaGroups = [
                 link:
                     "https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions#eligibility-",
                 text:
-                    "Individuals with [one or more of certain medical condition]",
+                    "Individuals with [one or more of certain medical conditions]",
                 color: "primary",
             },
             {
