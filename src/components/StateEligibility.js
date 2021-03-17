@@ -100,16 +100,53 @@ const criteriaGroups = [
             },
         ],
     },
-    /* TODO - remove the following div after March 11, and update link to be appropriate link from https://www.mass.gov/covid-19-vaccine */
+    // -------------------------------------------------------------------------
     {
-        endDate: "2021-03-11T00:00:00-05:00", // current timezone offset is at the end
-        title: "Eligible to sign up starting March 11: ",
+        endDate: "2021-04-19T00:00:00-04:00", // current timezone offset is at the end
+        title: "Eligible to sign up starting March 22: ",
         list: [
             {
                 link:
-                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-k-12-educators-child-care-workers-and-school-staff",
-                text:
-                    "[K-12 educators, child care workers and K-12 school staff]",
+                    "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-2-",
+                text: "Individuals [age 60 and older]",
+                color: "disabled",
+            },
+            {
+                link:
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-certain-workers",
+                text: "Workers [in certain sectors]",
+                color: "disabled",
+            },
+        ],
+    },
+    // -------------------------------------------------------------------------
+    {
+        endDate: "2021-04-19T00:00:00-04:00", // current timezone offset is at the end
+        title: "Eligible to sign up starting April 5: ",
+        list: [
+            {
+                link:
+                    "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-2-",
+                text: "Individuals [age 55 and older]",
+                color: "disabled",
+            },
+            {
+                link:
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions#eligibility-",
+                text: "Individuals with [one certain medical condition]",
+                color: "disabled",
+            },
+        ],
+    },
+    // -------------------------------------------------------------------------
+    {
+        endDate: "2021-04-19T00:00:00-04:00", // current timezone offset is at the end
+        title: "Eligible to sign up starting April 19: ",
+        list: [
+            {
+                link:
+                    "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-3-",
+                text: "Individuals [age 16 and older]",
                 color: "disabled",
             },
         ],
