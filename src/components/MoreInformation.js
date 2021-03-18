@@ -58,7 +58,7 @@ export default function MoreInformation({ entry }) {
                                 rel="noreferrer"
                                 href={googleMapsLink}
                             >
-                                {entry.streetAddress}, {entry.city}, MA
+                                {entry.streetAddress}, {entry.city}, MA{" "}
                                 {entry.zip}
                             </Link>
                         </div>
