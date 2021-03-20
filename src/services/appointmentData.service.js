@@ -1,4 +1,5 @@
 import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
+import { isMassVax } from "../components/FilterPanel/MassVaxFilter";
 import { isWithinRadius } from "../components/FilterPanel/RadiusFilter";
 
 const dayjs = require("dayjs");
@@ -19,6 +20,10 @@ export function transformData(data) {
             }
         }
 
+        const isMassVax =
+            entry.signUpLink?.includes("color.com") ||
+            entry.signUpLink?.includes("curative.com");
+
         return {
             key: index,
             location: entry.name,
@@ -27,6 +32,7 @@ export function transformData(data) {
             zip: entry.zip,
             hasAppointments: entry.hasAvailability,
             appointmentData: availability || null,
+            isMassVax: isMassVax || null,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
             restrictions: entry.restrictions || null,
@@ -44,6 +50,7 @@ export function transformData(data) {
         return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
     });
 }
+
 export function sortData(data, sortKey) {
     const newData = data.sort((a, b) => {
         const first = a[sortKey];
@@ -57,9 +64,15 @@ export function sortData(data, sortKey) {
     return newData;
 }
 
-export function filterData(data, { filterByAvailable, filterByZipCode }) {
+export function filterData(
+    data,
+    { filterByAvailable, filterByMassVax, filterByZipCode }
+) {
     return data.filter((d) => {
         if (filterByAvailable && !isAvailable(d)) {
+            return false;
+        }
+        if (!filterByMassVax && isMassVax(d)) {
             return false;
         }
         if (

@@ -9,9 +9,23 @@ it("doesn't show if no extra info", async () => {
     expect(screen.queryByText("More Information")).toBeNull();
 });
 
-it("shows if address", async () => {
+it("doesn't show if ONLY an address", async () => {
     await act(async () => {
         render(<MoreInformation entry={{ streetAddress: "123 Easy St" }} />);
+    });
+    expect(screen.queryByText("More Information")).toBeFalsy();
+});
+
+it("show if an address AND restrictions", async () => {
+    await act(async () => {
+        render(
+            <MoreInformation
+                entry={{
+                    streetAddress: "123 Easy St",
+                    restrictions: "Cool cats and kittens only",
+                }}
+            />
+        );
     });
     expect(screen.queryByText("More Information")).toBeTruthy();
 });

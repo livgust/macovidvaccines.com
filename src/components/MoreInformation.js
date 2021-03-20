@@ -33,11 +33,11 @@ export default function MoreInformation({ entry }) {
 
     if (!(entry.streetAddress || entry.restrictions || entry.extraData)) {
         return null;
-    } else {
-        const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-            `${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`
-        )}`;
+    }
 
+    if (!(entry.restrictions || entry.extraData)) {
+        return <StreetAddress entry={entry} classes={classes} />;
+    } else {
         return (
             <Accordion className={classes.accordion}>
                 <AccordionSummary
@@ -50,19 +50,7 @@ export default function MoreInformation({ entry }) {
                     More Information
                 </AccordionSummary>
                 <AccordionDetails className={classes.extraDataContainer}>
-                    {entry.streetAddress && (
-                        <div className={classes.extraData}>
-                            <b>Address: </b>
-                            <Link
-                                target="_blank"
-                                rel="noreferrer"
-                                href={googleMapsLink}
-                            >
-                                {entry.streetAddress}, {entry.city}, MA
-                                {entry.zip}
-                            </Link>
-                        </div>
-                    )}
+                    <StreetAddress entry={entry} classes={classes} />
                     {entry.restrictions && (
                         <div className={classes.extraData}>
                             <b>Restrictions:</b> {entry.restrictions}
@@ -73,6 +61,26 @@ export default function MoreInformation({ entry }) {
             </Accordion>
         );
     }
+}
+
+function StreetAddress({ entry, classes }) {
+    if (!entry.streetAddress) return null;
+
+    const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+        `${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`
+    )}`;
+
+    return (
+        <div className={classes.accordion}>
+            <b>Address: </b>
+            <Link target="_blank" rel="noreferrer" href={googleMapsLink}>
+                {entry.streetAddress}
+                {", "}
+                {entry.city},{" MA "}
+                {entry.zip}
+            </Link>
+        </div>
+    );
 }
 
 function ExtraData({ data }) {

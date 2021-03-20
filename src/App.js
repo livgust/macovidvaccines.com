@@ -83,6 +83,7 @@ function MainComponent() {
 
     const [filters, setFilters] = useState({
         filterByAvailable: true,
+        filterByMassVax: true,
         filterByZipCode: { zipCode: getZipCodeCookie(), miles: 9999 },
     });
 
