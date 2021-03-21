@@ -1,6 +1,7 @@
 import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
 import { isMassVax } from "../components/FilterPanel/MassVaxFilter";
 import { isWithinRadius } from "../components/FilterPanel/RadiusFilter";
+import { setCookie } from "./cookie.service";
 
 const dayjs = require("dayjs");
 
@@ -64,10 +65,11 @@ export function sortData(data, sortKey) {
     return newData;
 }
 
-export function filterData(
-    data,
-    { filterByAvailable, filterByMassVax, filterByZipCode }
-) {
+export function filterData(data, filters) {
+    // Update the cookie
+    setCookie("filter", filters);
+
+    const { filterByAvailable, filterByMassVax, filterByZipCode } = filters;
     return data.filter((d) => {
         if (filterByAvailable && !isAvailable(d)) {
             return false;

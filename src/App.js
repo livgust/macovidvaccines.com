@@ -9,10 +9,8 @@ import {
     filterData,
     getAppointmentData,
 } from "./services/appointmentData.service";
-import {
-    getZipCodeCookie,
-    isZipValid,
-} from "./components/FilterPanel/ZipCodeFilter";
+import { isZipValid } from "./components/FilterPanel/ZipCodeFilter";
+import { getCookie } from "./services/cookie.service";
 import { useTranslation } from "react-i18next";
 import Alert from "@material-ui/lab/Alert";
 import AlertBanner from "./components/AlertBanner";
@@ -84,7 +82,8 @@ function MainComponent() {
     const [filters, setFilters] = useState({
         filterByAvailable: true,
         filterByMassVax: true,
-        filterByZipCode: { zipCode: getZipCodeCookie(), miles: 9999 },
+        filterByZipCode: { zipCode: "", miles: 9999 },
+        ...getCookie("filter"),
     });
 
     const zip = filters.filterByZipCode.zipCode;
