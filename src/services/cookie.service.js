@@ -9,7 +9,12 @@ let ourCookie = {};
 export function getCookie(key) {
     const theCookie = cookies.get(cookieName, { doNotParse: true });
     if (theCookie) {
-        ourCookie = JSON.parse(cookieDecipher(theCookie));
+        try {
+            ourCookie = JSON.parse(cookieDecipher(theCookie));
+        } catch (e) {
+            // Unable to decode and parse a bad cookie!
+            ourCookie = {};
+        }
     }
     return ourCookie[key];
 }
