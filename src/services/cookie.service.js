@@ -4,25 +4,25 @@ const cookies = new Cookies();
 const cookieMaxAge = 365 * 86400;
 const cookieName = "macovidvaccines";
 
-let ourCookie = {};
+let plaintextCookie = {};
 
 export function getCookie(key) {
-    const theCookie = cookies.get(cookieName, { doNotParse: true });
-    if (theCookie) {
+    const encryptedCookie = cookies.get(cookieName, { doNotParse: true });
+    if (encryptedCookie) {
         try {
-            ourCookie = JSON.parse(cookieDecipher(theCookie));
+            plaintextCookie = JSON.parse(cookieDecipher(encryptedCookie));
         } catch (e) {
             // Unable to decode and parse a bad cookie!
-            ourCookie = {};
+            plaintextCookie = {};
         }
     }
-    return ourCookie[key];
+    return plaintextCookie[key];
 }
 
 export function setCookie(key, value) {
-    ourCookie[key] = value;
-    const enc = cookieCipher(JSON.stringify(ourCookie));
-    cookies.set(cookieName, enc, {
+    plaintextCookie[key] = value;
+    const encryptedCookie = cookieCipher(JSON.stringify(plaintextCookie));
+    cookies.set(cookieName, encryptedCookie, {
         path: "/",
         secure: true,
         maxAge: cookieMaxAge,
