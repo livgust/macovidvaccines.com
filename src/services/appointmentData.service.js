@@ -76,6 +76,10 @@ export function getAppointmentData() {
     return fetch(
         "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
     ).then(async (res) => {
-        return transformData(JSON.parse((await res.json()).body).results);
+        let serviceDataBody = (await res.json()).body;
+        if (typeof serviceDataBody === "string") {
+            serviceDataBody = JSON.parse(serviceDataBody);
+        }
+        return transformData(serviceDataBody.results);
     });
 }
