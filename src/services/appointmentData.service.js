@@ -1,10 +1,10 @@
 import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
 import { isWithinRadius } from "../components/FilterPanel/RadiusFilter";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc";
 
-const dayjs = require("dayjs");
-const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
-const utc = require("dayjs/plugin/utc");
 dayjs.extend(utc);
 
 // This is the timestamp of our data. It should be used instead of "new Date()"
