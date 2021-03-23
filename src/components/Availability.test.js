@@ -15,7 +15,7 @@ it("does not show dates and slot numbers if there aren't any appointments (onlyS
             />
         );
     });
-    expect(screen.queryByText("No availability.")).toBeTruthy();
+    expect(screen.getByTestId("no-availability")).toBeTruthy();
 });
 
 // Test 2
@@ -32,7 +32,7 @@ it("does not show dates and slot numbers if there aren't any appointments (!only
             />
         );
     });
-    expect(screen.queryByText("No availability.")).toBeTruthy();
+    expect(screen.getByTestId("no-availability")).toBeTruthy();
 });
 
 it("shows total slots if slots by date aren't available", async () => {
@@ -159,7 +159,7 @@ it("shows dates and slot numbers with date sign up link (when onlyShowAvailable)
     expect(screen.queryByText("3/6/21: 292 slots")).toBeTruthy();
 });
 
-it("shows 'no date-specific' if there aren't any sign up links", async () => {
+it("shows 'Appointments are available, but...' if there aren't any sign up links", async () => {
     await act(async () => {
         render(
             <Availability
@@ -187,7 +187,7 @@ it("shows 'no date-specific' if there aren't any sign up links", async () => {
             />
         );
     });
-    expect(screen.queryByText("No date-specific data available.")).toBeTruthy();
+    expect(screen.getByTestId("appts-available")).toBeTruthy();
 });
 
 it("shows dates and slot numbers even without signUpLink (when !onlyShowAvailable)", async () => {
@@ -223,19 +223,20 @@ it("shows dates and slot numbers even without signUpLink (when !onlyShowAvailabl
     expect(screen.queryByText("3/6/21: 292 slots")).toBeTruthy();
 });
 
-it("shows 'no date-specific' message is there is no appointment dates", async () => {
+it("shows 'Appointments are available, but...' message if there is no appointment dates", async () => {
     await act(async () => {
         render(
             <Availability
                 onlyShowAvailable={true}
                 entry={{
                     hasAppointments: true,
+                    signUpLink: "https://macovidvaccines.com",
                     appointmentData: {},
                 }}
             />
         );
     });
-    expect(screen.queryByText("No date-specific data available.")).toBeTruthy();
+    expect(screen.getByTestId("appts-available")).toBeTruthy();
 });
 
 it("shows total slots across all available days", async () => {
@@ -247,17 +248,18 @@ it("shows total slots across all available days", async () => {
                     appointmentData: {
                         "10/11/2021": {
                             hasAvailability: true,
-                            numberAvailableAppointments: 35,
+                            numberAvailableAppointments: 34,
                         },
                         "10/12/2021": {
                             hasAvailability: true,
-                            numberAvailableAppointments: 35,
+                            numberAvailableAppointments: 36,
                         },
                     },
                 }}
             />
         );
     });
+    expect(screen.getByTestId("total-available")).toBeTruthy();
     expect(screen.getByText("Total available: 70 slots")).toBeVisible();
 });
 
@@ -273,6 +275,6 @@ it("does not show total slots across all available days if there aren't any", as
         );
     });
     expect(() => {
-        screen.getByText("Total available");
+        screen.getByTestId("total-available");
     }).toThrow();
 });

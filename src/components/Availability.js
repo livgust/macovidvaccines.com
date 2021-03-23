@@ -1,4 +1,3 @@
-import HelpDialog from "./HelpDialog";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import Link from "@material-ui/core/Link";
@@ -6,6 +5,9 @@ import Link from "@material-ui/core/Link";
 const useStyles = makeStyles((theme) => ({
     totalSlotsSummary: {
         fontWeight: "bold",
+    },
+    availability: {
+        marginBottom: theme.spacing(2),
     },
 }));
 
@@ -29,7 +31,11 @@ export default function Availability({ entry, onlyShowAvailable }) {
         );
     }
     if (!entry.hasAppointments) {
-        return <div>No availability.</div>;
+        return (
+            <div className={classes.availability} data-testid="no-availability">
+                No availability.
+            </div>
+        );
     } else if (
         entry.totalAvailability &&
         (!entry.availability || !Object.keys(entry.availability).length)
@@ -63,14 +69,20 @@ export default function Availability({ entry, onlyShowAvailable }) {
         }
         if (!availableSlots.length) {
             return (
-                <div>
-                    No date-specific data available.
-                    <HelpDialog
-                        title="No date-specific data available."
-                        text="We were able to determine that there are available appointments,
-                        but we can't tell when or how many. Click the sign up button to learn more
-                        from the location's website."
-                    />
+                <div
+                    className={classes.availability}
+                    data-testid="appts-available"
+                >
+                    Appointments are available, but this location isn't
+                    providing details. Click{" "}
+                    <Link
+                        href={entry.signUpLink ? entry.signUpLink : ""}
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        sign up
+                    </Link>{" "}
+                    to look on their website.
                 </div>
             );
         } else {
@@ -79,9 +91,12 @@ export default function Availability({ entry, onlyShowAvailable }) {
                 0
             );
             return (
-                <div>
+                <div className={classes.availability}>
                     {totalAvailableSlots > 1 && availableSlots.length > 1 && (
-                        <div className={classes.totalSlotsSummary}>
+                        <div
+                            className={classes.totalSlotsSummary}
+                            data-testid="total-available"
+                        >
                             {`Total available: ${totalAvailableSlots} slots`}
                         </div>
                     )}
