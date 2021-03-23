@@ -21,10 +21,6 @@ export function transformData(data) {
             }
         }
 
-        const isMassVax =
-            entry.signUpLink?.includes("color.com") ||
-            entry.signUpLink?.includes("curative.com");
-
         return {
             key: index,
             location: entry.name,
@@ -33,7 +29,7 @@ export function transformData(data) {
             zip: entry.zip,
             hasAppointments: entry.hasAvailability,
             appointmentData: availability || null,
-            isMassVax: isMassVax || null,
+            isMassVax: entry.massVax || false,
             signUpLink: entry.signUpLink || null,
             extraData: entry.extraData || null,
             restrictions: entry.restrictions || null,
