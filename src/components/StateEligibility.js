@@ -13,6 +13,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import grey from "@material-ui/core/colors/grey";
 
+const EDT = "-04:00";
+//const EST="-05:00";
+
+const eligibilityNow = new Date();
+// Key Dates (provided for testing purposes
+//const eligibilityNow = new Date(`2021-03-22T00:00:00${EDT}`);
+//const eligibilityNow = new Date(`2021-04-05T00:00:00${EDT}`);
+//const eligibilityNow = new Date(`2021-04-19T00:00:00${EDT}`);
+
 const useStyles = makeStyles((theme) => ({
     container: {
         marginBottom: theme.spacing(1),
@@ -48,15 +57,62 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// NOTE: the link is applied to the section of text in the [square brackets]
 const criteriaGroups = [
     {
+        // This group is the only group after April 19th as
+        // everyone in the Commonwealth will be eligible.
+        startDate: `2021-04-19T00:00:00${EDT}`,
+        title: "[Official criteria from Massachusetts]",
+        link: "https://www.mass.gov/covid-19-vaccine",
+        list: [
+            {
+                text: "All individuals age 16 and older",
+                color: "primary",
+            },
+        ],
+    },
+    // -------------------------------------------------------------------------
+    {
+        // This is the PRIMARY group of people eligible for vaccines
+        // until April 19th when everyone becomes eligible and the group
+        // above is displayed instead.
+        endDate: `2021-04-19T00:00:00${EDT}`,
         title:
             "You may click the links below for [official criteria from Massachusetts]:",
         link: "https://www.mass.gov/covid-19-vaccine",
         list: [
-            // NOTE: the link is applied to the section of text in the [square brackets]
             {
-                startDate: "2021-03-11T00:00:00-05:00", // current timezone offset is at the end
+                startDate: `2021-04-05T00:00:00${EDT}`,
+                link:
+                    "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-2-",
+                text: "Individuals [age 55 and older]",
+                color: "primary",
+            },
+            {
+                startDate: `2021-04-05T00:00:00${EDT}`,
+                link:
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions#eligibility-",
+                text:
+                    "Individuals with [one or more of certain medical conditions]",
+                color: "primary",
+            },
+            {
+                startDate: `2021-03-22T00:00:00${EDT}`,
+                endDate: `2021-04-05T00:00:00${EDT}`, // subsumed by 55+ after this date
+                link:
+                    "https://www.mass.gov/info-details/massachusetts-covid-19-vaccination-phases#phase-2-",
+                text: "Individuals [age 60 and older]",
+                color: "primary",
+            },
+            {
+                startDate: `2021-03-22T00:00:00${EDT}`,
+                link:
+                    "https://www.mass.gov/info-details/covid-19-vaccinations-for-certain-workers",
+                text: "Workers [in certain sectors]",
+                color: "primary",
+            },
+            {
                 link:
                     "https://www.mass.gov/info-details/covid-19-vaccinations-for-k-12-educators-child-care-workers-and-school-staff",
                 text:
@@ -64,12 +120,16 @@ const criteriaGroups = [
                 color: "primary",
             },
             {
+                // This item will be subsumed by "age 60 and older"
+                endDate: `2021-03-22T00:00:00${EDT}`,
                 link:
                     "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-65-and-older",
                 text: "Individuals [age 65 and older]",
                 color: "primary",
             },
             {
+                // This item will be subsumed by "one or more medical conditions"
+                endDate: `2021-04-05T00:00:00${EDT}`,
                 link:
                     "https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions",
                 text:
@@ -84,8 +144,9 @@ const criteriaGroups = [
                     "Residents and staff of [low-income and affordable senior housing]",
                 color: "primary",
             },
-
             {
+                // This item stays separate from other age cohorts as "75 and older"
+                // have a caregiver exemption that deserves a special link
                 link:
                     "https://www.mass.gov/info-details/covid-19-vaccinations-for-people-ages-75-and-older",
                 text: "Individuals [age 75 and older]",
@@ -102,7 +163,8 @@ const criteriaGroups = [
     },
     // -------------------------------------------------------------------------
     {
-        endDate: "2021-04-19T00:00:00-04:00", // current timezone offset is at the end
+        // This entire group moves into the primary group on March 22
+        endDate: `2021-03-22T00:00:00${EDT}`,
         title: "Eligible to sign up starting March 22: ",
         list: [
             {
@@ -121,7 +183,8 @@ const criteriaGroups = [
     },
     // -------------------------------------------------------------------------
     {
-        endDate: "2021-04-19T00:00:00-04:00", // current timezone offset is at the end
+        // This entire group moves into the primary group on April 5
+        endDate: `2021-04-05T00:00:00${EDT}`,
         title: "Eligible to sign up starting April 5: ",
         list: [
             {
@@ -133,14 +196,15 @@ const criteriaGroups = [
             {
                 link:
                     "https://www.mass.gov/info-details/covid-19-vaccinations-for-individuals-with-certain-medical-conditions#eligibility-",
-                text: "Individuals with [one certain medical condition]",
+                text: "Individuals with [one of certain medical conditions]",
                 color: "disabled",
             },
         ],
     },
     // -------------------------------------------------------------------------
     {
-        endDate: "2021-04-19T00:00:00-04:00", // current timezone offset is at the end
+        // This entire group moves into the primary group on April 19
+        endDate: `2021-04-19T00:00:00${EDT}`,
         title: "Eligible to sign up starting April 19: ",
         list: [
             {
@@ -157,9 +221,11 @@ export default function StateEligibility() {
     const classes = useStyles();
 
     // filter out entire groups that have ended
-    const now = new Date();
     const filteredGroups = criteriaGroups.filter((group) => {
-        return !(group.endDate && now > new Date(group.endDate));
+        return !(
+            (group.startDate && eligibilityNow < new Date(group.startDate)) ||
+            (group.endDate && eligibilityNow >= new Date(group.endDate))
+        );
     });
 
     return (
@@ -223,12 +289,15 @@ function CriterionGroup({ className, group }) {
 }
 
 function CriterionItem({ criterion, classes }) {
-    const now = new Date();
-
-    // skip any criteria that haven't started yet.
-    if (criterion.startDate && now < new Date(criterion.startDate)) {
+    // skip any criteria that aren't in the valid time window
+    if (
+        (criterion.startDate &&
+            eligibilityNow < new Date(criterion.startDate)) ||
+        (criterion.endDate && eligibilityNow >= new Date(criterion.endDate))
+    ) {
         return false;
     }
+
     return (
         <ListItem className={classes.listItem}>
             <ListItemIcon className={classes.listItemIcon}>

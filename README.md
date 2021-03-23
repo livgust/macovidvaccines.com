@@ -4,6 +4,8 @@
 
 This is the front-end software that powers www.macovidvaccines.com. Technology used is React JS. This code is uploaded to AWS whenever there is a commit to the master branch.
 
+[Our project board](https://github.com/users/livgust/projects/2) is the definitive source for work in progress and work that needs to be done.
+
 [![CircleCI](https://circleci.com/gh/livgust/macovidvaccines.com.svg?style=svg)](https://circleci.com/gh/livgust/macovidvaccines.com)
 
 ## Local Development
