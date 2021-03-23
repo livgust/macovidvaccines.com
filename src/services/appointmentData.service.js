@@ -13,11 +13,7 @@ export let dataNow = dayjs();
 // any location with data older than this will not be displayed at all
 const tooStaleMinutes = 60; // unit in minutes
 
-function transformData(data, testDataNow) {
-    if (testDataNow) {
-        dataNow = testDataNow; // this is used for archived data sets
-    }
-
+function transformData(data) {
     const ourDateFormat = "M/D/YY"; // 3/2
     // future format?    "ddd, MMM D"; // Tue Mar 2
 
