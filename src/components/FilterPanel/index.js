@@ -9,7 +9,6 @@ import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ZipCodeFilter, { isZipValid } from "./ZipCodeFilter";
-import MassVaxFilter from "./MassVaxFilter";
 
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
@@ -61,7 +60,6 @@ function ClearSelections({ classes, inProgressFilters, setInProgressFilters }) {
                 setInProgressFilters({
                     ...inProgressFilters,
                     filterByAvailable: true,
-                    filterByMassVax: true,
                     filterByZipCode: {
                         ...inProgressFilters.filterByZipCode,
                         zipCode: "",
@@ -224,17 +222,6 @@ function FilterPanel(props) {
                             setFilters({
                                 ...filters,
                                 filterByAvailable: value,
-                            })
-                        }
-                    />
-                </FilterSegment>
-                <FilterSegment>
-                    <MassVaxFilter
-                        canShowMassVax={filters.filterByMassVax}
-                        onChange={(value) =>
-                            setFilters({
-                                ...filters,
-                                filterByMassVax: value,
                             })
                         }
                     />

@@ -21,6 +21,14 @@ export function getCookie(key) {
 
 export function setCookie(key, value) {
     plaintextCookie[key] = value;
+    if (process.env.NODE_ENV !== "production") {
+        // Because I couldn't read my encrypted cookies for debugging!
+        cookies.set(cookieName + "-dev", plaintextCookie, {
+            path: "/",
+            secure: true,
+            maxAge: cookieMaxAge,
+        });
+    }
     const encryptedCookie = cookieCipher(JSON.stringify(plaintextCookie));
     cookies.set(cookieName, encryptedCookie, {
         path: "/",
