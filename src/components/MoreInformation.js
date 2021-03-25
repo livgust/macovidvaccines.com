@@ -36,7 +36,7 @@ export default function MoreInformation({ entry }) {
     }
 
     if (!(entry.restrictions || entry.extraData)) {
-        return <StreetAddress entry={entry} classes={classes} />;
+        return <StreetAddress entry={entry} className={classes.accordion} />;
     } else {
         return (
             <Accordion className={classes.accordion}>
@@ -50,7 +50,10 @@ export default function MoreInformation({ entry }) {
                     More Information
                 </AccordionSummary>
                 <AccordionDetails className={classes.extraDataContainer}>
-                    <StreetAddress entry={entry} classes={classes} />
+                    <StreetAddress
+                        entry={entry}
+                        className={classes.extraData}
+                    />
                     {entry.restrictions && (
                         <div className={classes.extraData}>
                             <b>Restrictions:</b> {entry.restrictions}
@@ -63,7 +66,7 @@ export default function MoreInformation({ entry }) {
     }
 }
 
-function StreetAddress({ entry, classes }) {
+function StreetAddress({ entry, className }) {
     if (!entry.streetAddress) return null;
 
     const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
@@ -71,7 +74,7 @@ function StreetAddress({ entry, classes }) {
     )}`;
 
     return (
-        <div className={classes.accordion}>
+        <div className={className}>
             <b>Address: </b>
             <Link target="_blank" rel="noreferrer" href={googleMapsLink}>
                 {entry.streetAddress}
