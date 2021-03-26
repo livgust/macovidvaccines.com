@@ -160,10 +160,12 @@ function RestrictionNotifier({ entry }) {
             // " live"
             // " work"
             // "eligible populations in"
+            // "k-12"
+            // "only" (" only" or "only ")
             text
                 .toLowerCase()
                 .match(
-                    /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin)/
+                    /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin|k-12|\sonly|only\s)/
                 )
         ) {
             hasRestriction = true;
