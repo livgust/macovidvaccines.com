@@ -151,10 +151,11 @@ function convertExtraDataToRestrictions(additionalInfo) {
         // " work"
         // "eligible populations in"
         // "k-12"
+        // "teacher"
         text
             .toLowerCase()
             .match(
-                /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin|k-12)/
+                /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin|k-12|teacher)/
             )
     ) {
         return {
