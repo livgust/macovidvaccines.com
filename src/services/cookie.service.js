@@ -21,14 +21,6 @@ export function getCookie(key) {
 
 export function setCookie(key, value) {
     plaintextCookie[key] = value;
-    if (process.env.NODE_ENV !== "production") {
-        // Because I couldn't read my encrypted cookies for debugging!
-        cookies.set(cookieName + "-dev", plaintextCookie, {
-            path: "/",
-            secure: true,
-            maxAge: cookieMaxAge,
-        });
-    }
     const encryptedCookie = cookieCipher(JSON.stringify(plaintextCookie));
     cookies.set(cookieName, encryptedCookie, {
         path: "/",
@@ -66,7 +58,11 @@ const decipher = (salt) => {
             .join("");
 };
 
-// To create a cipher
-const cookieSalt = "XDpUY3ti0uEh8wUnWv6t";
-const cookieCipher = cipher(cookieSalt);
-const cookieDecipher = decipher(cookieSalt);
+function noCipher(value) {
+    // If no salt is provided, then don't encrypt/decrypt values
+    return value;
+}
+
+const cookieSalt = process.env.REACT_APP_COOKIE_SALT;
+const cookieCipher = cookieSalt ? cipher(cookieSalt) : noCipher;
+const cookieDecipher = cookieSalt ? decipher(cookieSalt) : noCipher;
