@@ -6,6 +6,23 @@ const dayjs = require("dayjs");
 // any location with data older than this will not be displayed at all
 export const tooStaleMinutes = 60; // unit in minutes
 
+export function combineMoreInformation(moreInfo) {
+    if (hasSameInformationText(moreInfo)) {
+        return Object.values(moreInfo)[0];
+    } else {
+        return Object.keys(moreInfo)
+            .map((date) => `${date}: ${moreInfo[date]}`)
+            .join("&#10;&#13;");
+    }
+}
+
+export function hasSameInformationText(moreInfo) {
+    return Object.values(moreInfo).reduce(
+        (cum, cur, ind, arr) => ind === 0 || (cum && arr[ind - 1] === cur),
+        true
+    );
+}
+
 export function transformData(data) {
     const ourDateFormat = "M/D/YY"; // 3/2
     // future format?    "ddd, MMM D"; // Tue Mar 2
@@ -17,6 +34,36 @@ export function transformData(data) {
                 let newKey = dayjs(key).format(ourDateFormat);
                 availability[newKey] = value;
             }
+            for (const [key, value] of Object.entries(entry.availability)) {
+                let newKey = dayjs(key).format(ourDateFormat);
+                availability[newKey] = value;
+            }
+        }
+
+        let extraData = entry.extraData;
+        console.log(extraData);
+        if (extraData && extraData["Additional Information"]) {
+            let newMoreInfo = extraData["Additional Information"];
+            if (
+                entry.hasAvailability &&
+                typeof newMoreInfo === "object" &&
+                Object.keys(newMoreInfo).length
+            ) {
+                newMoreInfo = {};
+                for (const key of Object.keys(
+                    extraData["Additional Information"]
+                )) {
+                    const formattedKey = dayjs(key).format(ourDateFormat);
+                    if (availability[formattedKey].hasAvailability) {
+                        newMoreInfo[formattedKey] =
+                            extraData["Additional Information"][key];
+                    }
+                }
+            }
+            if (typeof newMoreInfo === "object" && Object.keys(newMoreInfo)) {
+                newMoreInfo = combineMoreInformation(newMoreInfo);
+            }
+            extraData["Additional Information"] = newMoreInfo;
         }
 
         return {
@@ -28,7 +75,7 @@ export function transformData(data) {
             hasAppointments: entry.hasAvailability,
             appointmentData: availability || null,
             signUpLink: entry.signUpLink || null,
-            extraData: entry.extraData || null,
+            extraData: extraData || null,
             restrictions: entry.restrictions || null,
             coordinates: {
                 latitude: entry.latitude,

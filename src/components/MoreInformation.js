@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     extraData: {
         display: "block",
+        "white-space": "pre-line",
         "padding-top": theme.spacing(1),
     },
 }));
@@ -96,7 +97,7 @@ function ExtraData({ data }) {
                             key={key}
                             className={classes.extraData}
                             dangerouslySetInnerHTML={{
-                                __html: `<b>${key}:</b> ${finalData}`,
+                                __html: `<b>${key}:</b><br/> ${finalData}`,
                             }}
                         />
                     );

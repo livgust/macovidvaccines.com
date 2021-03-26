@@ -142,6 +142,30 @@ export default function CovidAppointmentTable({
     }
 }
 
+function convertExtraDataToRestrictions(additionalInfo) {
+    const text = additionalInfo;
+    if (
+        // "County residents"
+        // "eligible residents"
+        // " live"
+        // " work"
+        // "eligible populations in"
+        // "k-12"
+        text
+            .toLowerCase()
+            .match(
+                /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin|k-12)/
+            )
+    ) {
+        return {
+            hasRestriction: true,
+            restrictionText: text,
+        };
+    } else {
+        return {};
+    }
+}
+
 function RestrictionNotifier({ entry }) {
     let hasRestriction = false;
     let restrictionText = null;
@@ -153,23 +177,11 @@ function RestrictionNotifier({ entry }) {
         hasRestriction = true;
         restrictionText = entry.restrictions;
     } else if (entry.extraData && entry.extraData["Additional Information"]) {
-        const text = entry.extraData["Additional Information"];
-        if (
-            // "County residents"
-            // "eligible residents"
-            // " live"
-            // " work"
-            // "eligible populations in"
-            // "k-12"
-            text
-                .toLowerCase()
-                .match(
-                    /(county\sresidents|eligible\sresidents|\slive|\swork|eligible\spopulations\sin|k-12)/
-                )
-        ) {
-            hasRestriction = true;
-            restrictionText = text;
-        }
+        const restrictions = convertExtraDataToRestrictions(
+            entry.extraData["Additional Information"]
+        );
+        hasRestriction = restrictions.hasRestriction;
+        restrictionText = restrictions.restrictionText;
     }
 
     const classes = useStyles();
