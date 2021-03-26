@@ -12,6 +12,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function hasSignUpLink(entry) {
+    if (entry.isMassVax) {
+        return true;
+    }
+
     if (entry.hasAppointments) {
         if (entry.signUpLink) {
             // one sign-up link for all availabilities
@@ -32,6 +36,20 @@ export function hasSignUpLink(entry) {
 }
 
 export default function SignUpLink({ entry }) {
+    if (entry.isMassVax) {
+        return (
+            <Button
+                variant="outlined"
+                color="secondary"
+                href="https://vaccineSignUp.mass.gov"
+                rel="noreferrer"
+                target="_blank"
+            >
+                Preregister
+            </Button>
+        );
+    }
+
     if (entry.hasAppointments) {
         if (entry.signUpLink) {
             // one sign-up link for all availabilities

@@ -1,5 +1,6 @@
 import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
 import { isWithinRadius } from "../components/FilterPanel/RadiusFilter";
+import { setCookie } from "./cookie.service";
 
 const dayjs = require("dayjs");
 
@@ -74,6 +75,7 @@ export function transformData(data) {
             zip: entry.zip,
             hasAppointments: entry.hasAvailability,
             appointmentData: availability || null,
+            isMassVax: entry.massVax || false,
             signUpLink: entry.signUpLink || null,
             extraData: extraData || null,
             restrictions: entry.restrictions || null,
@@ -85,12 +87,21 @@ export function transformData(data) {
         };
     });
 
+    // Filter all massVax locations out.
+    // We are going to show a consolidated "Preregistration" card instead.
+    // There is still code to display these sites individually in
+    // Availability.js and SignupLink.js if we decide to go that way later on.
+    mappedData = mappedData.filter((d) => {
+        return !d.isMassVax;
+    });
+
     // Pre-Filter the locations that have "non-stale" data
     const oldestGoodTimestamp = new Date() - tooStaleMinutes * 60 * 1000;
     return mappedData.filter((d) => {
         return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
     });
 }
+
 export function sortData(data, sortKey) {
     const newData = data.sort((a, b) => {
         const first = a[sortKey];
@@ -104,7 +115,11 @@ export function sortData(data, sortKey) {
     return newData;
 }
 
-export function filterData(data, { filterByAvailable, filterByZipCode }) {
+export function filterData(data, filters) {
+    // Update the cookie
+    setCookie("filter", filters);
+
+    const { filterByAvailable, filterByZipCode } = filters;
     return data.filter((d) => {
         if (filterByAvailable && !isAvailable(d)) {
             return false;

@@ -15,6 +15,8 @@ import SignUpLink, { hasSignUpLink } from "./components/SignUpLink";
 import { sortData } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import { getCookie, setCookie } from "./services/cookie.service";
 
 const dayjs = require("dayjs");
 
@@ -100,6 +102,12 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.error.dark,
         "padding-right": theme.spacing(1),
     },
+    massVaxBoxHeader: {
+        paddingBottom: 0,
+    },
+    massVaxBox: {
+        backgroundColor: "#f8fff8",
+    },
 }));
 
 export default function CovidAppointmentTable({
@@ -124,6 +132,7 @@ export default function CovidAppointmentTable({
     if (sortedData && sortedData.length) {
         return (
             <div role="list">
+                <MassVaxCard className={classes.cardBox} />
                 {sortedData.map((entry) => {
                     return (
                         <LocationCard
@@ -138,7 +147,12 @@ export default function CovidAppointmentTable({
             </div>
         );
     } else {
-        return <NoAppointmentsAlert />;
+        return (
+            <div role="list">
+                <MassVaxCard className={classes.cardBox} />
+                <NoAppointmentsAlert />
+            </div>
+        );
     }
 }
 
@@ -251,6 +265,83 @@ function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
                     />
                     <MoreInformation entry={entry} />
                     <SignUpLink entry={entry} />
+                </CardContent>
+            </Card>
+        </div>
+    );
+}
+
+function MassVaxCard({ className }) {
+    const classes = useStyles();
+
+    if (getCookie("hideMassVax")) {
+        return null;
+    }
+
+    function dismissMassVax() {
+        setCookie("hideMassVax", true);
+        document.getElementById("MassVaxCard").hidden = true;
+    }
+
+    return (
+        <div id="MassVaxCard" role="listitem" className={className}>
+            <Card className={classes.massVaxBox}>
+                <CardHeader
+                    className={classes.massVaxBoxHeader}
+                    title={
+                        <div className={classes.locationTitle}>
+                            <span>Preregister for Mass Vaccination Sites</span>
+                        </div>
+                    }
+                    subheader={
+                        <>
+                            <div>
+                                Gillette Stadium, Hynes Convention Center,
+                                Reggie Lewis State Track Athletic Center,
+                                Dartmouth - Former Circuit City, Danvers -
+                                Doubletree Hotel, Springfield - Eastfield Mall,
+                                Natick Mall
+                            </div>
+                        </>
+                    }
+                />
+                <CardContent>
+                    The Commonwealth’s{" "}
+                    <a
+                        href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        preregistration system
+                    </a>{" "}
+                    helps you get an appointment at one of the seven mass
+                    vaccination locations. You’ll receive weekly status updates,
+                    and you may opt out at any time if you find an appointment
+                    elsewhere.
+                    <p>
+                        We recommend preregistering <i>and</i> using this site
+                        &mdash; you may find an appointment at locations not
+                        covered by preregistration.
+                    </p>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        href="https://vaccineSignUp.mass.gov"
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        Preregister at mass.gov
+                    </Button>{" "}
+                    <Button
+                        variant="outlined"
+                        color="default"
+                        style={{ marginLeft: "5px" }}
+                        onClick={dismissMassVax}
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        Dismiss this reminder
+                    </Button>
                 </CardContent>
             </Card>
         </div>

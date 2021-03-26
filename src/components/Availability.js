@@ -14,6 +14,22 @@ const useStyles = makeStyles((theme) => ({
 export default function Availability({ entry, onlyShowAvailable }) {
     const classes = useStyles();
     const { t } = useTranslation("main");
+    if (entry.isMassVax) {
+        return (
+            <div>
+                Appointments at this site are by{" "}
+                <Link
+                    href="https://vaccineSignUp.mass.gov"
+                    rel="noreferrer"
+                    target="_blank"
+                >
+                    preregistration only.
+                </Link>{" "}
+                Once you register, the Commonwealth will notify you when an
+                appointment is available.
+            </div>
+        );
+    }
     if (!entry.hasAppointments) {
         return (
             <div className={classes.availability} data-testid="no-availability">
