@@ -2,26 +2,14 @@ import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
-import Cookies from "universal-cookie";
 
 // For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
 // const zipcodeData = require("us-zips");
 import zipcodeData from "../../generated/ma-zips.json";
 
-const cookies = new Cookies();
-export function getZipCodeCookie() {
-    const savedZip = cookies.get("ZIPCode");
-    return savedZip ? savedZip : "";
-}
 export default function ZipCodeFilter(props) {
     const handleChange = (e) => {
-        /* TODO: we have a mix of cookie stuff in and out of this component.
-         * It should all be in one place. */
-        const { formattedZip, zipValid } = zipInputFilter(e.target.value);
-        if (zipValid) {
-            cookies.set("ZIPCode", formattedZip, { path: "/" });
-        }
-        props.onChange(formattedZip);
+        props.onChange(zipInputFilter(e.target.value).formattedZip);
     };
 
     const error = showZipError(props.zipCode);

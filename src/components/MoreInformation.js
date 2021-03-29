@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     extraData: {
         display: "block",
+        "white-space": "pre-line",
         "padding-top": theme.spacing(1),
     },
 }));
@@ -33,11 +34,11 @@ export default function MoreInformation({ entry }) {
 
     if (!(entry.streetAddress || entry.restrictions || entry.extraData)) {
         return null;
-    } else {
-        const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-            `${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`
-        )}`;
+    }
 
+    if (!(entry.restrictions || entry.extraData)) {
+        return <StreetAddress entry={entry} className={classes.accordion} />;
+    } else {
         return (
             <Accordion className={classes.accordion}>
                 <AccordionSummary
@@ -50,19 +51,10 @@ export default function MoreInformation({ entry }) {
                     More Information
                 </AccordionSummary>
                 <AccordionDetails className={classes.extraDataContainer}>
-                    {entry.streetAddress && (
-                        <div className={classes.extraData}>
-                            <b>Address: </b>
-                            <Link
-                                target="_blank"
-                                rel="noreferrer"
-                                href={googleMapsLink}
-                            >
-                                {entry.streetAddress}, {entry.city}, MA
-                                {entry.zip}
-                            </Link>
-                        </div>
-                    )}
+                    <StreetAddress
+                        entry={entry}
+                        className={classes.extraData}
+                    />
                     {entry.restrictions && (
                         <div className={classes.extraData}>
                             <b>Restrictions:</b> {entry.restrictions}
@@ -73,6 +65,26 @@ export default function MoreInformation({ entry }) {
             </Accordion>
         );
     }
+}
+
+function StreetAddress({ entry, className }) {
+    if (!entry.streetAddress) return null;
+
+    const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+        `${entry.streetAddress}, ${entry.city}, MA ${entry.zip}`
+    )}`;
+
+    return (
+        <div className={className}>
+            <b>Address: </b>
+            <Link target="_blank" rel="noreferrer" href={googleMapsLink}>
+                {entry.streetAddress}
+                {", "}
+                {entry.city},{" MA "}
+                {entry.zip}
+            </Link>
+        </div>
+    );
 }
 
 function ExtraData({ data }) {
@@ -96,7 +108,7 @@ function ExtraData({ data }) {
                             key={key}
                             className={classes.extraData}
                             dangerouslySetInnerHTML={{
-                                __html: `<b>${key}:</b> ${finalData}`,
+                                __html: `<b>${key}:</b><br/> ${finalData}`,
                             }}
                         />
                     );

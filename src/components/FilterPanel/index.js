@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ClearSelections({ classes, inProgressFilters, setInProgressFilters }) {
+function ClearFilters({ classes, inProgressFilters, setInProgressFilters }) {
     return (
         <Button
             variant="outlined"
@@ -66,7 +66,7 @@ function ClearSelections({ classes, inProgressFilters, setInProgressFilters }) {
             }}
             type="submit"
         >
-            Clear Selections
+            Clear Filters
         </Button>
     );
 }
@@ -104,7 +104,7 @@ export default function FilterPanelParent({
                     setFilters={setInProgressFilters}
                     closeButton={
                         <Button
-                            data-testid="update-list-button"
+                            data-testid="apply-filters-button"
                             variant="contained"
                             color="primary"
                             onClick={(e) => {
@@ -113,11 +113,11 @@ export default function FilterPanelParent({
                             }}
                             type="submit"
                         >
-                            Update List
+                            Apply Filters
                         </Button>
                     }
                     clearButton={
-                        <ClearSelections
+                        <ClearFilters
                             inProgressFilters={inProgressFilters}
                             setInProgressFilters={setInProgressFilters}
                             classes={classes}
@@ -141,7 +141,7 @@ export default function FilterPanelParent({
                     setFilters={setInProgressFilters}
                     closeButton={
                         <Button
-                            data-testid="update-list-button"
+                            data-testid="apply-filters-button"
                             variant="contained"
                             color="primary"
                             className={classes.mobileButton}
@@ -157,11 +157,11 @@ export default function FilterPanelParent({
                             }
                             type="submit"
                         >
-                            Update List
+                            Apply Filters
                         </Button>
                     }
                     clearButton={
-                        <ClearSelections
+                        <ClearFilters
                             inProgressFilters={inProgressFilters}
                             setInProgressFilters={setInProgressFilters}
                             classes={classes}
