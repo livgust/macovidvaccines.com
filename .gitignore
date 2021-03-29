@@ -8,6 +8,7 @@
 
 # testing
 /coverage
+/src/test
 
 # production
 /build
@@ -22,4 +23,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.eslintcache
