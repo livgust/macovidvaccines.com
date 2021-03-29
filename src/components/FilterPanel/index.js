@@ -10,9 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ZipCodeFilter, { isZipValid } from "./ZipCodeFilter";
 
-// any location with data older than this will not be displayed at all
-export const tooStaleMinutes = 60; // unit in minutes
-
 const leftPaddingSpacingCoefficient = 1.0;
 
 const useStyles = makeStyles((theme) => ({
