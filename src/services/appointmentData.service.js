@@ -81,13 +81,10 @@ export function getAppointmentData() {
 
     if (
         process.env.NODE_ENV !== "production" &&
-        !process.env.REACT_APP_IGNORE_DEVTEST_JSON
+        process.env.REACT_APP_USE_DEVTEST_JSON === "true"
     ) {
         // This is a testing branch to get data from a local file instead of the production file.
-        // It will read a file called "test/devtest.json" in the src directory.
-        // You can obtain a cached file using a cmd line:
-        //
-        // aws s3 cp s3://ma-covid-vaccine/data-2021-02-23T2253Z.json src/test/devtest.json
+        // See README.md to learn how to use this feature.
 
         try {
             let testData = require("../test/devtest.json");
