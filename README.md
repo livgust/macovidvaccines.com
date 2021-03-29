@@ -60,6 +60,29 @@ There are unit tests (\*.test.js) that can be run at anytime. They will run auto
 npm run test
 ```
 
+## Testing with Local Data
+
+Normally, the front-end fetches data from the production server.  Sometimes it is necessary to test with a known data set.
+
+1. You must enable local testing by adding the following line to your `.env.local` file. _Note: You need to `npm run start`_ again when changing any environment variable.
+
+```sh
+# .env.local
+REACT_APP_USE_DEVTEST_JSON="true"
+```
+
+2. Your test file should be in `src/test/devtest.json`.  If there is no test file or if it is invalid, then the live production data will be fetched instead.  This allows you to simply delete or rename `devtest.json` to revert to live testing. 
+
+#### Acceptable Formats:
+1. Output from the back-end scrapers (i.e. `out.json`)
+1. Output from a browser's _View Source_.  You might get this by saving the contents of the production endpoint from a browser.
+1. Just create your own data set!
+1. Retrieve archived data from S3. If you have credentials, then you can retrieve a file using the following command. 
+   
+```sh
+aws s3 cp s3://ma-covid-vaccine/data-2021-02-23T2253Z.json src/test/devtest.json
+```
+
 ## Accessibility
 
 This project uses [axe](https://www.npmjs.com/package/@axe-core/react) as a way to encourage accessibility-friendly coding practices. Axe provides feedback when running this application locally and when running tests.
