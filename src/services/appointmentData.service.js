@@ -45,7 +45,6 @@ function transformData(data) {
         }
 
         let extraData = entry.extraData;
-        console.log(extraData);
         if (extraData && extraData["Additional Information"]) {
             let newMoreInfo = extraData["Additional Information"];
             if (
