@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
         "&:not(:first-of-type)": {
             "padding-left": theme.spacing(0.5),
         },
+        "&:last-of-type": {
+            "margin-right": 0,
+        },
     },
 }));
 
@@ -52,9 +55,9 @@ export default function RadiusFilter({ value, onChange }) {
                 row
             >
                 <RadiusRadio radius="9999" label="Any" />
-                <RadiusRadio radius="5" />
                 <RadiusRadio radius="10" />
                 <RadiusRadio radius="25" />
+                <RadiusRadio radius="50" />
             </RadioGroup>
         </FormControl>
     );
