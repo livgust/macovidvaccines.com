@@ -83,7 +83,11 @@ function MainComponent() {
     // UX change removed 5 mile radius as an option so this will set cookies
     // previously set to 5 to the next smallest, 10
     // TODO: undo this snippet after sufficient time has passed
-    if (filterCookies.filterByZipCode.miles === 5) {
+    if (
+        filterCookies &&
+        filterCookies.hasOwnProperty("filterByZipCode") &&
+        filterCookies.filterByZipCode.miles === 5
+    ) {
         filterCookies.filterByZipCode.miles = 10;
         setCookie("filter", filterCookies);
     }

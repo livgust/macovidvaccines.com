@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         "border-color": theme.palette.divider,
         "margin-left": theme.spacing(leftPaddingSpacingCoefficient / 2),
         "padding-left": theme.spacing(leftPaddingSpacingCoefficient / 2),
-        "width": "90%",
+        width: "90%",
     },
     filterSegment: {
         "padding-top": theme.spacing(1),
