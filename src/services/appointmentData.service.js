@@ -1,11 +1,18 @@
 import { isAvailable } from "../components/FilterPanel/AvailabilityFilter";
 import { isWithinRadius } from "../components/FilterPanel/RadiusFilter";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc";
 import { setCookie } from "./cookie.service";
 
-const dayjs = require("dayjs");
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+
+// This is the timestamp of our data. It should be used instead of "new Date()"
+export let dataNow = dayjs();
 
 // any location with data older than this will not be displayed at all
-export const tooStaleMinutes = 60; // unit in minutes
+const tooStaleMinutes = 60; // unit in minutes
 
 export function combineMoreInformation(moreInfo) {
     if (hasSameInformationText(moreInfo)) {
@@ -24,7 +31,7 @@ export function hasSameInformationText(moreInfo) {
     );
 }
 
-export function transformData(data) {
+function transformData(data) {
     const ourDateFormat = "M/D/YY"; // 3/2
     // future format?    "ddd, MMM D"; // Tue Mar 2
 
@@ -35,14 +42,9 @@ export function transformData(data) {
                 let newKey = dayjs(key).format(ourDateFormat);
                 availability[newKey] = value;
             }
-            for (const [key, value] of Object.entries(entry.availability)) {
-                let newKey = dayjs(key).format(ourDateFormat);
-                availability[newKey] = value;
-            }
         }
 
         let extraData = entry.extraData;
-        console.log(extraData);
         if (extraData && extraData["Additional Information"]) {
             let newMoreInfo = extraData["Additional Information"];
             if (
@@ -96,14 +98,14 @@ export function transformData(data) {
     });
 
     // Pre-Filter the locations that have "non-stale" data
-    const oldestGoodTimestamp = new Date() - tooStaleMinutes * 60 * 1000;
+    const oldestGoodTimestamp = dataNow - tooStaleMinutes * 60 * 1000;
     return mappedData.filter((d) => {
         return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
     });
 }
 
 export function sortData(data, sortKey) {
-    const newData = data.sort((a, b) => {
+    return data.sort((a, b) => {
         const first = a[sortKey];
         const second = b[sortKey];
         if (typeof first == "string") {
@@ -112,7 +114,6 @@ export function sortData(data, sortKey) {
             return first - second;
         }
     });
-    return newData;
 }
 
 export function filterData(data, filters) {
@@ -135,9 +136,54 @@ export function filterData(data, filters) {
 }
 
 export function getAppointmentData() {
-    return fetch(
-        "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
-    ).then(async (res) => {
-        return transformData(JSON.parse((await res.json()).body).results);
-    });
+    let testDataTransformed = null;
+
+    if (
+        process.env.NODE_ENV !== "production" &&
+        process.env.REACT_APP_USE_DEVTEST_JSON === "true"
+    ) {
+        // This is a testing branch to get data from a local file instead of the production file.
+        // See README.md to learn how to use this feature.
+
+        try {
+            let testData = require("../test/devtest.json");
+
+            // If it has 'body', then this looks like something pasted from a browser (View Source)
+            if (testData.hasOwnProperty("body")) {
+                if (typeof testData.body == "object") {
+                    testData = testData.body;
+                } else {
+                    testData = JSON.parse(testData.body);
+                }
+            }
+
+            if (testData.results) {
+                if (testData.timestamp) {
+                    dataNow = dayjs.utc(
+                        testData.timestamp,
+                        "YYYY-MM-DDTHHmmss[Z]"
+                    );
+                } else {
+                    // If there is no timestamp in the test data
+                    // then just use a date in the past so that nothing is filtered
+                    dataNow = dayjs("03/11/2020");
+                }
+                testDataTransformed = transformData(testData.results);
+            }
+        } catch (err) {
+            // if the file doesn't exist, just get the prod file
+            testDataTransformed = null;
+        }
+    }
+
+    if (testDataTransformed) {
+        return Promise.resolve(testDataTransformed);
+    } else {
+        dataNow = dayjs();
+        return fetch(
+            "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
+        ).then(async (res) => {
+            return transformData(JSON.parse((await res.json()).body).results);
+        });
+    }
 }
