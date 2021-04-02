@@ -12,7 +12,7 @@ dayjs.extend(utc);
 export let dataNow = dayjs();
 
 // any location with data older than this will not be displayed at all
-const tooStaleMinutes = 60; // unit in minutes
+const tooStaleMinutes = 20; // unit in minutes
 
 export function combineMoreInformation(moreInfo) {
     if (hasSameInformationText(moreInfo)) {
