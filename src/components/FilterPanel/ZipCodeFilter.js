@@ -3,6 +3,9 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormLabel from "@material-ui/core/FormLabel";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
+import zipcodeData from "../../generated/ma-zips.json";
+// For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
+// const zipcodeData = require("us-zips");
 
 const useStyles = makeStyles({
     error: {
@@ -17,10 +20,6 @@ const useStyles = makeStyles({
         "margin-bottom": "5px",
     },
 });
-
-// For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
-// const zipcodeData = require("us-zips");
-import zipcodeData from "../../generated/ma-zips.json";
 
 export default function ZipCodeFilter(props) {
     const classes = useStyles();
