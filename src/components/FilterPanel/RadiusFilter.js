@@ -7,9 +7,9 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import React from "react";
-import zipcodeData from "../../generated/ma-zips.json";
 // For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
 // const zipcodeData = require("us-zips");
+import zipcodeData from "../../generated/ma-zips.json";
 
 const useStyles = makeStyles((theme) => ({
     narrowRadio: {
