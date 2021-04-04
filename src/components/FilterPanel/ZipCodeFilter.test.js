@@ -32,8 +32,39 @@ it("executes onChange with true when clicked from empty", async () => {
     const onChange = jest.fn();
     await act(async () => {
         render(<ZipCodeFilter onChange={onChange} />);
+        userEvent.type(screen.getByTestId("zip-input"), "1");
     });
-    userEvent.type(screen.getByTestId("zip-input"), "1");
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenLastCalledWith("1");
+});
+
+it("has error text display when given incorrect zipcode", async () => {
+    const onChange = jest.fn();
+    await act(async () => {
+        render(<ZipCodeFilter onChange={onChange} zipCode="02215" />);
+    });
+    expect(() => {
+        // has to be inside function or will be left uncaught
+        screen.getByTestId("zip-error");
+    }).toThrowError();
+
+    await act(async () => {
+        // length > 5 for zip is invalid
+        userEvent.type(screen.getByTestId("zip-input"), "6");
+    });
+    expect(() => {
+        // DOM won't instantly update so have to wait
+        screen.findByTestId("zip-error");
+    }).not.toThrowError();
+
+    await act(async () => {
+        // inputting non-MA zip
+        userEvent.type(
+            screen.getByTestId("zip-input"),
+            "{selectall}{backspace}12345"
+        );
+    });
+    expect(() => {
+        screen.findByTestId("zip-error");
+    }).not.toThrowError();
 });

@@ -7,7 +7,6 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import React from "react";
-
 // For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
 // const zipcodeData = require("us-zips");
 import zipcodeData from "../../generated/ma-zips.json";
@@ -19,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     padBetweenChoices: {
         "&:not(:first-of-type)": {
             "padding-left": theme.spacing(0.5),
+        },
+        "&:last-of-type": {
+            "margin-right": 0,
         },
     },
 }));
@@ -52,9 +54,9 @@ export default function RadiusFilter({ value, onChange }) {
                 row
             >
                 <RadiusRadio radius="9999" label="Any" />
-                <RadiusRadio radius="5" />
                 <RadiusRadio radius="10" />
                 <RadiusRadio radius="25" />
+                <RadiusRadio radius="50" />
             </RadioGroup>
         </FormControl>
     );

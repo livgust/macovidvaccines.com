@@ -10,7 +10,7 @@ import {
     getAppointmentData,
 } from "./services/appointmentData.service";
 import { isZipValid } from "./components/FilterPanel/ZipCodeFilter";
-import { getCookie } from "./services/cookie.service";
+import { getCookie, setCookie } from "./services/cookie.service";
 import { useTranslation } from "react-i18next";
 import Alert from "@material-ui/lab/Alert";
 import AlertBanner from "./components/AlertBanner";
@@ -79,11 +79,20 @@ function MainComponent() {
     const [errorMessage, setErrorMessage] = useState();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
+    let filterCookies = getCookie("filter");
+    // UX change removed 5 mile radius as an option so this will set cookies
+    // previously set to 5 to the next smallest, 10
+    // TODO: undo this snippet after sufficient time has passed
+    if (filterCookies?.filterByZipCode?.miles === 5) {
+        filterCookies.filterByZipCode.miles = 10;
+        setCookie("filter", filterCookies);
+    }
+
     const [filters, setFilters] = useState({
         filterByAvailable: true,
         filterByMassVax: true,
         filterByZipCode: { zipCode: "", miles: 9999 },
-        ...getCookie("filter"),
+        ...filterCookies,
     });
 
     const zip = filters.filterByZipCode.zipCode;

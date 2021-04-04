@@ -34,12 +34,14 @@ const useStyles = makeStyles((theme) => ({
     filterGroup: {
         "border-style": "solid",
         "border-color": theme.palette.divider,
-        "margin-left": theme.spacing(-leftPaddingSpacingCoefficient / 2),
+        "margin-left": theme.spacing(leftPaddingSpacingCoefficient / 2),
         "padding-left": theme.spacing(leftPaddingSpacingCoefficient / 2),
+        width: "90%",
     },
     filterSegment: {
         "padding-top": theme.spacing(1),
         "padding-bottom": theme.spacing(1),
+        "padding-left": theme.spacing(0.5),
     },
     panel: {
         "padding-left": theme.spacing(leftPaddingSpacingCoefficient),
