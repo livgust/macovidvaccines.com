@@ -76,6 +76,7 @@ function transformData(data) {
             city: entry.city,
             zip: entry.zip,
             hasAppointments: entry.hasAvailability,
+            totalAvailability: entry.totalAvailability || null,
             appointmentData: availability || null,
             isMassVax: entry.massVax || false,
             signUpLink: entry.signUpLink || null,
