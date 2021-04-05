@@ -52,6 +52,9 @@ export default function CovidAppointmentTable({
     data,
     sortBy,
     onlyShowAvailable,
+    numUnfilteredAvailableLocations,
+    showingUnfilteredData,
+    filterMiles,
 }) {
     const classes = useStyles();
 
@@ -71,6 +74,13 @@ export default function CovidAppointmentTable({
         return (
             <div role="list">
                 <MassVaxCard className={classes.cardBox} />
+                <ShowingUnfilteredData
+                    numUnfilteredAvailableLocations={
+                        numUnfilteredAvailableLocations
+                    }
+                    showingUnfilteredData={showingUnfilteredData}
+                    miles={filterMiles}
+                />
                 {sortedData.map((entry) => {
                     return (
                         <LocationCard
@@ -78,6 +88,7 @@ export default function CovidAppointmentTable({
                             className={classes.cardBox}
                             key={getSiteId(entry)}
                             showMiles={sortBy === "miles"}
+                            milesLimit={filterMiles}
                             onlyShowAvailable={onlyShowAvailable}
                         />
                     );
@@ -172,8 +183,15 @@ function RestrictionNotifier({ entry }) {
     }
 }
 
-function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
+function LocationCard({
+    entry,
+    className,
+    onlyShowAvailable,
+    milesLimit,
+    showMiles,
+}) {
     const classes = useStyles();
+    const milesColor = entry.miles > milesLimit ? "red" : "";
     return (
         <div role="listitem" className={className}>
             <Card>
@@ -187,9 +205,11 @@ function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
                         <>
                             <div>
                                 {entry.city}{" "}
-                                {showMiles &&
-                                    entry.miles &&
-                                    `(${entry.miles} miles)`}
+                                <span style={{ color: milesColor }}>
+                                    {showMiles &&
+                                        entry.miles &&
+                                        `(${entry.miles} miles)`}
+                                </span>
                             </div>
                             <RestrictionNotifier entry={entry} />
                             <StaleDataIndicator timestamp={entry.timestamp} />
@@ -309,6 +329,34 @@ function NoAppointmentsAlert() {
                         www.mass.gov/covid-19-vaccine
                     </a>
                     .
+                </p>
+            </Alert>
+            <br />
+        </div>
+    );
+}
+
+function ShowingUnfilteredData({
+    showingUnfilteredData,
+    numUnfilteredAvailableLocations,
+    miles,
+}) {
+    //const classes = useStyles();
+    if (!showingUnfilteredData) return null;
+    return (
+        <div role="status">
+            <br />
+            <Alert severity={"warning"}>
+                <AlertTitle>
+                    No Appointments Found Within {miles} Miles
+                </AlertTitle>
+                <p>
+                    {numUnfilteredAvailableLocations === 1
+                        ? `There is ${numUnfilteredAvailableLocations} location that has availability but it is`
+                        : `There are ${numUnfilteredAvailableLocations} locations that have availability but they are`}{" "}
+                    farther than {miles} miles from you. This website gathers
+                    data every minute from COVID-19 vaccine sites across
+                    Massachusetts.
                 </p>
             </Alert>
             <br />

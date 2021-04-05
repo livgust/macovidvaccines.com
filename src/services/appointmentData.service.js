@@ -120,9 +120,17 @@ export function filterData(data, filters) {
     // Update the cookie
     setCookie("filter", filters);
 
+    // count the number of unfiltered available locations for UI messaging
+    let numUnfilteredAvailableLocations = 0;
+
     const { filterByAvailable, filterByZipCode } = filters;
-    return data.filter((d) => {
-        if (filterByAvailable && !isAvailable(d)) {
+    let filteredData = data.filter((d) => {
+        const hasAvailability = isAvailable(d);
+        if (hasAvailability) {
+            ++numUnfilteredAvailableLocations;
+        }
+
+        if (filterByAvailable && !hasAvailability) {
             return false;
         }
         if (
@@ -133,6 +141,28 @@ export function filterData(data, filters) {
         }
         return true;
     });
+
+    let showingUnfilteredData = false;
+
+    if (
+        filteredData.length === 0 &&
+        filterByAvailable &&
+        filterByZipCode.zipCode &&
+        filterByZipCode.miles < 9999
+    ) {
+        showingUnfilteredData = true;
+        filteredData = data.filter((d) => {
+            if (filterByAvailable && !isAvailable(d)) {
+                return false;
+            }
+            return true;
+        });
+    }
+    return {
+        filteredData: filteredData,
+        showingUnfilteredData: showingUnfilteredData,
+        numUnfilteredAvailableLocations: numUnfilteredAvailableLocations,
+    };
 }
 
 export function getAppointmentData() {
