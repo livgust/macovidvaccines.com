@@ -32,17 +32,16 @@ export function hasSameInformationText(moreInfo) {
 }
 
 function transformData(data) {
-    const ourDateFormat = "M/D/YY"; // 3/2
-    // future format?    "ddd, MMM D"; // Tue Mar 2
-
     let mappedData = data.map((entry, index) => {
         let availability = [];
         if (entry.availability) {
             for (const [key, value] of Object.entries(entry.availability)) {
-                let newKey = dayjs(key).format(ourDateFormat);
+                let newKey = dayjs(key).format();
                 availability[newKey] = value;
             }
         }
+
+        sortKeys(availability);
 
         let extraData = entry.extraData;
         if (extraData && extraData["Additional Information"]) {
@@ -56,7 +55,7 @@ function transformData(data) {
                 for (const key of Object.keys(
                     extraData["Additional Information"]
                 )) {
-                    const formattedKey = dayjs(key).format(ourDateFormat);
+                    const formattedKey = dayjs(key).format();
                     if (availability[formattedKey].hasAvailability) {
                         newMoreInfo[formattedKey] =
                             extraData["Additional Information"][key];
@@ -102,6 +101,30 @@ function transformData(data) {
     return mappedData.filter((d) => {
         return !d.timestamp || d.timestamp >= oldestGoodTimestamp;
     });
+}
+
+function sortKeys(theObject) {
+    let key = Object.keys(theObject).sort(function order(key1, key2) {
+        if (key1 < key2) return -1;
+        else if (key1 > key2) return +1;
+        else return 0;
+    });
+
+    // Taking the object in 'temp' object
+    // and deleting the original object.
+    let temp = {};
+
+    for (let i = 0; i < key.length; i++) {
+        temp[key[i]] = theObject[key[i]];
+        delete theObject[key[i]];
+    }
+
+    // Copying the object from 'temp' to
+    // 'original object'.
+    for (let i = 0; i < key.length; i++) {
+        theObject[key[i]] = temp[key[i]];
+    }
+    return theObject;
 }
 
 export function sortData(data, sortKey) {

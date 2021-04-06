@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
@@ -71,10 +72,10 @@ export default function SignUpLink({ entry }) {
                     entry.appointmentData[date].hasAvailability &&
                     entry.appointmentData[date].signUpLink
                 ) {
-                    dateLinkPairs.push([
-                        date,
-                        entry.appointmentData[date].signUpLink,
-                    ]);
+                    dateLinkPairs.push({
+                        date: dayjs(date).format("M/D/YY"),
+                        signUpLink: entry.appointmentData[date].signUpLink,
+                    });
                 }
             }
             if (!dateLinkPairs.length) {
@@ -92,7 +93,7 @@ export default function SignUpLink({ entry }) {
                     <Button
                         variant="contained"
                         color="secondary"
-                        href={dateLinkPairs[0][1]}
+                        href={dateLinkPairs[0].signUpLink}
                         rel="noreferrer"
                         target="_blank"
                     >
@@ -119,15 +120,15 @@ function DropDownWithButton({ dateLinkPairs }) {
                 className={classes.dateSelectDropdown}
             >
                 {dateLinkPairs.map((pair, index) => (
-                    <MenuItem key={pair[0]} value={index}>
-                        {pair[0]}
+                    <MenuItem key={pair.date} value={index}>
+                        {pair.date}
                     </MenuItem>
                 ))}
             </Select>
             <Button
                 variant="contained"
                 color="secondary"
-                href={dateLinkPairs[dateIndexSelected][1]}
+                href={dateLinkPairs[dateIndexSelected].signUpLink}
                 rel="noreferrer"
                 target="_blank"
             >
