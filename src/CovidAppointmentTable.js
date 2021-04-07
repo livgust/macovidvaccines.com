@@ -52,7 +52,6 @@ export default function CovidAppointmentTable({
     data,
     sortBy,
     onlyShowAvailable,
-    numUnfilteredAvailableLocations,
     showingUnfilteredData,
     filterMiles,
 }) {
@@ -75,9 +74,6 @@ export default function CovidAppointmentTable({
             <div role="list">
                 <MassVaxCard className={classes.cardBox} />
                 <ShowingUnfilteredData
-                    numUnfilteredAvailableLocations={
-                        numUnfilteredAvailableLocations
-                    }
                     showingUnfilteredData={showingUnfilteredData}
                     miles={filterMiles}
                 />
@@ -183,15 +179,8 @@ function RestrictionNotifier({ entry }) {
     }
 }
 
-function LocationCard({
-    entry,
-    className,
-    onlyShowAvailable,
-    milesLimit,
-    showMiles,
-}) {
+function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
     const classes = useStyles();
-    const milesColor = entry.miles > milesLimit ? "red" : "";
     return (
         <div role="listitem" className={className}>
             <Card>
@@ -205,11 +194,9 @@ function LocationCard({
                         <>
                             <div>
                                 {entry.city}{" "}
-                                <span style={{ color: milesColor }}>
-                                    {showMiles &&
-                                        entry.miles &&
-                                        `(${entry.miles} miles)`}
-                                </span>
+                                {showMiles &&
+                                    entry.miles &&
+                                    `(${entry.miles} miles)`}
                             </div>
                             <RestrictionNotifier entry={entry} />
                             <StaleDataIndicator timestamp={entry.timestamp} />
@@ -336,11 +323,7 @@ function NoAppointmentsAlert() {
     );
 }
 
-function ShowingUnfilteredData({
-    showingUnfilteredData,
-    numUnfilteredAvailableLocations,
-    miles,
-}) {
+function ShowingUnfilteredData({ showingUnfilteredData, miles }) {
     //const classes = useStyles();
     if (!showingUnfilteredData) return null;
     return (
@@ -351,12 +334,10 @@ function ShowingUnfilteredData({
                     No Appointments Found Within {miles} Miles
                 </AlertTitle>
                 <p>
-                    {numUnfilteredAvailableLocations === 1
-                        ? `There is ${numUnfilteredAvailableLocations} location that has availability but it is`
-                        : `There are ${numUnfilteredAvailableLocations} locations that have availability but they are`}{" "}
-                    farther than {miles} miles from you. This website gathers
-                    data every minute from COVID-19 vaccine sites across
-                    Massachusetts.
+                    The following locations have appointments, but they are
+                    farther than the {miles} mile limit you specified. This
+                    website gathers data every minute from COVID-19 vaccine
+                    sites across Massachusetts.
                 </p>
             </Alert>
             <br />

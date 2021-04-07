@@ -120,26 +120,15 @@ export function filterData(data, filters) {
     // Update the cookie
     setCookie("filter", filters);
 
-    // count the number of unfiltered available locations for UI messaging
-    let numUnfilteredAvailableLocations = 0;
-
     const { filterByAvailable, filterByZipCode } = filters;
     let filteredData = data.filter((d) => {
-        const hasAvailability = isAvailable(d);
-        if (hasAvailability) {
-            ++numUnfilteredAvailableLocations;
-        }
-
-        if (filterByAvailable && !hasAvailability) {
+        if (filterByAvailable && !isAvailable(d)) {
             return false;
         }
-        if (
+        return !(
             filterByZipCode.zipCode &&
             !isWithinRadius(d, filterByZipCode.zipCode, filterByZipCode.miles)
-        ) {
-            return false;
-        }
-        return true;
+        );
     });
 
     let showingUnfilteredData = false;
@@ -152,16 +141,12 @@ export function filterData(data, filters) {
     ) {
         showingUnfilteredData = true;
         filteredData = data.filter((d) => {
-            if (filterByAvailable && !isAvailable(d)) {
-                return false;
-            }
-            return true;
+            return !(filterByAvailable && !isAvailable(d));
         });
     }
     return {
         filteredData: filteredData,
         showingUnfilteredData: showingUnfilteredData,
-        numUnfilteredAvailableLocations: numUnfilteredAvailableLocations,
     };
 }
 

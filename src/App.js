@@ -114,11 +114,7 @@ function MainComponent() {
             });
     }, []);
 
-    const {
-        filteredData,
-        numUnfilteredAvailableLocations,
-        showingUnfilteredData,
-    } = filterData(data, filters);
+    const { filteredData, showingUnfilteredData } = filterData(data, filters);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -163,9 +159,6 @@ function MainComponent() {
                                         data={filteredData}
                                         onlyShowAvailable={
                                             filters.filterByAvailable
-                                        }
-                                        numUnfilteredAvailableLocations={
-                                            numUnfilteredAvailableLocations
                                         }
                                         showingUnfilteredData={
                                             showingUnfilteredData
