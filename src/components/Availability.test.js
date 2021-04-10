@@ -72,15 +72,15 @@ it("shows dates and slot numbers when showing all (!onlyShowAvailable)", async (
                 entry={{
                     hasAppointments: true,
                     appointmentData: {
-                        "3/4/21": {
+                        "2021-03-04T00:00:00-05:00": {
                             hasAvailability: false,
                             numberAvailableAppointments: 0,
                         },
-                        "3/5/21": {
+                        "2021-03-05T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 271,
                         },
-                        "3/6/21": {
+                        "2021-03-06T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 272,
                             signUpLink: "https://macovidvaccines.com",
@@ -104,15 +104,15 @@ it("shows dates and slot numbers with single sign up link (when onlyShowAvailabl
                     hasAppointments: true,
                     signUpLink: "https://macovidvaccines.com",
                     appointmentData: {
-                        "3/4/21": {
+                        "2021-03-04T00:00:00-05:00": {
                             hasAvailability: false,
                             numberAvailableAppointments: 0,
                         },
-                        "3/5/21": {
+                        "2021-03-05T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 281,
                         },
-                        "3/6/21": {
+                        "2021-03-06T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 282,
                         },
@@ -168,16 +168,16 @@ it("shows 'Appointments are available, but...' if there aren't any sign up links
                     hasAppointments: true,
                     // no single signUpLink
                     appointmentData: {
-                        "3/4/21": {
+                        "2021-03-04T00:00:00-05:00": {
                             hasAvailability: false,
                             numberAvailableAppointments: 0,
                         },
-                        "3/5/21": {
+                        "2021-03-05T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 291,
                             // no signUpLink -- so should not be in output
                         },
-                        "3/6/21": {
+                        "2021-03-06T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 292,
                             // no signUpLink -- so should not be in output
@@ -199,16 +199,16 @@ it("shows dates and slot numbers even without signUpLink (when !onlyShowAvailabl
                     hasAppointments: true,
                     // no single signUpLink
                     appointmentData: {
-                        "3/4/21": {
+                        "2021-03-04T00:00:00-05:00": {
                             hasAvailability: false,
                             numberAvailableAppointments: 0,
                         },
-                        "3/5/21": {
+                        "2021-03-05T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 291,
                             // no signUpLink
                         },
-                        "3/6/21": {
+                        "2021-03-06T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 292,
                             // no signUpLink
@@ -246,11 +246,11 @@ it("shows total slots across all available days", async () => {
                 entry={{
                     hasAppointments: true,
                     appointmentData: {
-                        "10/11/2021": {
+                        "2021-10-11T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 34,
                         },
-                        "10/12/2021": {
+                        "2021-10-12T00:00:00-05:00": {
                             hasAvailability: true,
                             numberAvailableAppointments: 36,
                         },

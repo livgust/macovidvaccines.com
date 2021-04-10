@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import Link from "@material-ui/core/Link";
+import dayjs from "dayjs";
 
 const useStyles = makeStyles((theme) => ({
     totalSlotsSummary: {
@@ -100,13 +101,16 @@ export default function Availability({ entry, onlyShowAvailable }) {
                             {`Total available: ${totalAvailableSlots} slots`}
                         </div>
                     )}
-                    {availableSlots.map((slot) => (
-                        <div key={slot.date}>
-                            {`${slot.date}: ${t("availability.slot", {
-                                count: slot.numberAvailableAppointments,
-                            })}`}
-                        </div>
-                    ))}
+                    {availableSlots.map((slot) => {
+                        const displayDate = dayjs(slot.date).format("M/D/YY");
+                        return (
+                            <div key={slot.date}>
+                                {`${displayDate}: ${t("availability.slot", {
+                                    count: slot.numberAvailableAppointments,
+                                })}`}
+                            </div>
+                        );
+                    })}
                 </div>
             );
         }
