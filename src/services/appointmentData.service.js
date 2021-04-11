@@ -205,9 +205,9 @@ export function getAppointmentData() {
     } else {
         dataNow = dayjs();
         return fetch(
-            "https://mzqsa4noec.execute-api.us-east-1.amazonaws.com/prod"
+            "https://nhkg3i3jpg.execute-api.us-east-1.amazonaws.com/prod/appointment_availability"
         ).then(async (res) => {
-            return transformData(JSON.parse((await res.json()).body).results);
+            return transformData((await res.json()).results);
         });
     }
 }

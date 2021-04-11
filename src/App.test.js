@@ -5,17 +5,9 @@ import App from "./App";
 import prodExample from "../test/fixtures/api/prod.json";
 import noResultsExample from "../test/fixtures/api/no-data.json";
 
-// actual API returns `body` as a string but we store it as a POJO in the fixture for
-// ease of reading
-const prodData = {
-    ...prodExample,
-    body: JSON.stringify(prodExample.body),
-};
+const prodData = prodExample.body;
 
-const noData = {
-    ...noResultsExample,
-    body: JSON.stringify(noResultsExample.body),
-};
+const noData = noResultsExample.body;
 
 beforeAll(function () {
     jest.spyOn(window, "fetch");
