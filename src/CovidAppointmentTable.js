@@ -43,9 +43,7 @@ const useStyles = makeStyles((theme) => ({
     massVaxBoxHeader: {
         paddingBottom: 0,
     },
-    massVaxBox: {
-        backgroundColor: "#f8fff8",
-    },
+    massVaxBox: {},
 }));
 
 export default function CovidAppointmentTable({
