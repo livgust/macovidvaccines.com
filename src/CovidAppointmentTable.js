@@ -238,7 +238,8 @@ function MassVaxCard({ className }) {
                                 Reggie Lewis State Track Athletic Center,
                                 Dartmouth - Former Circuit City, Danvers -
                                 Doubletree Hotel, Springfield - Eastfield Mall,
-                                Natick Mall
+                                Natick Mall, Marshfield Fairgrounds, Amherst
+                                Bangs Community Center
                             </div>
                         </>
                     }
@@ -252,10 +253,9 @@ function MassVaxCard({ className }) {
                     >
                         preregistration system
                     </a>{" "}
-                    helps you get an appointment at one of the seven mass
-                    vaccination locations. You’ll receive weekly status updates,
-                    and you may opt out at any time if you find an appointment
-                    elsewhere.
+                    helps you get an appointment at one of the mass vaccination
+                    locations. You’ll receive weekly status updates, and you may
+                    opt out at any time if you find an appointment elsewhere.
                     <p>
                         We recommend preregistering <i>and</i> using this site
                         &mdash; you may find an appointment at locations not
