@@ -145,18 +145,33 @@ export function filterData(data, filters) {
     setCookie("filter", filters);
 
     const { filterByAvailable, filterByZipCode } = filters;
-    return data.filter((d) => {
+    let filteredData = data.filter((d) => {
         if (filterByAvailable && !isAvailable(d)) {
             return false;
         }
-        if (
+        return !(
             filterByZipCode.zipCode &&
             !isWithinRadius(d, filterByZipCode.zipCode, filterByZipCode.miles)
-        ) {
-            return false;
-        }
-        return true;
+        );
     });
+
+    let showingUnfilteredData = false;
+
+    if (
+        filteredData.length === 0 &&
+        filterByAvailable &&
+        filterByZipCode.zipCode &&
+        filterByZipCode.miles < 9999
+    ) {
+        showingUnfilteredData = true;
+        filteredData = data.filter((d) => {
+            return !(filterByAvailable && !isAvailable(d));
+        });
+    }
+    return {
+        filteredData: filteredData,
+        showingUnfilteredData: showingUnfilteredData,
+    };
 }
 
 export function getAppointmentData() {

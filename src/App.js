@@ -114,7 +114,7 @@ function MainComponent() {
             });
     }, []);
 
-    const filteredData = filterData(data, filters);
+    const { filteredData, showingUnfilteredData } = filterData(data, filters);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -159,6 +159,12 @@ function MainComponent() {
                                         data={filteredData}
                                         onlyShowAvailable={
                                             filters.filterByAvailable
+                                        }
+                                        showingUnfilteredData={
+                                            showingUnfilteredData
+                                        }
+                                        filterMiles={
+                                            filters.filterByZipCode.miles
                                         }
                                         sortBy={sortBy}
                                     />

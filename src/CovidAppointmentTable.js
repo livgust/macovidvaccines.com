@@ -52,6 +52,8 @@ export default function CovidAppointmentTable({
     data,
     sortBy,
     onlyShowAvailable,
+    showingUnfilteredData,
+    filterMiles,
 }) {
     const classes = useStyles();
 
@@ -71,6 +73,10 @@ export default function CovidAppointmentTable({
         return (
             <div role="list">
                 <MassVaxCard className={classes.cardBox} />
+                <ShowingUnfilteredData
+                    showingUnfilteredData={showingUnfilteredData}
+                    miles={filterMiles}
+                />
                 {sortedData.map((entry) => {
                     return (
                         <LocationCard
@@ -78,6 +84,7 @@ export default function CovidAppointmentTable({
                             className={classes.cardBox}
                             key={getSiteId(entry)}
                             showMiles={sortBy === "miles"}
+                            milesLimit={filterMiles}
                             onlyShowAvailable={onlyShowAvailable}
                         />
                     );
@@ -309,6 +316,28 @@ function NoAppointmentsAlert() {
                         www.mass.gov/covid-19-vaccine
                     </a>
                     .
+                </p>
+            </Alert>
+            <br />
+        </div>
+    );
+}
+
+function ShowingUnfilteredData({ showingUnfilteredData, miles }) {
+    //const classes = useStyles();
+    if (!showingUnfilteredData) return null;
+    return (
+        <div role="status">
+            <br />
+            <Alert severity={"warning"}>
+                <AlertTitle>
+                    No Appointments Found Within {miles} Miles
+                </AlertTitle>
+                <p>
+                    The following locations have appointments, but they are
+                    farther than the {miles} mile limit you specified. This
+                    website gathers data every minute from COVID-19 vaccine
+                    sites across Massachusetts.
                 </p>
             </Alert>
             <br />
