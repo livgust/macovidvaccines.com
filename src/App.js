@@ -23,6 +23,7 @@ import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import Loader from "react-loader";
 import Menu from "./components/Menu";
+import NotificationsDialog from "./components/NotificationsDialog";
 import React, { useEffect, useState } from "react";
 import StateEligibility from "./components/StateEligibility";
 import themeTemplate from "./theme";
@@ -77,7 +78,8 @@ function MainComponent() {
     const [data, setData] = useState([]);
     const [ready, setReady] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [notificationsOpen, setNotificationsOpen] = useState(false);
 
     let filterCookies = getCookie("filter");
     // UX change removed 5 mile radius as an option so this will set cookies
@@ -122,6 +124,10 @@ function MainComponent() {
 
     return (
         <main className={classes.main}>
+            <NotificationsDialog
+                open={notificationsOpen}
+                onClose={() => setNotificationsOpen(false)}
+            />
             <Grid container justify="center" spacing={3}>
                 <Grid container id="main-container">
                     <FilterPanel
@@ -134,6 +140,17 @@ function MainComponent() {
                     />
                     <Grid className={classes.content}>
                         <h1 className={classes.heading}>{t("page_title")}</h1>
+                        <Grid container justify="center">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => setNotificationsOpen(true)}
+                                style={{ align: "center" }}
+                            >
+                                Enroll in text notifications
+                            </Button>
+                        </Grid>
+                        <br />
                         <AlertBanner />
                         <StateEligibility />
                         <Hidden mdUp implementation="css">

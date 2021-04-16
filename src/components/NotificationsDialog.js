@@ -49,7 +49,20 @@ export default function TextAlertsDialog(props) {
     const [error, setError] = useState(false);
 
     return (
-        <Dialog {...props}>
+        <Dialog
+            {...{
+                ...props,
+                onClose: () => {
+                    setSuccess(false);
+                    setIsSubmitting(false);
+                    setError(false);
+                    setPhoneNumber("");
+                    setZip("");
+                    setRadius(10);
+                    props.onClose();
+                },
+            }}
+        >
             <DialogTitle id="about-dialog-title">
                 {"Sign Up for Text Notifications"}
             </DialogTitle>
@@ -112,12 +125,12 @@ export default function TextAlertsDialog(props) {
                             <p>
                                 We will never share your phone number with third
                                 parties. We may share aggregated, anonymized
-                                data with interested parties (for example, to
-                                share what ZIP codes our subscribers entered or
-                                how many people have subscribed). Your
-                                subscription information will be stored on a
-                                secure database.
+                                data with interested parties (for example, what
+                                ZIP codes our subscribers entered or how many
+                                people have subscribed). Your subscription
+                                information will be stored on a secure database.
                             </p>
+                            <p>If these terms change, we will notify you.</p>
                         </AccordionDetails>
                     </Accordion>
                     <br />

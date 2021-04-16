@@ -83,7 +83,7 @@ export default function ButtonAppBar() {
                         className={classes.buttonText}
                         onClick={() => setTextAlertsOpen(true)}
                     >
-                        NEW! Text Notifications
+                        Notifications
                     </Button>
                 </Toolbar>
             </AppBar>
