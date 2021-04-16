@@ -2,7 +2,7 @@
   Copyright © 2021 Olivia Adams/Ora Innovations LLC. All rights reserved
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
@@ -14,6 +14,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import NotificationsDialog from "./NotificationsDialog";
 import Toolbar from "@material-ui/core/Toolbar";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,9 +42,10 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtonAppBar() {
     const classes = useStyles();
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [aboutOpen, setAboutOpen] = React.useState(false);
-    const [resourcesOpen, setResourcesOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [aboutOpen, setAboutOpen] = useState(false);
+    const [resourcesOpen, setResourcesOpen] = useState(false);
+    const [textAlertsOpen, setTextAlertsOpen] = useState(false);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -75,6 +77,13 @@ export default function ButtonAppBar() {
                         rel="noreferrer"
                     >
                         Contribute
+                    </Button>{" "}
+                    |
+                    <Button
+                        className={classes.buttonText}
+                        onClick={() => setTextAlertsOpen(true)}
+                    >
+                        NEW! Text Notifications
                     </Button>
                 </Toolbar>
             </AppBar>
@@ -118,6 +127,10 @@ export default function ButtonAppBar() {
             <ResourcesDialog
                 open={resourcesOpen}
                 onClose={() => setResourcesOpen(false)}
+            />
+            <NotificationsDialog
+                open={textAlertsOpen}
+                onClose={() => setTextAlertsOpen(false)}
             />
         </nav>
     );

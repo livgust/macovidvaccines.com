@@ -175,7 +175,7 @@ export default function FilterPanelParent({
     );
 }
 
-function FilterSegment({ children }) {
+export function FilterSegment({ children }) {
     const classes = useStyles();
     return (
         <Grid item xs={12} className={classes.filterSegment}>
@@ -184,7 +184,7 @@ function FilterSegment({ children }) {
     );
 }
 
-function FilterGroup({ name, children }) {
+export function FilterGroup({ name, children }) {
     const classes = useStyles();
     return (
         <div className={classes.filterGroup}>
