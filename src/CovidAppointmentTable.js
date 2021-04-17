@@ -233,13 +233,10 @@ function MassVaxCard({ className }) {
                     className={classes.massVaxBoxHeader}
                     title={
                         <div className={classes.locationTitle}>
-                            <span>Preregister for Mass Vaccination Sites</span>
+                            <span>
+                                Preregister for a COVID-19 vaccine appointment
+                            </span>
                         </div>
-                    }
-                    subheader={
-                        <>
-                            <div>Numerous Locations across Massachusetts</div>
-                        </>
                     }
                 />
                 <CardContent>
@@ -251,10 +248,11 @@ function MassVaxCard({ className }) {
                     >
                         preregistration system
                     </a>{" "}
-                    helps you get an appointment at one of the many mass
-                    vaccination locations and regional collaboratives near you.
-                    You’ll receive weekly status updates, and you may opt out at
-                    any time if you find an appointment elsewhere.
+                    makes it easier to request and schedule an appointment at
+                    one of the many mass vaccination locations and regional
+                    collaboratives near you. You’ll receive weekly status
+                    updates, and you may opt out at any time if you find an
+                    appointment elsewhere.
                     <p>
                         We recommend preregistering <i>and</i> using this site
                         &mdash; you may find an appointment at locations not
