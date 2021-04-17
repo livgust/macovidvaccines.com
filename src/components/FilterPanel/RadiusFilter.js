@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     },
     padBetweenChoices: {
         "&:not(:first-of-type)": {
-            "padding-left": theme.spacing(0.5),
+            "padding-left": theme.spacing(0),
         },
         "&:last-of-type": {
             "margin-right": 0,
@@ -42,7 +42,7 @@ function RadiusRadio({ radius, label }) {
     );
 }
 
-export default function RadiusFilter({ value, onChange }) {
+export default function RadiusFilter({ variant, value, onChange }) {
     return (
         <FormControl component="fieldset">
             <FormLabel component="label">Distance (miles):</FormLabel>
@@ -54,6 +54,12 @@ export default function RadiusFilter({ value, onChange }) {
                 row
             >
                 <RadiusRadio radius="9999" label="Any" />
+                {variant === "notifications" ? (
+                    <>
+                        <RadiusRadio radius="2" />
+                        <RadiusRadio radius="5" />
+                    </>
+                ) : null}
                 <RadiusRadio radius="10" />
                 <RadiusRadio radius="25" />
                 <RadiusRadio radius="50" />
