@@ -73,10 +73,11 @@ export default function TextAlertsDialog(props) {
                 >
                     <p>
                         Get notifications when appointments become available. By
-                        submitting this form, you consent to receiving text
-                        messages from us. You can cancel at any time. Standard
-                        messaging and data rates may apply. See below for full
-                        details.
+                        submitting this form, you authorize us to communicate
+                        with you via text message. If you wish to stop receiving
+                        text messages from us, you may reply STOP to opt-out at
+                        any time. Standard text messaging rates may apply. See
+                        below for full details.
                     </p>
                     <PhoneNumber
                         value={phoneNumber}
@@ -118,19 +119,24 @@ export default function TextAlertsDialog(props) {
                                 computational power needed to send lots of text
                                 messages to lots of people. The radius you
                                 specify is approximate; we may notify you for a
-                                location slightly outside of your radius. You
-                                can cancel your subscription at any time by
+                                location slightly outside of your radius.
+                            </p>
+                            <p>
+                                You can cancel your subscription at any time by
                                 replying STOP.
                             </p>
                             <p>
                                 We will never share your phone number with third
                                 parties. We may share aggregated, anonymized
                                 data with interested parties (for example, what
-                                ZIP codes our subscribers entered or how many
+                                ZIP Codes our subscribers entered or how many
                                 people have subscribed). Your subscription
-                                information will be stored on a secure database.
+                                information will be stored in a secure database.
                             </p>
-                            <p>If these terms change, we will notify you.</p>
+                            <p>
+                                If these terms change and you are still enrolled
+                                in this service, we will notify you.
+                            </p>
                         </AccordionDetails>
                     </Accordion>
                     <br />
