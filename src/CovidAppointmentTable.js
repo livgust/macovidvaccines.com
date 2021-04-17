@@ -238,14 +238,7 @@ function MassVaxCard({ className }) {
                     }
                     subheader={
                         <>
-                            <div>
-                                Gillette Stadium, Hynes Convention Center,
-                                Reggie Lewis State Track Athletic Center,
-                                Dartmouth - Former Circuit City, Danvers -
-                                Doubletree Hotel, Springfield - Eastfield Mall,
-                                Natick Mall, Marshfield Fairgrounds, Amherst
-                                Bangs Community Center
-                            </div>
+                            <div>Numerous Locations across Massachusetts</div>
                         </>
                     }
                 />
@@ -258,9 +251,10 @@ function MassVaxCard({ className }) {
                     >
                         preregistration system
                     </a>{" "}
-                    helps you get an appointment at one of the mass vaccination
-                    locations. You’ll receive weekly status updates, and you may
-                    opt out at any time if you find an appointment elsewhere.
+                    helps you get an appointment at one of the many mass
+                    vaccination locations and regional collaboratives near you.
+                    You’ll receive weekly status updates, and you may opt out at
+                    any time if you find an appointment elsewhere.
                     <p>
                         We recommend preregistering <i>and</i> using this site
                         &mdash; you may find an appointment at locations not
@@ -269,7 +263,7 @@ function MassVaxCard({ className }) {
                     <Button
                         variant="contained"
                         color="primary"
-                        href="https://vaccineSignUp.mass.gov"
+                        href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
                         rel="noreferrer"
                         target="_blank"
                     >
