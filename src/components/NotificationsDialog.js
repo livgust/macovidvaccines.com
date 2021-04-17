@@ -89,7 +89,11 @@ export default function TextAlertsDialog(props) {
                             <ZipCodeFilter zipCode={zip} onChange={setZip} />
                         </FilterSegment>
                         <FilterSegment>
-                            <RadiusFilter value={radius} onChange={setRadius} />
+                            <RadiusFilter
+                                variant="notifications"
+                                value={radius}
+                                onChange={setRadius}
+                            />
                         </FilterSegment>
                     </FilterGroup>
                     <br />
