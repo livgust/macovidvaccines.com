@@ -70,6 +70,7 @@ export default function TextAlertsDialog(props) {
                 <DialogContentText
                     id="about-dialog-description"
                     component="div"
+                    style={{ color: "black" }}
                 >
                     <p>
                         Get notifications when appointments become available. By
@@ -79,6 +80,18 @@ export default function TextAlertsDialog(props) {
                         any time. Standard text messaging rates may apply. See
                         below for full details.
                     </p>
+                    <p>
+                        We're funded 100% by donations. Text alerts are a
+                        significant expense. If you have the means,{" "}
+                        <a
+                            href="https://www.gofundme.com/f/wwwmacovidvaccinescom?utm_source=customer&utm_medium=copy_link&utm_campaign=p_cf+share-flow-1"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            please consider contributing to this project.
+                        </a>
+                    </p>
+                    <br />
                     <PhoneNumber
                         value={phoneNumber}
                         onChange={setPhoneNumber}
