@@ -1,5 +1,6 @@
 {
     "page_title": "MA Covid Vaccine Appointments",
+    "about_us": "About Us",
     "availability": {
         "slot": "{{count}} slot",
         "slot_plural": "{{count}} slots"

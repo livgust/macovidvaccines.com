@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import AppRouter from "./Router";
 import reportWebVitals from "./reportWebVitals";
 
 import "./i18n"; // load translations
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== "production") {
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <AppRouter />
     </React.StrictMode>,
     document.getElementById("root")
 );
