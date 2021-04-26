@@ -3,12 +3,18 @@ import { useTranslation } from "react-i18next";
 import Link from "@material-ui/core/Link";
 import dayjs from "dayjs";
 
+const availabilityDateFormat = "M/D/YY";
+
 const useStyles = makeStyles((theme) => ({
     totalSlotsSummary: {
         fontWeight: "bold",
     },
     availability: {
         marginBottom: theme.spacing(2),
+    },
+    today: {
+        color: theme.palette.success.dark,
+        fontWeight: "bold",
     },
 }));
 
@@ -91,6 +97,7 @@ export default function Availability({ entry, onlyShowAvailable }) {
                 (total, slot) => total + slot.numberAvailableAppointments,
                 0
             );
+            const todayDate = dayjs().format(availabilityDateFormat);
             return (
                 <div className={classes.availability}>
                     {totalAvailableSlots > 1 && availableSlots.length > 1 && (
@@ -102,12 +109,20 @@ export default function Availability({ entry, onlyShowAvailable }) {
                         </div>
                     )}
                     {availableSlots.map((slot) => {
-                        const displayDate = dayjs(slot.date).format("M/D/YY");
+                        const displayDate = dayjs(slot.date).format(
+                            availabilityDateFormat
+                        );
+                        const isToday = displayDate === todayDate;
+                        const displayToday = isToday ? " (today)" : "";
+                        const displayClass = isToday ? classes.today : "";
                         return (
-                            <div key={slot.date}>
-                                {`${displayDate}: ${t("availability.slot", {
-                                    count: slot.numberAvailableAppointments,
-                                })}`}
+                            <div key={slot.date} className={displayClass}>
+                                {`${displayDate}${displayToday}: ${t(
+                                    "availability.slot",
+                                    {
+                                        count: slot.numberAvailableAppointments,
+                                    }
+                                )}`}
                             </div>
                         );
                     })}
