@@ -164,12 +164,10 @@ function AboutContent({ className }) {
                         "mailto:macovidvaccines@gmail.com?subject=site feeedback"
                     }
                 >
-                    send an email send Olivia email
+                    send an email
                 </a>
                 .
             </p>
-
-            {/*            https://www.cnn.com/videos/health/2021/02/08/software-developer-builds-simple-massachusetts-covid-19-vaccine-website-olivia-adams-intv-newday-vpx.cnn*/}
 
             <h3>Technical details</h3>
             <p>
