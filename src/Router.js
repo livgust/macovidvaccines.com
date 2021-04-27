@@ -16,6 +16,12 @@ export default function AppRouter() {
                     <Route exact path="/">
                         <App />
                     </Route>
+                    <Route
+                        path="/zip/:ZIPCode"
+                        render={({ match }) => (
+                            <App zipParam={match.params.ZIPCode} />
+                        )}
+                    />
                     <Route path="/about">
                         <About />
                     </Route>
