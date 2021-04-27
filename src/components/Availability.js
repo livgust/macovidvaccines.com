@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
     },
     today: {
-        color: theme.palette.success.dark,
+        color: "#006600",
         fontWeight: "bold",
     },
 }));
