@@ -51,8 +51,8 @@ export default function RadiusFilter({ variant, value, onChange }) {
                 {t("filter.distance_miles_label")}
             </FormLabel>
             <RadioGroup
-                aria-label=""
-                name="distance (miles)"
+                aria-label="distance (miles)"
+                name="distance-filter"
                 value={value.toString()}
                 onChange={(e) => onChange(parseInt(e.target.value))}
                 row
