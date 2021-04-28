@@ -49,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function App() {
+function App({ zipParam }) {
     return (
         <MuiThemeProvider theme={theme}>
             <Menu />
-            <MainComponent />
+            <MainComponent zipParam={zipParam} />
         </MuiThemeProvider>
     );
 }
@@ -71,7 +71,7 @@ function ErrorMessageAlert({ message }) {
     );
 }
 
-function MainComponent() {
+function MainComponent({ zipParam }) {
     const { t } = useTranslation("main");
     const classes = useStyles();
     const mainContainer = document.getElementById("main-container");
@@ -82,6 +82,13 @@ function MainComponent() {
     const [notificationsOpen, setNotificationsOpen] = useState(false);
 
     let filterCookies = getCookie("filter");
+
+    // If there was a ZIP Code parameter passed in, then set/update the cookie
+    if (zipParam) {
+        filterCookies.filterByZipCode.zipCode = zipParam;
+        setCookie("filter", filterCookies);
+    }
+
     // UX change removed 5 mile radius as an option so this will set cookies
     // previously set to 5 to the next smallest, 10
     // TODO: undo this snippet after sufficient time has passed
