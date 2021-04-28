@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
 import React from "react";
 import { dataNow } from "../services/appointmentData.service";
+import { useTranslation } from "react-i18next";
 
 // any location with data older than this will be labeled as "stale"
 export const staleMinutesDefault = 8; // unit is Minutes
@@ -23,6 +24,7 @@ export default function StaleDataIndicator({
     timestamp,
     staleMinutesOverride,
 }) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
     const now = new Date(dataNow); // use the data's date
 
@@ -46,17 +48,19 @@ export default function StaleDataIndicator({
             let timeString = timestampDate.toLocaleTimeString("en-US");
             // chop off the seconds
             timeString = timeString.replace(/:[0-9]{2}\s/, " ");
-            message = `Last updated ${timeString}`;
+            message = t("location.last_updated_at_time", { timeString });
         }
         // timestamp is yesterday
         else if (timestamp >= yesterday) {
-            message = "Last updated yesterday";
+            message = t("location.last_updated_yesterday");
         }
         // timestamp is older than yesterday
         else {
-            message = `Last updated ${
-                timestampDate.getMonth() + 1
-            }/${timestampDate.getDate()}`;
+            message = t("location.last_updated_on_date", {
+                dateString: `${
+                    timestampDate.getMonth() + 1
+                }/${timestampDate.getDate()}`,
+            });
         }
 
         return (

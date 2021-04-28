@@ -46,7 +46,7 @@ it("shows total slots if slots by date aren't available", async () => {
             />
         );
     });
-    expect(screen.queryByText("13 slots")).toBeTruthy();
+    expect(screen.queryByText("Total available: 13 slots")).toBeTruthy();
 });
 
 it("shows total slots if availability has no content", async () => {
@@ -61,7 +61,7 @@ it("shows total slots if availability has no content", async () => {
             />
         );
     });
-    expect(screen.queryByText("14 slots")).toBeTruthy();
+    expect(screen.queryByText("Total available: 14 slots")).toBeTruthy();
 });
 
 it("shows dates and slot numbers when showing all (!onlyShowAvailable)", async () => {

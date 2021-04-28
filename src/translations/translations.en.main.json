@@ -1,8 +1,103 @@
 {
     "page_title": "MA Covid Vaccine Appointments",
     "about_us": "About Us",
+    "menu": {
+        "about": "About",
+        "resources": "Resources",
+        "feedback": "Give Feedback",
+        "contribute": "Contribute",
+        "notifications": "Notifications"
+    },
+    "about": {
+        "title": "About This Website",
+        "paragraph1": "This website was created by <2>Olivia Adams</2>.",
+        "paragraph2": "This website scrapes data from other websites every minute and tells you what places currently are advertising available appointments for COVID vaccines. It is YOUR responsibility to verify that you are eligible before signing up. For more information, <2>click here</2>.",
+        "paragraph3": "We're working as fast as we can to gather more information from other sources. To contact us, <2>send an email</2>."
+    },
+    "resources": {
+        "title": "Resources",
+        "other_sites": "There are two other websites for the Commonwealth of Massachusetts that compile information on vaccine availability. They are:",
+        "vaccinate_ma": "<0>VaccinateMA.com</0> (volunteer-run)",
+        "vaxfinder": "<0>VaxFinder.mass.gov</0> (state-run)",
+        "more_information": "For more information on the vaccine rollout in Massachusetts, visit <2>www.mass.gov/covid-19-vaccine</2>."
+    },
+    "get_involved": {
+        "title": "Get Involved",
+        "paragraph1": "If you have experience with designing or developing web site software, and you want to get involved in the site, please <2>email the team</2> with a note about how you can contribute.",
+        "paragraph2": "The website source code can be found on Github. The code that gathers data from other sites is in the{ <2> covid-vaccine-scrapers </2> repository. The code that generates the website is in the <6>macovidvaccines.com</6> repository."
+    },
     "availability": {
         "slot": "{{count}} slot",
-        "slot_plural": "{{count}} slots"
+        "slot_plural": "{{count}} slots",
+        "total_slot": "Total available: {{count}} slot",
+        "total_slot_plural": "Total available: {{count}} slots",
+        "none": "No availability.",
+        "today": "(today)",
+        "no_details": "Appointments are available, but this location isn't providing details. Click <2>sign up</2> to look on their website."
+    },
+    "filter": {
+        "heading": "Filter",
+        "mobile_button": "Filter Locations",
+        "find_locations": "Find Locations",
+        "apply_filters": "Apply Filters",
+        "clear_filters": "Clear Filters",
+        "only_show_available": "Only show locations with available appointments",
+        "zipcode_label": "ZIP Code:",
+        "enter_mass_zipcode": "Enter a ZIP Code in Massachusetts.",
+        "distance_miles_label": "Distance (miles):",
+        "any_distance": "Any",
+        "phone_number_label": "Mobile phone number (USA):",
+        "invalid_phone_number": "Please enter a valid phone number."
+    },
+    "button": {
+        "enroll_txt": "Enroll in text notifications",
+        "preregister": "Preregister at Mass.gov",
+        "dismiss_reminder": "Dismiss this reminder",
+        "sign_up": "Sign Up",
+        "ok": "OK",
+        "cancel": "Cancel",
+        "submit": "Submit"
+    },
+    "disclaimer": "This site is for informational purposes only and is not affiliated with or endorsed by the Commonwealth of Massachusetts. Not all vaccination locations are tracked and the information may not be complete or accurate.",
+    "error_alert_title": "Unexpected Internal Error",
+    "read_error": "Something went wrong, please try again later.",
+    "no_appointments_within": {
+        "title": "No Appointments Found Within {{miles}} Miles",
+        "content": "The following locations have appointments, but they are farther than the {{ miles }} mile limit you specified. This website gathers data every minute from COVID-19 vaccine sites across Massachusetts."
+    },
+    "no_appointments": {
+        "title": "No Appointments Found",
+        "paragraph1": "None of the vaccine sites that we monitor currently have available appointments. This website gathers data every minute from COVID-19 vaccine sites across Massachusetts.",
+        "paragraph2": "Check back for updated information. For more information on the vaccine rollout in Massachusetts, visit <2>www.mass.gov/covid-19-vaccine</2>."
+    },
+    "mass_vax": {
+        "title": "Preregister for a COVID-19 vaccine appointment",
+        "content": "The Commonwealth’s <2> preregistration system</2> makes it easier to request and schedule an appointment at one of the many mass vaccination locations and regional collaboratives near you. You’ll receive weekly status updates, and you may opt out at any time if you find an appointment elsewhere. <p> We recommend preregistering <i>and</i> using this site. You may find an appointment at locations not covered by preregistration.</p>"
+    },
+    "location": {
+        "miles": "({{count}} mile)",
+        "miles_plural": "({{count}} miles)",
+        "last_updated_yesterday": "Last updated yesterday",
+        "last_updated_at_time": "Last updated at {{timeString}}",
+        "last_updated_on_date": "Last updated on {{dateString}}"
+    },
+    "restriction": {
+        "title": "Information about eligibility"
+    },
+    "more_information": {
+        "title": "More Information",
+        "restrictions_label": "Restrictions:",
+        "address_label": "Address:"
+    },
+    "help_dialog": {
+        "to_get_more_information": "Click for more info"
+    },
+    "notifications": {
+        "title": "Sign Up for Text Notifications",
+        "paragraph1": "Get notifications when appointments become available. By submitting this form, you authorize us to communicate with you via text message. If you wish to stop receiving text messages from us, you may reply STOP to opt-out at any time. Standard text messaging rates may apply. See below for full details.",
+        "paragraph2": "We're funded 100% by donations. Text alerts are a significant expense. If you have the means, <2> please consider contributing to this project.</2>",
+        "filter_name": "Get notifications by location",
+        "detail_title": "Notification details: What to expect",
+        "detail_content": "<p>When we see appointments appear, we will notify subscribers in order of proximity. If 5 appointments drop at a local pharmacy, a portion of the nearest subscribers will receive a notification. If 1,000 appointments drop somewhere, everyone will receive a notification as long as the location is within their specified radius. This is due to the cost and computational power needed to send lots of text messages to lots of people. The radius you specify is approximate; we may notify you for a location slightly outside of your radius.</p><p>You can cancel your subscription at any time by replying STOP.</p><p>We will never share your phone number with third parties. We may share aggregated, anonymized data with interested parties (for example, what ZIP Codes our subscribers entered or how many people have subscribed). Your subscription information will be stored in a secure database.</p><p> If these terms change and you are still enrolled in this service, we will notify you.</p>"
     }
 }

@@ -14,6 +14,7 @@ import grey from "@material-ui/core/colors/grey";
 import PhoneNumber from "./PhoneNumber";
 import RadiusFilter from "./FilterPanel/RadiusFilter";
 import React, { useState } from "react";
+import { useTranslation, Trans } from "react-i18next";
 import ZipCodeFilter, { isZipValid } from "./FilterPanel/ZipCodeFilter";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 export default function TextAlertsDialog(props) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
     const [phoneNumber, setPhoneNumber] = useState("");
     const [zip, setZip] = useState("");
@@ -64,7 +66,7 @@ export default function TextAlertsDialog(props) {
             }}
         >
             <DialogTitle id="about-dialog-title">
-                {"Sign Up for Text Notifications"}
+                {t("notifications.title")}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText
@@ -72,24 +74,19 @@ export default function TextAlertsDialog(props) {
                     component="div"
                     style={{ color: "black" }}
                 >
+                    <p>{t("notifications.paragraph1")}</p>
                     <p>
-                        Get notifications when appointments become available. By
-                        submitting this form, you authorize us to communicate
-                        with you via text message. If you wish to stop receiving
-                        text messages from us, you may reply STOP to opt-out at
-                        any time. Standard text messaging rates may apply. See
-                        below for full details.
-                    </p>
-                    <p>
-                        We're funded 100% by donations. Text alerts are a
-                        significant expense. If you have the means,{" "}
-                        <a
-                            href="https://www.gofundme.com/f/wwwmacovidvaccinescom?utm_source=customer&utm_medium=copy_link&utm_campaign=p_cf+share-flow-1"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            please consider contributing to this project.
-                        </a>
+                        <Trans ns="main" i18nKey="notifications.paragraph2">
+                            We're funded 100% by donations. Text alerts are a
+                            significant expense. If you have the means,{" "}
+                            <a
+                                href="https://www.gofundme.com/f/wwwmacovidvaccinescom?utm_source=customer&utm_medium=copy_link&utm_campaign=p_cf+share-flow-1"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                please consider contributing to this project.
+                            </a>
+                        </Trans>
                     </p>
                     <br />
                     <PhoneNumber
@@ -98,7 +95,7 @@ export default function TextAlertsDialog(props) {
                     />
                     <br />
                     <br />
-                    <FilterGroup name="Get notifications by location">
+                    <FilterGroup name={t("notifications.filter_name")}>
                         <FilterSegment>
                             <ZipCodeFilter zipCode={zip} onChange={setZip} />
                         </FilterSegment>
@@ -120,40 +117,14 @@ export default function TextAlertsDialog(props) {
                             }}
                         >
                             <Typography variant="subtitle1" component="span">
-                                Notification details: What to expect
+                                {t("notifications.detail_title")}
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails className={classes.accordionDetails}>
-                            <p>
-                                When we see appointments appear, we will notify
-                                subscribers in order of proximity. If 5
-                                appointments drop at a local pharmacy, a portion
-                                of the nearest subscribers will receive a
-                                notification. If 1,000 appointments drop
-                                somewhere, everyone will receive a notification
-                                as long as the location is within their
-                                specified radius. This is due to the cost and
-                                computational power needed to send lots of text
-                                messages to lots of people. The radius you
-                                specify is approximate; we may notify you for a
-                                location slightly outside of your radius.
-                            </p>
-                            <p>
-                                You can cancel your subscription at any time by
-                                replying STOP.
-                            </p>
-                            <p>
-                                We will never share your phone number with third
-                                parties. We may share aggregated, anonymized
-                                data with interested parties (for example, what
-                                ZIP Codes our subscribers entered or how many
-                                people have subscribed). Your subscription
-                                information will be stored in a secure database.
-                            </p>
-                            <p>
-                                If these terms change and you are still enrolled
-                                in this service, we will notify you.
-                            </p>
+                            <Trans
+                                ns="main"
+                                i18nKey="notifications.detail_content"
+                            />
                         </AccordionDetails>
                     </Accordion>
                     <br />
@@ -206,7 +177,7 @@ export default function TextAlertsDialog(props) {
                             setIsSubmitting(false);
                         }}
                     >
-                        Submit
+                        {t("button.submit")}
                     </Button>
                     <Button
                         variant="contained"
@@ -220,7 +191,7 @@ export default function TextAlertsDialog(props) {
                             props.onClose();
                         }}
                     >
-                        Cancel
+                        {t("button.cancel")}
                     </Button>
                 </DialogContentText>
             </DialogContent>

@@ -68,7 +68,7 @@ function MainComponent() {
             <Grid container justify="center" spacing={3}>
                 <Grid container id="main-container" justify="center">
                     <Grid className={classes.content}>
-                        <h1 className={classes.heading}>{t("about_us")}</h1>
+                        <h1 className={classes.heading}>{t("about.title")}</h1>
                         <AboutContent className={classes.aboutContent} />
                         <Copyright />
                     </Grid>

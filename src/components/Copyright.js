@@ -1,13 +1,13 @@
 import Typography from "@material-ui/core/Typography";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Copyright() {
+    const { t } = useTranslation("main");
+
     return (
         <Typography variant="caption" display="block" gutterBottom>
-            This site is for informational purposes only and is not affiliated
-            with or endorsed by the Commonwealth of Massachusetts. Not all
-            vaccination locations are tracked and the information may not be
-            complete or accurate.
+            {t("disclaimer")}
             <br />
             Copyright &#169; {new Date().getFullYear()} Olivia Adams/Ora
             Innovations LLC. All rights reserved.

@@ -17,6 +17,7 @@ import AlertBanner from "./components/AlertBanner";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import Button from "@material-ui/core/Button";
 import CovidAppointmentTable from "./CovidAppointmentTable";
+import Copyright from "./components/Copyright";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import FilterPanel from "./components/FilterPanel";
 import Grid from "@material-ui/core/Grid";
@@ -27,7 +28,6 @@ import NotificationsDialog from "./components/NotificationsDialog";
 import React, { useEffect, useState } from "react";
 import StateEligibility from "./components/StateEligibility";
 import themeTemplate from "./theme";
-import Typography from "@material-ui/core/Typography";
 
 const theme = createMuiTheme(themeTemplate);
 
@@ -59,11 +59,12 @@ function App() {
 }
 
 function ErrorMessageAlert({ message }) {
+    const { t } = useTranslation("main");
     //const classes = useStyles();
     return (
         <>
             <Alert severity={"error"}>
-                <AlertTitle>Unexpected Internal Error</AlertTitle>
+                <AlertTitle>{t("error_alert_title")}</AlertTitle>
                 <p>{message}</p>
             </Alert>
             <br />
@@ -100,6 +101,7 @@ function MainComponent() {
     const zip = filters.filterByZipCode.zipCode;
     const sortBy = zip && isZipValid(zip) ? "miles" : "location";
 
+    const readError = t("read_error");
     useEffect(() => {
         getAppointmentData()
             .then(async (res) => {
@@ -109,12 +111,10 @@ function MainComponent() {
             .catch((ex) => {
                 console.log(ex); // full traceback for diagnostics
                 console.error(ex.message);
-                setErrorMessage(
-                    "Something went wrong, please try again later."
-                );
+                setErrorMessage(readError);
                 setReady(true);
             });
-    }, []);
+    }, [readError]);
 
     const { filteredData, showingUnfilteredData } = filterData(data, filters);
 
@@ -147,7 +147,7 @@ function MainComponent() {
                                 onClick={() => setNotificationsOpen(true)}
                                 style={{ align: "center" }}
                             >
-                                Enroll in text notifications
+                                {t("button.enroll_txt")}
                             </Button>
                         </Grid>
                         <br />
@@ -159,7 +159,7 @@ function MainComponent() {
                                 startIcon={<FilterListIcon />}
                                 onClick={handleDrawerToggle}
                             >
-                                Filter Locations
+                                {t("filter.mobile_button")}
                             </Button>{" "}
                         </Hidden>
                         <div
@@ -188,21 +188,7 @@ function MainComponent() {
                                 )}
                             </Loader>
                         </div>
-                        <Typography
-                            variant="caption"
-                            display="block"
-                            gutterBottom
-                        >
-                            This site is not affiliated with or endorsed by the
-                            Commonwealth of Massachusetts.
-                            <br />
-                            This site is for informational purposes only. Not
-                            all vaccination locations are tracked and the
-                            information may not be complete or accurate.
-                            <br />
-                            Copyright &#169; {new Date().getFullYear()} Olivia
-                            Adams/Ora Innovations LLC. All rights reserved.
-                        </Typography>
+                        <Copyright />
                     </Grid>
                 </Grid>
             </Grid>

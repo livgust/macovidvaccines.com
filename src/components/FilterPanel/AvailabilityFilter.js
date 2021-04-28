@@ -4,6 +4,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     tightCheckbox: {
@@ -12,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AvailabilityFilter(props) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
 
     const handleChange = (e) => {
@@ -38,7 +40,7 @@ export default function AvailabilityFilter(props) {
                             />
                         </div>
                     }
-                    label="Only show locations with available appointments"
+                    label={t("filter.only_show_available")}
                 />
             </FormGroup>
         </FormControl>

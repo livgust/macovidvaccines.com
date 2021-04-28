@@ -5,6 +5,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useState } from "react";
 import HelpDialog from "./HelpDialog";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     dateSelectDropdown: {
@@ -37,6 +38,8 @@ export function hasSignUpLink(entry) {
 }
 
 export default function SignUpLink({ entry }) {
+    const { t } = useTranslation("main");
+
     if (entry.isMassVax) {
         return (
             <Button
@@ -46,7 +49,7 @@ export default function SignUpLink({ entry }) {
                 rel="noreferrer"
                 target="_blank"
             >
-                Preregister
+                {t("button.preregister")}
             </Button>
         );
     }
@@ -62,7 +65,7 @@ export default function SignUpLink({ entry }) {
                     rel="noreferrer"
                     target="_blank"
                 >
-                    Sign Up
+                    {t("button.sign_up")}
                 </Button>
             );
         } else {
@@ -97,7 +100,7 @@ export default function SignUpLink({ entry }) {
                         rel="noreferrer"
                         target="_blank"
                     >
-                        Sign Up
+                        {t("button.sign_up")}
                     </Button>
                 );
             } else {

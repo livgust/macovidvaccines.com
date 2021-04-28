@@ -39,7 +39,7 @@ describe("staleness messaging", () => {
         const minutes = padMinutes(timestampDate.getMinutes());
         const AMPM = timestampDate.getHours() >= 12 ? "PM" : "AM";
         expect(
-            screen.getByText(`Last updated ${hours}:${minutes} ${AMPM}`)
+            screen.getByText(`Last updated at ${hours}:${minutes} ${AMPM}`)
         ).toBeTruthy();
     });
 
@@ -69,6 +69,6 @@ describe("staleness messaging", () => {
             );
         });
 
-        expect(screen.getByText("Last updated 1/21")).toBeTruthy();
+        expect(screen.getByText("Last updated on 1/21")).toBeTruthy();
     });
 });
