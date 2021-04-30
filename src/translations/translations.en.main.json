@@ -24,7 +24,7 @@
     "get_involved": {
         "title": "Get Involved",
         "paragraph1": "If you have experience with designing or developing web site software, and you want to get involved in the site, please <2>email the team</2> with a note about how you can contribute.",
-        "paragraph2": "The website source code can be found on Github. The code that gathers data from other sites is in the{ <2> covid-vaccine-scrapers </2> repository. The code that generates the website is in the <6>macovidvaccines.com</6> repository."
+        "paragraph2": "The website source code can be found on Github. The code that gathers data from other sites is in the <2> covid-vaccine-scrapers </2> repository. The code that generates the website is in the <6>macovidvaccines.com</6> repository."
     },
     "availability": {
         "slot": "{{count}} slot",
