@@ -10,6 +10,7 @@ import React from "react";
 // For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
 // const zipcodeData = require("us-zips");
 import zipcodeData from "../../generated/ma-zips.json";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     narrowRadio: {
@@ -43,9 +44,12 @@ function RadiusRadio({ radius, label }) {
 }
 
 export default function RadiusFilter({ variant, value, onChange }) {
+    const { t } = useTranslation("main");
     return (
         <FormControl component="fieldset">
-            <FormLabel component="label">Distance (miles):</FormLabel>
+            <FormLabel component="label">
+                {t("filter.distance_miles_label")}
+            </FormLabel>
             <RadioGroup
                 aria-label="distance (miles)"
                 name="distance-filter"
@@ -53,7 +57,7 @@ export default function RadiusFilter({ variant, value, onChange }) {
                 onChange={(e) => onChange(parseInt(e.target.value))}
                 row
             >
-                <RadiusRadio radius="9999" label="Any" />
+                <RadiusRadio radius="9999" label={t("filter.any_distance")} />
                 {variant === "notifications" ? (
                     <>
                         <RadiusRadio radius="2" />

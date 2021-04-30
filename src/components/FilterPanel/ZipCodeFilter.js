@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // For performance, use a pared down list of Mass. zipcodes only (saves 374K or 60% of size!)
 // const zipcodeData = require("us-zips");
 import zipcodeData from "../../generated/ma-zips.json";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
     error: {
@@ -22,6 +23,7 @@ const useStyles = makeStyles({
 });
 
 export default function ZipCodeFilter(props) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
 
     const handleChange = (e) => {
@@ -38,7 +40,7 @@ export default function ZipCodeFilter(props) {
                     component="label"
                     classes={{ root: classes.label }}
                 >
-                    ZIP Code:
+                    {t("filter.zipcode_label")}
                 </FormLabel>
                 <TextField
                     classes={{ root: classes.error }}
@@ -52,7 +54,7 @@ export default function ZipCodeFilter(props) {
                     size="small"
                     type="text"
                     error={error}
-                    helperText={error && "Enter a ZIP Code in Massachusetts."}
+                    helperText={error && t("filter.enter_mass_zipcode")}
                 />
             </FormGroup>
         </FormControl>

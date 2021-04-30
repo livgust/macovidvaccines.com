@@ -6,6 +6,7 @@ import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core";
 import { sanitize } from "dompurify";
 import grey from "@material-ui/core/colors/grey";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     accordion: {
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MoreInformation({ entry }) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
 
     if (!(entry.streetAddress || entry.restrictions || entry.extraData)) {
@@ -48,7 +50,7 @@ export default function MoreInformation({ entry }) {
                         expanded: classes.accordionExpanded,
                     }}
                 >
-                    More Information
+                    {t("more_information.title")}
                 </AccordionSummary>
                 <AccordionDetails className={classes.extraDataContainer}>
                     <StreetAddress
@@ -57,7 +59,8 @@ export default function MoreInformation({ entry }) {
                     />
                     {entry.restrictions && (
                         <div className={classes.extraData}>
-                            <b>Restrictions:</b> {entry.restrictions}
+                            <b>{t("more_information.restrictions_label")}</b>{" "}
+                            {entry.restrictions}
                         </div>
                     )}
                     <ExtraData data={entry.extraData} />
@@ -68,6 +71,7 @@ export default function MoreInformation({ entry }) {
 }
 
 function StreetAddress({ entry, className }) {
+    const { t } = useTranslation("main");
     if (!entry.streetAddress) return null;
 
     const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
@@ -76,7 +80,7 @@ function StreetAddress({ entry, className }) {
 
     return (
         <div className={className}>
-            <b>Address: </b>
+            <b>{t("more_information.address_label")}</b>{" "}
             <Link target="_blank" rel="noreferrer" href={googleMapsLink}>
                 {entry.streetAddress}
                 {", "}

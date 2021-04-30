@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import Link from "@material-ui/core/Link";
 import dayjs from "dayjs";
 
@@ -23,6 +23,7 @@ export default function Availability({ entry, onlyShowAvailable }) {
     const { t } = useTranslation("main");
     if (entry.isMassVax) {
         return (
+            /* NOTE: This section is not actually in use by production at this time */
             <div>
                 Appointments at this site are by{" "}
                 <Link
@@ -40,7 +41,7 @@ export default function Availability({ entry, onlyShowAvailable }) {
     if (!entry.hasAppointments) {
         return (
             <div className={classes.availability} data-testid="no-availability">
-                No availability.
+                {t("availability.none")}
             </div>
         );
     } else if (
@@ -49,9 +50,9 @@ export default function Availability({ entry, onlyShowAvailable }) {
     ) {
         return (
             <div>
-                {`${entry.totalAvailability} ${
-                    entry.totalAvailability === 1 ? "slot" : "slots"
-                }`}
+                {t("availability.total_slot", {
+                    count: entry.totalAvailability,
+                })}
             </div>
         );
     } else {
@@ -80,16 +81,18 @@ export default function Availability({ entry, onlyShowAvailable }) {
                     className={classes.availability}
                     data-testid="appts-available"
                 >
-                    Appointments are available, but this location isn't
-                    providing details. Click{" "}
-                    <Link
-                        href={entry.signUpLink ? entry.signUpLink : ""}
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        sign up
-                    </Link>{" "}
-                    to look on their website.
+                    <Trans t={t} i18nKey="availability.no_details">
+                        Appointments are available, but this location isn't
+                        providing details. Click{" "}
+                        <Link
+                            href={entry.signUpLink ? entry.signUpLink : ""}
+                            rel="noreferrer"
+                            target="_blank"
+                        >
+                            sign up
+                        </Link>{" "}
+                        to look on their website.
+                    </Trans>
                 </div>
             );
         } else {
@@ -105,7 +108,9 @@ export default function Availability({ entry, onlyShowAvailable }) {
                             className={classes.totalSlotsSummary}
                             data-testid="total-available"
                         >
-                            {`Total available: ${totalAvailableSlots} slots`}
+                            {t("availability.total_slot", {
+                                count: totalAvailableSlots,
+                            })}
                         </div>
                     )}
                     {availableSlots.map((slot) => {
@@ -113,7 +118,9 @@ export default function Availability({ entry, onlyShowAvailable }) {
                             availabilityDateFormat
                         );
                         const isToday = displayDate === todayDate;
-                        const displayToday = isToday ? " (today)" : "";
+                        const displayToday = isToday
+                            ? ` ${t("availability.today")}`
+                            : "";
                         const displayClass = isToday ? classes.today : "";
                         return (
                             <div key={slot.date} className={displayClass}>

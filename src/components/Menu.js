@@ -16,6 +16,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import NotificationsDialog from "./NotificationsDialog";
 import Toolbar from "@material-ui/core/Toolbar";
+import { useTranslation, Trans } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ButtonAppBar() {
+    const { t } = useTranslation("main");
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -76,14 +78,14 @@ export default function ButtonAppBar() {
                         target="_blank"
                         rel="noreferrer"
                     >
-                        Contribute
+                        {t("menu.contribute")}
                     </Button>{" "}
                     |
                     <Button
                         className={classes.buttonText}
                         onClick={() => setTextAlertsOpen(true)}
                     >
-                        Notifications
+                        {t("menu.notifications")}
                     </Button>
                 </Toolbar>
             </AppBar>
@@ -102,7 +104,7 @@ export default function ButtonAppBar() {
                         setAboutOpen(true);
                     }}
                 >
-                    About
+                    {t("menu.about")}
                 </MenuItem>
                 <MenuItem
                     onClick={() => {
@@ -110,7 +112,7 @@ export default function ButtonAppBar() {
                         setResourcesOpen(true);
                     }}
                 >
-                    Resources
+                    {t("menu.resources")}
                 </MenuItem>
                 <MenuItem>
                     <a
@@ -119,7 +121,7 @@ export default function ButtonAppBar() {
                         }
                         className={classes.unstyledLink}
                     >
-                        Give feedback
+                        {t("menu.feedback")}
                     </a>
                 </MenuItem>
             </Menu>
@@ -137,10 +139,11 @@ export default function ButtonAppBar() {
 }
 
 function AboutDialog(props) {
+    const { t } = useTranslation("main");
     return (
         <Dialog {...props}>
             <DialogTitle id="about-dialog-title">
-                {"About This Website"}
+                {t("about.title")}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText
@@ -148,79 +151,90 @@ function AboutDialog(props) {
                     component="div"
                 >
                     <p>
-                        This website was created by{" "}
-                        <a
-                            href="http://www.oliviaadams.dev"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Olivia Adams
-                        </a>
-                        .
+                        <Trans ns="main" i18nKey="about.paragraph1">
+                            This website was created by{" "}
+                            <a
+                                href="http://www.oliviaadams.dev"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Olivia Adams
+                            </a>
+                            .
+                        </Trans>
                     </p>
                     <p>
-                        This website scrapes data from other websites every
-                        minute and tells you what places currently are
-                        advertising available appointments for COVID vaccines.
-                        It is YOUR responsibility to verify that you are
-                        eligible before signing up. For more information, click{" "}
-                        <a
-                            href="https://www.mass.gov/covidvaccine"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            here
-                        </a>
-                        .
+                        <Trans ns="main" i18nKey="about.paragraph2">
+                            This website scrapes data from other websites every
+                            minute and tells you what places currently are
+                            advertising available appointments for COVID
+                            vaccines. It is YOUR responsibility to verify that
+                            you are eligible before signing up. For more
+                            information, click{" "}
+                            <a
+                                href="https://www.mass.gov/covidvaccine"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                here
+                            </a>
+                            .
+                        </Trans>
                     </p>
                     <p>
-                        We're working as fast as we can to gather more
-                        information from other sources. To contact us,{" "}
-                        <a href={"mailto:macovidvaccines@gmail.com"}>
-                            send an email
-                        </a>
-                        .
+                        <Trans ns="main" i18nKey="about.paragraph3">
+                            We're working as fast as we can to gather more
+                            information from other sources. To contact us,{" "}
+                            <a href={"mailto:macovidvaccines@gmail.com"}>
+                                send an email
+                            </a>
+                            .
+                        </Trans>
                     </p>
-                    <h3>Get Involved</h3>
+                    <h3>{t("get_involved.title")}</h3>
                     <p>
-                        If you have experience with designing or developing web
-                        site software, and you want to get involved in the site,
-                        please{" "}
-                        <a
-                            href={
-                                "mailto:macovidvaccines@gmail.com?subject=I want to help with MACovidVaccines.com&body=Here's how I can help..."
-                            }
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            email the team
-                        </a>{" "}
-                        with a note about how you can contribute.
+                        <Trans ns="main" i18nKey="get_involved.paragraph1">
+                            If you have experience with designing or developing
+                            web site software, and you want to get involved in
+                            the site, please{" "}
+                            <a
+                                href={
+                                    "mailto:macovidvaccines@gmail.com?subject=I want to help with MACovidVaccines.com&body=Here's how I can help..."
+                                }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                email the team
+                            </a>{" "}
+                            with a note about how you can contribute.
+                        </Trans>
                     </p>
                     <p>
-                        The website source code can be found on Github. The code
-                        that gathers data from other sites is in the{" "}
-                        <a
-                            href={
-                                "https://github.com/livgust/covid-vaccine-scrapers"
-                            }
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            covid-vaccine-scrapers
-                        </a>{" "}
-                        repository. The code that generates the website is in
-                        the{" "}
-                        <a
-                            href={
-                                "https://github.com/livgust/macovidvaccines.com"
-                            }
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            macovidvaccines.com
-                        </a>{" "}
-                        repository.
+                        <Trans ns="main" i18nKey="get_involved.paragraph2">
+                            The website source code can be found on Github. The
+                            code that gathers data from other sites is in the{" "}
+                            <a
+                                href={
+                                    "https://github.com/livgust/covid-vaccine-scrapers"
+                                }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                covid-vaccine-scrapers
+                            </a>{" "}
+                            repository. The code that generates the website is
+                            in the{" "}
+                            <a
+                                href={
+                                    "https://github.com/livgust/macovidvaccines.com"
+                                }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                macovidvaccines.com
+                            </a>{" "}
+                            repository.
+                        </Trans>
                     </p>
                 </DialogContentText>
             </DialogContent>
@@ -229,30 +243,38 @@ function AboutDialog(props) {
 }
 
 function ResourcesDialog(props) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
     return (
         <Dialog {...props}>
-            <DialogTitle id="about-dialog-title">{"Resources"}</DialogTitle>
+            <DialogTitle id="about-dialog-title">
+                {t("resources.title")}
+            </DialogTitle>
             <DialogContent>
                 <DialogContentText
                     id="about-dialog-description"
                     component="div"
                 >
-                    <p>
+                    <Trans ns="main" i18nKey="mass_vax.content">
                         The Commonwealth’s{" "}
-                        <a href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment">
+                        <a
+                            href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
+                            rel="noreferrer"
+                            target="_blank"
+                        >
                             preregistration system
                         </a>{" "}
-                        helps you get an appointment at one of the seven mass
-                        vaccination locations. You’ll receive weekly status
-                        updates, and you may opt out at any time if you find an
-                        appointment elsewhere.
-                    </p>
-                    <p>
-                        We recommend preregistering <i>and</i> using this site
-                        &mdash; you may find an appointment at locations not
-                        covered by preregistration.
-                    </p>
+                        makes it easier to request and schedule an appointment
+                        at one of the many mass vaccination locations and
+                        regional collaboratives near you. You’ll receive weekly
+                        status updates, and you may opt out at any time if you
+                        find an appointment elsewhere.
+                        <p>
+                            We recommend preregistering <i>and</i> using this
+                            site. You may find an appointment at locations not
+                            covered by preregistration.
+                        </p>
+                    </Trans>
 
                     <Button
                         variant="contained"
@@ -261,47 +283,48 @@ function ResourcesDialog(props) {
                         target="_blank"
                         rel="noreferrer"
                     >
-                        Preregister now
+                        {t("button.preregister")}
                     </Button>
-                    <p>
-                        There are two other websites for the state of
-                        Massachusetts that compile information on vaccine
-                        availability. They are:
-                    </p>
-
+                    <p>{t("resources.other_sites")}</p>
                     <ul>
                         <li>
-                            <a
-                                href="https://vaccinatema.com"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Vaccinate MA
-                            </a>{" "}
-                            (volunteer-run)
+                            <Trans ns="main" i18nKey="resources.vaccinate_ma">
+                                <a
+                                    href="https://vaccinatema.com"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Vaccinate MA
+                                </a>{" "}
+                                (volunteer-run)
+                            </Trans>
                         </li>
                         <li>
-                            <a
-                                href="https://vaxfinder.mass.gov"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Vax Finder
-                            </a>{" "}
-                            (state-run)
+                            <Trans ns="main" i18nKey="resources.vaxfinder">
+                                <a
+                                    href="https://vaxfinder.mass.gov"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Vax Finder
+                                </a>{" "}
+                                (state-run)
+                            </Trans>
                         </li>
                     </ul>
                     <p>
-                        For more information on the vaccine rollout in
-                        Massachusetts, visit{" "}
-                        <a
-                            href="https://www.mass.gov/covid-19-vaccine"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            www.mass.gov/covid-19-vaccine
-                        </a>
-                        .
+                        <Trans ns="main" i18nKey="resources.more_information">
+                            For more information on the vaccine rollout in
+                            Massachusetts, visit{" "}
+                            <a
+                                href="https://www.mass.gov/covid-19-vaccine"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                www.mass.gov/covid-19-vaccine
+                            </a>
+                            .
+                        </Trans>
                     </p>
                 </DialogContentText>
             </DialogContent>

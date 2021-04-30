@@ -17,6 +17,7 @@ import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { getCookie, setCookie } from "./services/cookie.service";
+import { useTranslation, Trans } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
     cardBox: {
@@ -125,6 +126,7 @@ function convertExtraDataToRestrictions(additionalInfo) {
 }
 
 function RestrictionNotifier({ entry }) {
+    const { t } = useTranslation("main");
     let hasRestriction = false;
     let restrictionText = null;
     let definitiveRestriction = false;
@@ -170,7 +172,7 @@ function RestrictionNotifier({ entry }) {
                 }
             >
                 <Typography className={classes.restrictionWarning}>
-                    Information about eligibility
+                    {t("restriction.title")}
                 </Typography>
             </HelpDialog>
         );
@@ -178,6 +180,7 @@ function RestrictionNotifier({ entry }) {
 }
 
 function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
     return (
         <div role="listitem" className={className}>
@@ -193,8 +196,7 @@ function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
                             <div>
                                 {entry.city}{" "}
                                 {showMiles &&
-                                    entry.miles &&
-                                    `(${entry.miles} miles)`}
+                                    t("location.miles", { count: entry.miles })}
                             </div>
                             <RestrictionNotifier entry={entry} />
                             <StaleDataIndicator timestamp={entry.timestamp} />
@@ -215,6 +217,7 @@ function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
 }
 
 function MassVaxCard({ className }) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
 
     if (getCookie("hideMassVax")) {
@@ -233,31 +236,31 @@ function MassVaxCard({ className }) {
                     className={classes.massVaxBoxHeader}
                     title={
                         <div className={classes.locationTitle}>
-                            <span>
-                                Preregister for a COVID-19 vaccine appointment
-                            </span>
+                            <span>{t("mass_vax.title")}</span>
                         </div>
                     }
                 />
                 <CardContent>
-                    The Commonwealth’s{" "}
-                    <a
-                        href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        preregistration system
-                    </a>{" "}
-                    makes it easier to request and schedule an appointment at
-                    one of the many mass vaccination locations and regional
-                    collaboratives near you. You’ll receive weekly status
-                    updates, and you may opt out at any time if you find an
-                    appointment elsewhere.
-                    <p>
-                        We recommend preregistering <i>and</i> using this site
-                        &mdash; you may find an appointment at locations not
-                        covered by preregistration.
-                    </p>
+                    <Trans ns="main" i18nKey="mass_vax.content">
+                        The Commonwealth’s{" "}
+                        <a
+                            href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
+                            rel="noreferrer"
+                            target="_blank"
+                        >
+                            preregistration system
+                        </a>{" "}
+                        makes it easier to request and schedule an appointment
+                        at one of the many mass vaccination locations and
+                        regional collaboratives near you. You’ll receive weekly
+                        status updates, and you may opt out at any time if you
+                        find an appointment elsewhere.
+                        <p>
+                            We recommend preregistering <i>and</i> using this
+                            site. You may find an appointment at locations not
+                            covered by preregistration.
+                        </p>
+                    </Trans>
                     <Button
                         variant="contained"
                         color="primary"
@@ -265,7 +268,7 @@ function MassVaxCard({ className }) {
                         rel="noreferrer"
                         target="_blank"
                     >
-                        Preregister at mass.gov
+                        {t("button.preregister")}
                     </Button>{" "}
                     <Button
                         variant="outlined"
@@ -275,7 +278,7 @@ function MassVaxCard({ className }) {
                         rel="noreferrer"
                         target="_blank"
                     >
-                        Dismiss this reminder
+                        {t("button.dismiss_reminder")}
                     </Button>
                 </CardContent>
             </Card>
@@ -284,28 +287,32 @@ function MassVaxCard({ className }) {
 }
 
 function NoAppointmentsAlert() {
-    //const classes = useStyles();
+    const { t } = useTranslation("main");
     return (
         <div role="status">
             <br />
             <Alert severity={"info"}>
-                <AlertTitle>No Appointments Found</AlertTitle>
+                <AlertTitle>{t("no_appointments.title")}</AlertTitle>
                 <p>
-                    None of the vaccine sites that we monitor currently have
-                    available appointments. This website gathers data every
-                    minute from COVID-19 vaccine sites across Massachusetts.
+                    <Trans t={t} i18nKey="no_appointments.paragraph1">
+                        None of the vaccine sites that we monitor currently have
+                        available appointments. This website gathers data every
+                        minute from COVID-19 vaccine sites across Massachusetts.
+                    </Trans>
                 </p>
                 <p>
-                    Check back for updated information. For more information on
-                    the vaccine rollout in Massachusetts, visit{" "}
-                    <a
-                        href="https://www.mass.gov/covid-19-vaccine"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        www.mass.gov/covid-19-vaccine
-                    </a>
-                    .
+                    <Trans t={t} i18nKey="no_appointments.paragraph2">
+                        Check back for updated information. For more information
+                        on the vaccine rollout in Massachusetts, visit{" "}
+                        <a
+                            href="https://www.mass.gov/covid-19-vaccine"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            www.mass.gov/covid-19-vaccine
+                        </a>
+                        .
+                    </Trans>
                 </p>
             </Alert>
             <br />
@@ -321,13 +328,17 @@ function ShowingUnfilteredData({ showingUnfilteredData, miles }) {
             <br />
             <Alert severity={"warning"}>
                 <AlertTitle>
-                    No Appointments Found Within {miles} Miles
+                    <Trans ns="main" i18nKey="no_appointments_within.title">
+                        No Appointments Found Within {{ miles }} Miles
+                    </Trans>
                 </AlertTitle>
                 <p>
-                    The following locations have appointments, but they are
-                    farther than the {miles} mile limit you specified. This
-                    website gathers data every minute from COVID-19 vaccine
-                    sites across Massachusetts.
+                    <Trans ns="main" i18nKey="no_appointments_within.content">
+                        The following locations have appointments, but they are
+                        farther than the {{ miles }} mile limit you specified.
+                        This website gathers data every minute from COVID-19
+                        vaccine sites across Massachusetts.
+                    </Trans>
                 </p>
             </Alert>
             <br />

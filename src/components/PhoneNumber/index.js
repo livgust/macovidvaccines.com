@@ -5,6 +5,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import PropTypes from "prop-types";
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
     label: {
@@ -13,6 +14,7 @@ const useStyles = makeStyles({
 });
 
 export default function PhoneNumber({ value, onChange, error }) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
     return (
         <FormControl component="fieldset">
@@ -22,7 +24,7 @@ export default function PhoneNumber({ value, onChange, error }) {
                     component="label"
                     classes={{ root: classes.label }}
                 >
-                    Mobile phone number (USA):
+                    {t("filter.phone_number_label")}
                 </FormLabel>
                 <TextField
                     id="phone"
@@ -37,7 +39,7 @@ export default function PhoneNumber({ value, onChange, error }) {
                     error={error}
                     type="tel"
                     inputProps={{ maxLength: 14 }}
-                    helperText={error && "Please enter a valid phone number."}
+                    helperText={error && t("filter.invalid_phone_number")}
                 />
             </FormGroup>
         </FormControl>

@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ZipCodeFilter, { isZipValid } from "./ZipCodeFilter";
+import { useTranslation } from "react-i18next";
 
 const leftPaddingSpacingCoefficient = 1.0;
 
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ClearFilters({ classes, inProgressFilters, setInProgressFilters }) {
+    const { t } = useTranslation("main");
     return (
         <Button
             variant="outlined"
@@ -68,7 +70,7 @@ function ClearFilters({ classes, inProgressFilters, setInProgressFilters }) {
             }}
             type="submit"
         >
-            Clear Filters
+            {t("filter.clear_filters")}
         </Button>
     );
 }
@@ -81,6 +83,7 @@ export default function FilterPanelParent({
     filters,
     setFilters,
 }) {
+    const { t } = useTranslation("main");
     const classes = useStyles();
     const theme = useTheme();
     const mdSize = useMediaQuery(theme.breakpoints.up("md"));
@@ -115,7 +118,7 @@ export default function FilterPanelParent({
                             }}
                             type="submit"
                         >
-                            Apply Filters
+                            {t("filter.apply_filters")}
                         </Button>
                     }
                     clearButton={
@@ -159,7 +162,7 @@ export default function FilterPanelParent({
                             }
                             type="submit"
                         >
-                            Apply Filters
+                            {t("filter.apply_filters")}
                         </Button>
                     }
                     clearButton={
@@ -198,6 +201,7 @@ export function FilterGroup({ name, children }) {
 
 function FilterPanel(props) {
     const { filters, setFilters, closeButton, clearButton, isMobile } = props;
+    const { t } = useTranslation("main");
 
     const classes = useStyles();
     const theme = useTheme();
@@ -210,7 +214,7 @@ function FilterPanel(props) {
         >
             {isMobile && (
                 <Typography variant="h6" component="span">
-                    Filter
+                    {t("filter.heading")}
                 </Typography>
             )}
             <form onSubmit={(e) => e.preventDefault()}>
@@ -225,7 +229,7 @@ function FilterPanel(props) {
                         }
                     />
                 </FilterSegment>
-                <FilterGroup name="Find Locations">
+                <FilterGroup name={t("filter.find_locations")}>
                     <FilterSegment>
                         <ZipCodeFilter
                             zipCode={filters.filterByZipCode.zipCode}
