@@ -33,7 +33,9 @@
         "total_slot_plural": "Total available: {{count}} slots",
         "none": "No availability.",
         "today": "(today)",
-        "no_details": "Appointments are available, but this location isn't providing details. Click <2>sign up</2> to look on their website."
+        "no_details": "Appointments are available, but this location isn't providing details. Click <2>sign up</2> to look on their website.",
+        "additional_dates": "There is {{count}} additional date available. Click sign up to see all available dates.",
+        "additional_dates_plural": "There are {{count}} additional dates available. Click sign up to see all available dates."
     },
     "filter": {
         "heading": "Filter",

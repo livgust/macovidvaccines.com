@@ -4,6 +4,7 @@ import Link from "@material-ui/core/Link";
 import dayjs from "dayjs";
 
 const availabilityDateFormat = "M/D/YY";
+const maxDatesToShow = 7;
 
 const useStyles = makeStyles((theme) => ({
     totalSlotsSummary: {
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     today: {
         color: "#006600",
         fontWeight: "bold",
+    },
+    conceal: {
+        display: "none",
     },
 }));
 
@@ -113,7 +117,7 @@ export default function Availability({ entry, onlyShowAvailable }) {
                             })}
                         </div>
                     )}
-                    {availableSlots.map((slot) => {
+                    {availableSlots.map((slot, index) => {
                         const displayDate = dayjs(slot.date).format(
                             availabilityDateFormat
                         );
@@ -122,8 +126,11 @@ export default function Availability({ entry, onlyShowAvailable }) {
                             ? ` ${t("availability.today")}`
                             : "";
                         const displayClass = isToday ? classes.today : "";
+                        const showClass =
+                            index < maxDatesToShow ? "" : classes.conceal;
+                        const availabilityClass = `${displayClass} ${showClass}`;
                         return (
-                            <div key={slot.date} className={displayClass}>
+                            <div key={slot.date} className={availabilityClass}>
                                 {`${displayDate}${displayToday}: ${t(
                                     "availability.slot",
                                     {
@@ -133,6 +140,18 @@ export default function Availability({ entry, onlyShowAvailable }) {
                             </div>
                         );
                     })}
+                    {availableSlots.length > maxDatesToShow ? (
+                        <div>
+                            <i>
+                                {t("availability.additional_dates", {
+                                    count:
+                                        availableSlots.length - maxDatesToShow,
+                                })}
+                            </i>
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </div>
             );
         }
