@@ -85,7 +85,7 @@ function MainComponent({ zipParam }) {
     let filterCookies = getCookie("filter");
 
     // If there was a ZIP Code parameter passed in, then set/update the cookie
-    if (zipParam) {
+    if (zipParam && filterCookies?.filterByZipCode) {
         filterCookies.filterByZipCode.zipCode = zipParam;
         setCookie("filter", filterCookies);
     }
