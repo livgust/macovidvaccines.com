@@ -84,10 +84,16 @@ function MainComponent({ zipParam }) {
 
     let filterCookies = getCookie("filter");
 
-    // If there was a ZIP Code parameter passed in, then set/update the cookie
-    if (zipParam && filterCookies?.filterByZipCode) {
-        filterCookies.filterByZipCode.zipCode = zipParam;
-        setCookie("filter", filterCookies);
+    // Check for a valid ZIP Code parameter.
+    if (zipParam && isZipValid(zipParam)) {
+        // If there was a ZIP Code parameter passed in, update the cookie if it exists
+        if (filterCookies?.filterByZipCode) {
+            filterCookies.filterByZipCode.zipCode = zipParam;
+            setCookie("filter", filterCookies);
+        }
+    } else {
+        // Missing or Invalid zip, then just default to no ZIP Code
+        zipParam = "";
     }
 
     // UX change removed 5 mile radius as an option so this will set cookies
@@ -101,7 +107,7 @@ function MainComponent({ zipParam }) {
     const [filters, setFilters] = useState({
         filterByAvailable: true,
         filterByMassVax: true,
-        filterByZipCode: { zipCode: "", miles: 9999 },
+        filterByZipCode: { zipCode: zipParam, miles: 9999 },
         ...filterCookies,
     });
 
