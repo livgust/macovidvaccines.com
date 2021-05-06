@@ -15,8 +15,6 @@ import SignUpLink from "./components/SignUpLink";
 import { sortData } from "./services/appointmentData.service";
 import StaleDataIndicator from "./components/StaleDataIndicator";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { getCookie, setCookie } from "./services/cookie.service";
 import { useTranslation, Trans } from "react-i18next";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,10 +39,6 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.error.dark,
         "padding-right": theme.spacing(1),
     },
-    massVaxBoxHeader: {
-        paddingBottom: 0,
-    },
-    massVaxBox: {},
 }));
 
 export default function CovidAppointmentTable({
@@ -71,7 +65,6 @@ export default function CovidAppointmentTable({
     if (sortedData && sortedData.length) {
         return (
             <div role="list">
-                <MassVaxCard className={classes.cardBox} />
                 <ShowingUnfilteredData
                     showingUnfilteredData={showingUnfilteredData}
                     miles={filterMiles}
@@ -93,7 +86,6 @@ export default function CovidAppointmentTable({
     } else {
         return (
             <div role="list">
-                <MassVaxCard className={classes.cardBox} />
                 <NoAppointmentsAlert />
             </div>
         );
@@ -210,76 +202,6 @@ function LocationCard({ entry, className, onlyShowAvailable, showMiles }) {
                     />
                     <MoreInformation entry={entry} />
                     <SignUpLink entry={entry} />
-                </CardContent>
-            </Card>
-        </div>
-    );
-}
-
-function MassVaxCard({ className }) {
-    const { t } = useTranslation("main");
-    const classes = useStyles();
-
-    if (getCookie("hideMassVax")) {
-        return null;
-    }
-
-    function dismissMassVax() {
-        setCookie("hideMassVax", true);
-        document.getElementById("MassVaxCard").hidden = true;
-    }
-
-    return (
-        <div id="MassVaxCard" role="listitem" className={className}>
-            <Card className={classes.massVaxBox}>
-                <CardHeader
-                    className={classes.massVaxBoxHeader}
-                    title={
-                        <div className={classes.locationTitle}>
-                            <span>{t("mass_vax.title")}</span>
-                        </div>
-                    }
-                />
-                <CardContent>
-                    <Trans ns="main" i18nKey="mass_vax.content">
-                        The Commonwealth’s{" "}
-                        <a
-                            href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
-                            rel="noreferrer"
-                            target="_blank"
-                        >
-                            preregistration system
-                        </a>{" "}
-                        makes it easier to request and schedule an appointment
-                        at one of the many mass vaccination locations and
-                        regional collaboratives near you. You’ll receive weekly
-                        status updates, and you may opt out at any time if you
-                        find an appointment elsewhere.
-                        <p>
-                            We recommend preregistering <i>and</i> using this
-                            site. You may find an appointment at locations not
-                            covered by preregistration.
-                        </p>
-                    </Trans>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        {t("button.preregister")}
-                    </Button>{" "}
-                    <Button
-                        variant="outlined"
-                        color="default"
-                        style={{ marginLeft: "5px" }}
-                        onClick={dismissMassVax}
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        {t("button.dismiss_reminder")}
-                    </Button>
                 </CardContent>
             </Card>
         </div>

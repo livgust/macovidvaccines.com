@@ -213,26 +213,6 @@ function AboutContent({ className }) {
 
             <h3>Resources</h3>
             <p>
-                The Commonwealth's{" "}
-                <a
-                    href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    preregistration system
-                </a>{" "}
-                helps you get an appointment at one of the seven mass
-                vaccination locations. You'll receive weekly status updates, and
-                you may opt out at any time if you find an appointment
-                elsewhere.
-            </p>
-
-            <p>
-                We recommend preregistering and using this site — you may find
-                an appointment at locations not covered by preregistration.
-            </p>
-
-            <p>
                 There are two other websites for the state of Massachusetts that
                 compile information on vaccine availability. They are:
                 <ul>

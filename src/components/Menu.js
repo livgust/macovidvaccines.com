@@ -244,7 +244,6 @@ function AboutDialog(props) {
 
 function ResourcesDialog(props) {
     const { t } = useTranslation("main");
-    const classes = useStyles();
     return (
         <Dialog {...props}>
             <DialogTitle id="about-dialog-title">
@@ -255,36 +254,6 @@ function ResourcesDialog(props) {
                     id="about-dialog-description"
                     component="div"
                 >
-                    <Trans ns="main" i18nKey="mass_vax.content">
-                        The Commonwealth’s{" "}
-                        <a
-                            href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
-                            rel="noreferrer"
-                            target="_blank"
-                        >
-                            preregistration system
-                        </a>{" "}
-                        makes it easier to request and schedule an appointment
-                        at one of the many mass vaccination locations and
-                        regional collaboratives near you. You’ll receive weekly
-                        status updates, and you may opt out at any time if you
-                        find an appointment elsewhere.
-                        <p>
-                            We recommend preregistering <i>and</i> using this
-                            site. You may find an appointment at locations not
-                            covered by preregistration.
-                        </p>
-                    </Trans>
-
-                    <Button
-                        variant="contained"
-                        className={classes.resourceButton}
-                        href="https://www.mass.gov/info-details/preregister-for-a-covid-19-vaccine-appointment"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        {t("button.preregister")}
-                    </Button>
                     <p>{t("resources.other_sites")}</p>
                     <ul>
                         <li>

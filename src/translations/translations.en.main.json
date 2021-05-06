@@ -72,10 +72,6 @@
         "paragraph1": "None of the vaccine sites that we monitor currently have available appointments. This website gathers data every minute from COVID-19 vaccine sites across Massachusetts.",
         "paragraph2": "Check back for updated information. For more information on the vaccine rollout in Massachusetts, visit <2>www.mass.gov/covid-19-vaccine</2>."
     },
-    "mass_vax": {
-        "title": "Preregister for a COVID-19 vaccine appointment",
-        "content": "The Commonwealth’s <2> preregistration system</2> makes it easier to request and schedule an appointment at one of the many mass vaccination locations and regional collaboratives near you. You’ll receive weekly status updates, and you may opt out at any time if you find an appointment elsewhere. <p> We recommend preregistering <i>and</i> using this site. You may find an appointment at locations not covered by preregistration.</p>"
-    },
     "location": {
         "miles": "({{count}} mile)",
         "miles_plural": "({{count}} miles)",
