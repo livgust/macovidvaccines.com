@@ -93,8 +93,16 @@ function transformData(data) {
     // We are going to show a consolidated "Preregistration" card instead.
     // There is still code to display these sites individually in
     // Availability.js and SignupLink.js if we decide to go that way later on.
+    // ALSO.. Filter out all pharmacies
     mappedData = mappedData.filter((d) => {
-        return !d.isMassVax;
+        return (
+            !d.isMassVax &&
+            d.location &&
+            !d.location.startsWith("CVS (") &&
+            !d.location.startsWith("Stop & Shop") &&
+            !d.location.startsWith("Walgreens") &&
+            !d.location.startsWith("Walmart")
+        );
     });
 
     // Pre-Filter the locations that have "non-stale" data
