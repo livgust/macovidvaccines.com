@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
         "padding-right": theme.spacing(1),
     },
     pharmacySignUp: {
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(1.2),
     },
 }));
 
