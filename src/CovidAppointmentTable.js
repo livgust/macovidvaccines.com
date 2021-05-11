@@ -215,11 +215,11 @@ function PharmacySignUp({ href, name }) {
     const { t } = useTranslation("main");
     const classes = useStyles();
     return (
-        <div className={classes.pharmacySignUp}>
+        <li className={classes.pharmacySignUp}>
             <a href={href} target="_blank" rel="noreferrer">
                 {t(name)}
             </a>
-        </div>
+        </li>
     );
 }
 
@@ -239,23 +239,24 @@ function PharmacyChainCard({ className }) {
                 <CardContent>
                     {t("pharmacy.availability")}
                     <br />
-
-                    <PharmacySignUp
-                        href="https://www.cvs.com/immunizations/covid-19-vaccine?icid=cvs-home-hero1-banner-1-link2-coronavirus-vaccine"
-                        name={t("pharmacy.cvs")}
-                    />
-                    <PharmacySignUp
-                        href="https://stopandshopsched.rxtouch.com/rbssched/program/covid19/Patient/Advisory"
-                        name={t("pharmacy.stop_and_shop")}
-                    />
-                    <PharmacySignUp
-                        href="https://www.walgreens.com/findcare/vaccination/covid-19/location-screening"
-                        name={t("pharmacy.walgreens")}
-                    />
-                    <PharmacySignUp
-                        href="https://www.walmart.com/cp/immunizations-flu-shots/1228302"
-                        name={t("pharmacy.walmart")}
-                    />
+                    <ul>
+                        <PharmacySignUp
+                            href="https://www.cvs.com/immunizations/covid-19-vaccine?icid=cvs-home-hero1-banner-1-link2-coronavirus-vaccine"
+                            name={t("pharmacy.cvs")}
+                        />
+                        <PharmacySignUp
+                            href="https://stopandshopsched.rxtouch.com/rbssched/program/covid19/Patient/Advisory"
+                            name={t("pharmacy.stop_and_shop")}
+                        />
+                        <PharmacySignUp
+                            href="https://www.walgreens.com/findcare/vaccination/covid-19/location-screening"
+                            name={t("pharmacy.walgreens")}
+                        />
+                        <PharmacySignUp
+                            href="https://www.walmart.com/cp/immunizations-flu-shots/1228302"
+                            name={t("pharmacy.walmart")}
+                        />
+                    </ul>
                 </CardContent>
             </Card>
         </div>

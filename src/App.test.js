@@ -27,7 +27,7 @@ describe("the App component", function () {
                 render(<App />);
             });
 
-            expect(await screen.findAllByRole("listitem")).toHaveLength(3);
+            expect(await screen.findAllByRole("listitem")).toHaveLength(7);
         });
 
         test("disabling the filter shows all appointment cards", async function () {
@@ -41,7 +41,7 @@ describe("the App component", function () {
             await screen.getByTestId("availability-checkbox").click();
             await screen.getByTestId("apply-filters-button").click();
 
-            expect(await screen.findAllByRole("listitem")).toHaveLength(4);
+            expect(await screen.findAllByRole("listitem")).toHaveLength(8);
         });
     });
 

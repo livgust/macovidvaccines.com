@@ -100,10 +100,10 @@
     },
     "pharmacy": {
         "title": "Large Pharmacy Chains",
-        "availability": "Vaccines are widely available at the following pharmacy chains.",
-        "cvs": "Sign up at CVS",
-        "walgreens": "Sign up at Walgreens",
-        "walmart": "Sign up at Walmart",
-        "stop_and_shop": "Sign up at Stop & Shop"
+        "availability": "Vaccines are widely available at the following pharmacy chains. Sign up at:",
+        "cvs": "CVS",
+        "walgreens": "Walgreens",
+        "walmart": "Walmart",
+        "stop_and_shop": "Stop & Shop"
     }
 }
