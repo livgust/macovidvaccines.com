@@ -97,5 +97,13 @@
         "filter_name": "Get notifications by location",
         "detail_title": "Notification details: What to expect",
         "detail_content": "<p>When we see appointments appear, we will notify subscribers in order of proximity. If 5 appointments drop at a local pharmacy, a portion of the nearest subscribers will receive a notification. If 1,000 appointments drop somewhere, everyone will receive a notification as long as the location is within their specified radius. This is due to the cost and computational power needed to send lots of text messages to lots of people. The radius you specify is approximate; we may notify you for a location slightly outside of your radius.</p><p>You can cancel your subscription at any time by replying STOP.</p><p>We will never share your phone number with third parties. We may share aggregated, anonymized data with interested parties (for example, what ZIP Codes our subscribers entered or how many people have subscribed). Your subscription information will be stored in a secure database.</p><p> If these terms change and you are still enrolled in this service, we will notify you.</p>"
+    },
+    "pharmacy": {
+        "title": "Large Pharmacy Chains",
+        "availability": "Vaccines are widely available at the following pharmacy chains. Sign up at:",
+        "cvs": "CVS",
+        "walgreens": "Walgreens",
+        "walmart": "Walmart",
+        "stop_and_shop": "Stop & Shop"
     }
 }
