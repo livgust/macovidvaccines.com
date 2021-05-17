@@ -196,7 +196,7 @@ export function getAppointmentData() {
             let testData = require("../test/devtest.json");
 
             // If it has 'body', then this looks like something pasted from a browser (View Source)
-            if (testData.hasOwnProperty("body")) {
+            if (Object.prototype.hasOwnProperty.call(testData, "body")) {
                 if (typeof testData.body == "object") {
                     testData = testData.body;
                 } else {
