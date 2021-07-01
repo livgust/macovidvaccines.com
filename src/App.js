@@ -1,33 +1,14 @@
-/*eslint no-unused-vars: ["error", { "varsIgnorePattern": "[iI]gnored" }]*/
-
 import {
     createMuiTheme,
     makeStyles,
     MuiThemeProvider,
 } from "@material-ui/core";
-import {
-    filterData,
-    getAppointmentData,
-} from "./services/appointmentData.service";
-import { isZipValid } from "./components/FilterPanel/ZipCodeFilter";
-import { getCookie, setCookie } from "./services/cookie.service";
-import { useTranslation } from "react-i18next";
-import Alert from "@material-ui/lab/Alert";
-import AlertBanner from "./components/AlertBanner";
-import AlertTitle from "@material-ui/lab/AlertTitle";
-import Button from "@material-ui/core/Button";
-import CovidAppointmentTable from "./CovidAppointmentTable";
 import Copyright from "./components/Copyright";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import FilterPanel from "./components/FilterPanel";
 import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import Loader from "react-loader";
 import Menu from "./components/Menu";
-import NotificationsDialog from "./components/NotificationsDialog";
-import React, { useEffect, useState } from "react";
-import StateEligibility from "./components/StateEligibility";
+import React from "react";
 import themeTemplate from "./theme";
+import Typography from "@material-ui/core/Typography";
 
 const theme = createMuiTheme(themeTemplate);
 
@@ -38,171 +19,90 @@ const useStyles = makeStyles((theme) => ({
     heading: {
         "text-align": "center",
     },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-        [theme.breakpoints.up("md")]: {
-            width: `calc(100% - ${theme.drawerWidth}px)`,
-            marginLeft: theme.drawerWidth,
-            borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
-        },
-    },
 }));
 
-function App({ zipParam }) {
+function App() {
     return (
         <MuiThemeProvider theme={theme}>
             <Menu />
-            <MainComponent zipParam={zipParam} />
+            <MainComponent />
         </MuiThemeProvider>
     );
 }
 
-function ErrorMessageAlert({ message }) {
-    const { t } = useTranslation("main");
-    //const classes = useStyles();
-    return (
-        <>
-            <Alert severity={"error"}>
-                <AlertTitle>{t("error_alert_title")}</AlertTitle>
-                <p>{message}</p>
-            </Alert>
-            <br />
-        </>
-    );
-}
-
-function MainComponent({ zipParam }) {
-    const { t } = useTranslation("main");
+function MainComponent() {
     const classes = useStyles();
-    const mainContainer = document.getElementById("main-container");
-    const [data, setData] = useState([]);
-    const [ready, setReady] = useState(false);
-    const [errorMessage, setErrorMessage] = useState();
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const [notificationsOpen, setNotificationsOpen] = useState(false);
-
-    let filterCookies = getCookie("filter");
-
-    // Check for a valid ZIP Code parameter.
-    if (zipParam && isZipValid(zipParam)) {
-        // If there was a ZIP Code parameter passed in, update the cookie if it exists
-        if (filterCookies?.filterByZipCode) {
-            filterCookies.filterByZipCode.zipCode = zipParam;
-            setCookie("filter", filterCookies);
-        }
-    } else {
-        // Missing or Invalid zip, then just default to no ZIP Code
-        zipParam = "";
-    }
-
-    // UX change removed 5 mile radius as an option so this will set cookies
-    // previously set to 5 to the next smallest, 10
-    // TODO: undo this snippet after sufficient time has passed
-    if (filterCookies?.filterByZipCode?.miles === 5) {
-        filterCookies.filterByZipCode.miles = 10;
-        setCookie("filter", filterCookies);
-    }
-
-    const [filters, setFilters] = useState({
-        filterByAvailable: true,
-        filterByMassVax: true,
-        filterByZipCode: { zipCode: zipParam, miles: 9999 },
-        ...filterCookies,
-    });
-
-    const zip = filters.filterByZipCode.zipCode;
-    const sortBy = zip && isZipValid(zip) ? "miles" : "location";
-
-    const readError = t("read_error");
-    useEffect(() => {
-        getAppointmentData()
-            .then(async (res) => {
-                setData(res);
-                setReady(true);
-            })
-            .catch((ex) => {
-                console.log(ex); // full traceback for diagnostics
-                console.error(ex.message);
-                setErrorMessage(readError);
-                setReady(true);
-            });
-    }, [readError]);
-
-    const { filteredData, showingUnfilteredData } = filterData(data, filters);
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
 
     return (
         <main className={classes.main}>
-            <NotificationsDialog
-                open={notificationsOpen}
-                onClose={() => setNotificationsOpen(false)}
-            />
             <Grid container justify="center" spacing={3}>
                 <Grid container id="main-container">
-                    <FilterPanel
-                        mainContainer={mainContainer}
-                        anchor={theme.direction === "rtl" ? "right" : "left"}
-                        mobileOpen={mobileOpen}
-                        handleDrawerToggle={handleDrawerToggle}
-                        filters={filters}
-                        setFilters={setFilters}
-                    />
-                    <Grid className={classes.content}>
-                        <h1 className={classes.heading}>{t("page_title")}</h1>
-                        <Grid container justify="center">
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => setNotificationsOpen(true)}
-                                style={{ align: "center" }}
+                    <Grid xs={1} md={2} />
+                    <Grid xs={10} md={8}>
+                        <h1 className={classes.heading}>MA Covid Vaccines</h1>
+                        <h2>Thank you!</h2>
+                        <Typography>
+                            <a
+                                href="/macovidvaccines_press_release_20210630.pdf"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                                {t("button.enroll_txt")}
-                            </Button>
-                        </Grid>
+                                Press Release - June 30, 2021
+                            </a>
+                        </Typography>
                         <br />
-                        <AlertBanner />
-                        <StateEligibility />
-                        <Hidden mdUp implementation="css">
-                            <Button
-                                variant="contained"
-                                startIcon={<FilterListIcon />}
-                                onClick={handleDrawerToggle}
+                        <Typography>
+                            We are no longer reporting on vaccination
+                            appointments because the supply has increased
+                            dramatically. We’re proud to have helped so many
+                            people in Massachusetts find appointments over the
+                            last six months. Visit the official Massachusetts
+                            Covid vaccine appointment finder at{" "}
+                            <a
+                                href="https://vaxfinder.mass.gov"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                                {t("filter.mobile_button")}
-                            </Button>{" "}
-                        </Hidden>
-                        <div
-                            aria-label="loading data"
-                            id="progress"
-                            role="progressbar"
-                            aria-valuetext={ready ? "loaded" : "waiting"}
-                        >
-                            <Loader loaded={ready}>
-                                {errorMessage ? (
-                                    <ErrorMessageAlert message={errorMessage} />
-                                ) : (
-                                    <CovidAppointmentTable
-                                        data={filteredData}
-                                        onlyShowAvailable={
-                                            filters.filterByAvailable
-                                        }
-                                        showingUnfilteredData={
-                                            showingUnfilteredData
-                                        }
-                                        filterMiles={
-                                            filters.filterByZipCode.miles
-                                        }
-                                        sortBy={sortBy}
-                                    />
-                                )}
-                            </Loader>
-                        </div>
+                                vaxfinder.mass.gov
+                            </a>{" "}
+                            to schedule an appointment. Our friends at Mass
+                            Covid Vaccination Help have great{" "}
+                            <a
+                                href="https://macovidvaxhelp.com/resources"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                tips to help you find an appointment
+                            </a>
+                            .
+                        </Typography>
+                        <br />
+                        <img
+                            src="/vaxfinder_screenshot.PNG"
+                            alt="A map of COVID-19 vaccine providers across Massachusetts"
+                            style={{ "max-width": "600px", width: "80%" }}
+                        />
+                        <br />
+                        <Typography>
+                            <i>
+                                There are now hundreds of vaccination sites
+                                across Massachusetts. See vaxfinder.mass.gov to
+                                schedule an appointment.
+                                <br />
+                                <a
+                                    href="https://www.mass.gov/info-details/covid-19-vaccination-locations"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Map source
+                                </a>
+                                , 16 June 2021
+                            </i>
+                        </Typography>
+                        <br />
                         <Copyright />
                     </Grid>
+                    <Grid xs={1} md={2} />
                 </Grid>
             </Grid>
         </main>

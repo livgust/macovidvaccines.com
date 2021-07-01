@@ -5,7 +5,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
+//import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -72,7 +72,7 @@ export default function ButtonAppBar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Button
+                    {/* <Button
                         className={classes.buttonText}
                         href="https://www.gofundme.com/f/wwwmacovidvaccinescom?utm_source=customer&utm_medium=copy_link&utm_campaign=p_cf+share-flow-1"
                         target="_blank"
@@ -80,13 +80,13 @@ export default function ButtonAppBar() {
                     >
                         {t("menu.contribute")}
                     </Button>{" "}
-                    |
-                    <Button
+                    | */}
+                    {/* <Button
                         className={classes.buttonText}
                         onClick={() => setTextAlertsOpen(true)}
                     >
                         {t("menu.notifications")}
-                    </Button>
+                    </Button> */}
                 </Toolbar>
             </AppBar>
             {/* workaround for spacing - see https://material-ui.com/components/app-bar/#fixed-placement */}

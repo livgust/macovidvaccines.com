@@ -1,6 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 
-import App from "./App";
+import App from "./AppOld";
 
 import prodExample from "../test/fixtures/api/prod.json";
 import noResultsExample from "../test/fixtures/api/no-data.json";
@@ -77,7 +77,7 @@ describe("the App component", function () {
                 render(<App />);
             });
 
-            expect(screen.getByText("Unexpected Internal Error"));
+            expect(screen.getByText("Unexpected Internal Error")).toBeTruthy();
         });
     });
 });
